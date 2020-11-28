@@ -53,7 +53,7 @@ const NavBar = (props) => {
         <Box>
           <Typography component="h1">
             <Link id="logo" className="badge-primary font-weight-bolder" to="/">
-              <Typography className={classes.title} color="white" component="h1">
+              <Typography className={classes.title} component="h1">
                 LE COMEDY HUB
               </Typography>
             </Link>

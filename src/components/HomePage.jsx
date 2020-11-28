@@ -32,13 +32,13 @@ const HomePage = () => {
       justify="space-between"
       alignItems="center"
     >
-      <Grid spacing={4}>
+      <Grid >
         <Typography component="h2" className={classes.grid}>LE FOU FOU</Typography>
       </Grid>
-      <Grid spacing={4}>
+      <Grid >
         <Typography className={classes.grid}>JOKES BLAGUES</Typography>
       </Grid>
-      <Grid spacing={4}>
+      <Grid >
         <Typography className={classes.grid}>RIRE NOW</Typography>
       </Grid>
     </Grid>
