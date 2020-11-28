@@ -1,26 +1,54 @@
 import React from "react";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core";
 
+/*  */
 
+const useStyles = makeStyles({
+  grid: {
+    fontWeight: "bolder",
+    padding: "0 5px",
+  },
+  title: {
+    fontWeight: "bolder",
+    margin: "0 5px"
+  },
+  homeImg: {
+    maxWidth: "100%",
+    height: "auto",
+  }
+  
+});
 
 const HomePage = () => {
+  const classes = useStyles();
+
   return (
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-md-4">
-          <h4 className="font-weight-bold text-left">LE FOU FOU </h4>
-        </div>
-        <div className="col-md-4">
-          <h4 className="font-weight-bold text-center">RIRE NOW </h4>
-        </div>
-        <div className="col-md-4">
-          <h4 className="font-weight-bold text-right">JOKES BLAGUES</h4>
-        </div>
-      </div>
-      <div className="row position-relative">
-        
-            <img id="home-img" className="img-fluid" src="club-2.jpg" alt="club" />
-      </div>
-    </div>
+    <>
+    <Grid
+      className={classes.grid}
+      container
+      direction="row"
+      justify="space-between"
+      alignItems="center"
+    >
+      <Grid spacing={4}>
+        <Typography component="h2" className={classes.grid}>LE FOU FOU</Typography>
+      </Grid>
+      <Grid spacing={4}>
+        <Typography className={classes.grid}>JOKES BLAGUES</Typography>
+      </Grid>
+      <Grid spacing={4}>
+        <Typography className={classes.grid}>RIRE NOW</Typography>
+      </Grid>
+    </Grid>
+
+    <Grid  container>
+    <img className={classes.homeImg} src="club-2.jpg" alt="club" />
+    </Grid>
+
+    </>
   );
 };
 
