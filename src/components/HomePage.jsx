@@ -1,6 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
-// import "./Homepage.css"
+
+
 
 const HomePage = () => {
   return (
@@ -17,25 +17,7 @@ const HomePage = () => {
         </div>
       </div>
       <div className="row position-relative">
-        <div className="col-12 col-md-4">
-          <Link
-            id="tickets-btn"
-            className="btn btn-secondary btn-lg font-weight-bolder"
-            role="button"
-            to="/events"
-          >
-            TICKETS
-          </Link>
-        </div>
-
-        <div className="col-12 col-md-4">
-          <Link id="host-btn" 
-          className="btn btn-primary btn-lg font-weight-bolder" 
-          role="button" 
-          to="/login">
-            HOST EVENTS
-          </Link>
-        </div>
+        
             <img id="home-img" className="img-fluid" src="club-2.jpg" alt="club" />
       </div>
     </div>
