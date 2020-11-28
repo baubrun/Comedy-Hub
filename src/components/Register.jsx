@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { logInAction } from "../../actions/actions";
-import { Header } from "../Header";
-import { Button } from "../Button";
+import { logInAction } from "../actions/actions";
+import  Header  from "./Header";
+import  Button  from "./Button";
 import { Link } from "react-router-dom";
-import { FormInput } from "../FormInput";
-import { dataRequestPost, goToEndpoint } from "../../api";
+import FormInput  from "./FormInput";
+import { dataRequestPost, goToEndpoint } from "../api";
 class Register extends Component {
   constructor(props) {
     super(props);

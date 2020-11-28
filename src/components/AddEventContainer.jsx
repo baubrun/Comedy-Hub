@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getSeatsAvailAction } from "../actions/actions";
-import {CalendarView} from "./CalendarView";
-import {AddEvent} from "./AddEvent";
+import CalendarView from "./CalendarView";
+import AddEvent from "./AddEvent";
 
 const DEFAULT_STATE = {
   title: "",

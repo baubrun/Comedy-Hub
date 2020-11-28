@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Button } from "../Button";
+import  Button  from "./Button";
 import {
   timeFixed15,
   validTimeFormat
-} from "../../Utils"
-import "./UpdateEvents.css"
+} from "../Utils"
+// import "./UpdateEvents.css"
 
 const DEFAULT_STATE = {
   title: "",

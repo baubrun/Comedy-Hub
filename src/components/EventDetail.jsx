@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { addToCartAction } from "../../actions/actions";
+import { addToCartAction } from "../actions/actions";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import "./EventDetail.css";
-import { Button } from "../Button";
-import { Nav } from "../Nav";
+// import "./EventDetail.css";
+import  Button  from "./Button";
+import  Nav  from "./Nav";
 
 const EventDetail = (props) => {
   
@@ -63,20 +63,20 @@ const EventDetail = (props) => {
               <div className="social-media">
                 {facebook && (
                   <Link to={`facebook.com/${facebook}`}>
-                    <img src={require("../../images/fb.png")} alt="facebook" />
+                    <img src={require("../images/fb.png")} alt="facebook" />
                   </Link>
                 )}
                 {instagram && (
                   <Link to={`instagram.com/${instagram}`}>
                     <img
-                      src={require("../../images/ig-color.png")}
+                      src={require("../images/ig-color.png")}
                       alt="instagram"
                     />
                   </Link>
                 )}
                 {twitter && (
                   <Link to={`instagram.com/${twitter}`}>
-                    <img src={require("../../images/tt.png")} alt="twitter" />
+                    <img src={require("../images/tt.png")} alt="twitter" />
                   </Link>
                 )}
               </div>

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { confirmCheckoutAction, emptyCartAction } from "../actions/actions";
-import "./Confirmation.css"
-import {Header} from "./Header"
+// import "./Confirmation.css"
+import Header from "./Header"
 import { dataRequestGet } from "../api";
 
 

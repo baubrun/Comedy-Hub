@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import Loader from "react-loader-spinner";
+// import Loader from "react-loader-spinner";
 import {
   loadingAction,
   loadedAction,
   emptyCartAction,
-} from "../../actions/actions";
+} from "../actions/actions";
 import { connect } from "react-redux";
-import { orderNumber, formattedAmount } from "../../Utils";
-import { FormInput } from "../FormInput";
-import { Button } from "../Button";
-import "./CheckoutForm.css";
-import { dataRequestPost, goToEndpoint } from "../../api";
+import { orderNumber, formattedAmount } from "../Utils";
+import  FormInput  from "./FormInput";
+import  Button  from "./Button";
+// import "./CheckoutForm.css";
+import { dataRequestPost, goToEndpoint } from "../api";
 
 const CARD_OPTIONS = {
   style: {

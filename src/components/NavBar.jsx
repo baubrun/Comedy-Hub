@@ -1,17 +1,43 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import { Dropdown } from "../Dropdown";
+import Dropdown from "./Dropdown";
 import {
   logOutAction,
   resetSeatsAvailAction,
   resetEventsAction,
   emptyCartAction,
-} from "../../actions/actions";
-import "./NavBar.css";
+} from "../actions/actions";
+// import "./NavBar.css";
+
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+
+import Box from "@material-ui/core/Box";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import { makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles({
+  appBar: {
+    bottom: "auto",
+    top: 0,
+  },
+  title: {
+    color: "white",
+    fontWeight: "bolder",
+    padding: "5px"
+  }
+
+})
 
 const NavBar = (props) => {
   const currentPage = useLocation().pathname;
+  const classes = useStyles()
 
   const logout = () => {
     props.logoutUser();
@@ -22,47 +48,19 @@ const NavBar = (props) => {
 
   return (
     <>
-      <nav className="navbar bg-primary p-0 m-0">
-          <div>
-            <h1>
-              <Link
-                id="logo"
-                className="badge-primary font-weight-bolder"
-                to="/"
-              >
-                <h3 className="ml-1">LE COMEDY HUB</h3>
-              </Link>
-            </h1>
-            {!props.loggedIn && currentPage !== "/login" ? (
-              <Link className="badge-secondary" to="/login">
-                <div className="font-weight-bold" id="login-link">
-                  <h4>LOGIN</h4>
-                </div>
-              </Link>
-            ) : (
-              ""
-            )}
-          </div>
-
-          {props.loggedIn && <Dropdown logout={logout} />}
-
-          <div >
-            {props.loggedIn ? `Salut ${props.hostId}!` : ""}
-          </div>
-
-          <div className="mx-3">
-            <Link to="/cart">
-              <img 
-              src="ticket-blk-white.png" 
-              alt="CART" />
-              {props.cart.length > 0 ? (
-                <span className="bg-secondary text-light cart-length">{props.cart.length}</span>
-              ) : (
-                ""
-              )}
+      <AppBar className={classes.appBar} color="primary" position="static">
+        <Box>
+          <Typography component="h1">
+            <Link id="logo" className="badge-primary font-weight-bolder" to="/">
+              <Typography className={classes.title} color="white" component="h1">
+                LE COMEDY HUB
+              </Typography>
             </Link>
-          </div>
-      </nav>
+          </Typography>
+          <Dropdown />
+    
+        </Box>
+      </AppBar>
     </>
   );
 };

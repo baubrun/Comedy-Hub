@@ -1,17 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { CalendarView } from "../CalendarView";
-import { Event } from "../Event";
+import  CalendarView  from "./CalendarView";
+import  Event  from "./Event";
 import {
   getEventsAction,
   getSeatsAvailAction,
   loadingAction,
   loadedAction,
-} from "../../actions/actions";
-import { compareDates } from "../../Utils";
-import "./Events.css";
-import { Header } from "../Header";
-import { dataRequestGet } from "../../api";
+} from "../actions/actions";
+import { compareDates } from "../Utils";
+// import "./Events.css";
+import  Header  from "./Header";
+import { dataRequestGet } from "../api";
 
 class Events extends Component {
   constructor(props) {

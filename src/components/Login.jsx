@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { logInAction } from "../../actions/actions";
-import { FormInput } from "../FormInput";
-import { Button } from "../Button";
-import "./Login.css";
+import { logInAction } from "../actions/actions";
+import  FormInput  from "./FormInput";
+import  Button  from "./Button";
+// import "./Login.css";
 import { Link } from "react-router-dom";
-import { dataRequestPost, goToEndpoint } from "../../api";
+import { dataRequestPost, goToEndpoint } from "../api";
 
 class Login extends Component {
   constructor(props) {

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { CheckoutForm } from "../CheckoutForm";
+import  CheckoutForm  from "./CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import "./Checkout.css";
-import { Header } from "../Header";
+// import "./Checkout.css";
+import  Header  from "./Header";
 
 export const PK_STRIPE = "pk_test_1jcRkbFeUYqVsCGYpNX51Ggv00oyStF042";
 const stripePromise = loadStripe(PK_STRIPE);

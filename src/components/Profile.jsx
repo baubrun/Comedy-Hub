@@ -1,21 +1,22 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { EventsHistory } from "../EventsHistory";
-import { AddEventContainer } from "../AddEventContainer";
-import UpdateEvent from "../UpdateEvent/UpdateEvent";
+import  EventsHistory  from "./EventsHistory";
+import  AddEventContainer  from "./AddEventContainer";
+import UpdateEvent from "./UpdateEvent";
+
 import { compareDates, 
   toggleProfileButtons 
-} from "../../Utils";
+} from "../Utils";
 import {
   getEventsAction,
   getSeatsAvailAction,
   loadingAction,
   loadedAction,
-} from "../../actions/actions";
-import { Button } from "../Button";
-import { Header } from "../Header";
-import "./Profile.css";
-import { dataRequestGet, dataRequestPost } from "../../api";
+} from "../actions/actions";
+import  Button  from "./Button";
+import  Header  from "./Header";
+// import "./Profile.css";
+import { dataRequestGet, dataRequestPost } from "../api";
 
 
 

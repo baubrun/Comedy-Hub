@@ -1,5 +1,5 @@
 import React from "react";
-import {Header} from "../Header"
+import Header from "./Header"
 
 const AddEvent = ({ dispatchLoading, handleVenueChange }) => {
   // const del = document.getElementById("delete-event-btn")

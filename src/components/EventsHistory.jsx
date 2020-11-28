@@ -1,11 +1,11 @@
 import React from "react";
 import moment from "moment";
-import { loadingAction, loadedAction } from "../../actions/actions";
+import { loadingAction, loadedAction } from "../actions/actions";
 import { connect } from "react-redux";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
-import "./EventsHistory.css";
-import { Header } from "../Header";
+// import "./EventsHistory.css";
+import  Header  from "./Header";
 
 export const EventsHistory = (props) => {
   const loadingSize = 200;
