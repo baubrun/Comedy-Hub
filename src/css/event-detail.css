@@ -1,0 +1,28 @@
+.events-header h1,
+.profile-header h1,
+.confirmation-header,
+.cart-header
+{
+    background-color: #020202;
+    display: flex;
+    color: white;
+    flex-flow: row wrap;
+    justify-content: center;
+    letter-spacing: 1px;
+    padding: 5px 0;
+    width: 100%;
+}
+
+.checkout-header,
+.event-detail-header,
+.venue-select h2,
+#events-history-header {
+    background-color: #663A2B;
+    display: flex;
+    color: white;
+    justify-content: center;
+    letter-spacing: 1px;
+    padding: 5px 0;
+    width: 100%;
+}
+

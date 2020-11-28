@@ -1,0 +1,190 @@
+/*====================
+Form 
+===============*/
+
+.errors {
+  background-color: rgba(243, 60, 60, 0.856);
+  border-radius: 5px;
+  display: flex;
+  color: white;
+  padding: 5px;
+  width: 100%;
+}
+
+
+
+#close-btn {
+  color: white;
+  cursor: pointer;
+  font-size: 30px;
+  font-weight: bold;
+  margin-left: auto;
+}
+
+#close-btn:hover {
+  color: rgb(255, 0, 0);
+}
+
+.login {
+  background-image: url("./images/door-lock.jpg");
+  background-size: cover;
+  height: 100vh;
+}
+
+.modal {
+  overflow: auto;
+  position: fixed;
+  width: 100%;
+}
+
+
+.login-flex-container,
+.register-flex-container {
+  background-color: #fefefe;
+  border: 1px solid #888;
+  border-radius: 5px;
+  display: flex;
+  flex-flow: row wrap;
+  margin: 1% auto 15% auto;
+  padding: 5px;
+  width: 80%;
+}
+
+.modal button {
+  width: 100%
+}
+
+.login-form-container,
+.register-form-container {
+  position: relative;
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+}
+
+.login-form-container img,
+.register-form-container img {
+  height: 95px;
+  width: 95px;
+}
+
+
+.modal input[type=text],
+.modal input[type=password],
+.modal input[type=email] {
+  width: 100%;
+  padding: 5px 5px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.login-form-fields,
+.modal .container {
+  width: 100%;
+}
+
+.cancel-btn {
+  display: flex;
+}
+
+.cancel-btn {
+  background-color: rgba(243, 60, 60, 0.856);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  letter-spacing: 1px;
+  justify-content: center;
+  margin-top: 10px;
+  padding: 5px 0;
+  text-align: center;
+  width: 100%;
+}
+
+.register {
+  background-image: url("./images/clay-brick-wall.jpg");
+}
+
+
+.not-registered-btn {
+  background-color: rgb(224, 151, 33);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  font-weight: bold;
+  font-size: 1.1em;
+  justify-content: center;
+  letter-spacing: 1px;
+  margin-top: 5px;
+  padding: 5px 0;
+}
+
+.login-btn,
+.register-btn {
+  background-color: #663A2B;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  font-weight: bold;
+  font-size: 1.1em;
+  justify-content: center;
+  letter-spacing: 1px;
+  margin: 10px 0;
+  padding: 5px 0;
+}
+
+.register-btn {
+  margin: 5px 0;
+}
+
+
+
+.show-events-addPage {
+  color: rgb(224, 151, 33);
+  cursor: pointer;
+}
+
+
+.show-events-addPage:hover {
+  color: white;
+  font-size: 1.1em;
+}
+
+
+
+/* =============================
+Mobile Styles: 0 to 480px
+=============================== */
+
+
+@media only screen and (max-width: 480px) {
+
+
+
+
+  .login-flex-container {
+    margin-top: 100px;
+
+  }
+
+  .register-flex-container {
+    margin-top: 45px;
+
+  }
+
+
+
+
+
+
+
+
+
+
+}
