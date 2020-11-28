@@ -22,6 +22,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { makeStyles } from "@material-ui/core";
 
+
 const useStyles = makeStyles({
   appBar: {
     bottom: "auto",
@@ -57,7 +58,7 @@ const NavBar = (props) => {
               </Typography>
             </Link>
           </Typography>
-          <Dropdown />
+          <Dropdown logout={logout}/>
     
         </Box>
       </AppBar>
