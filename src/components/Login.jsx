@@ -12,9 +12,42 @@ import { makeStyles } from "@material-ui/core/styles";
 
 // import "./Login.css";
 import { Link } from "react-router-dom";
-import { dataRequestPost, goToEndpoint } from "../api";
+import { dataRequestPost, fetchRequest } from "../api";
 
-const useStyles = makeStyles({});
+const useStyles = makeStyles((theme) => ({
+  card: {
+    maxWidth: 600,
+    margin: "auto",
+    textAlign: "center",
+    marginTop: theme.spacing(5),
+    paddingBottom: theme.spacing(2),
+  },
+  error: {
+    verticalAlign: "middle",
+  },
+  title: {
+    marginTop: theme.spacing(2),
+    color: theme.palette.openTitle,
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 300,
+  },
+  signUp: {
+    color: theme.palette.primary.dark,
+    fontWeight: "bold",
+    textDecoration: "none",
+    "&:hover": {
+      fontSize: "16px",
+    },
+  },
+  submit: {
+    margin: "auto",
+    marginBottom: theme.spacing(2),
+  },
+}));
+
 
 const Login = (props) => {
   const classes = useStyles();
@@ -34,14 +67,14 @@ const Login = (props) => {
   };
 
   const handleRegister = () => {
-    goToEndpoint("/register", props);
+    fetchRequest("/register", props);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData();
-    data.append("username", this.state.username);
-    data.append("password", this.state.password);
+    data.append("username", values.username);
+    data.append("password", values.password);
     setValues({
       ...values,
       username: "",
@@ -51,7 +84,7 @@ const Login = (props) => {
     const lg = await dataRequestPost("/login", data);
     if (lg.success) {
       dispatch(logInAction(lg.hostId));
-      goToEndpoint("/profile", props);
+      fetchRequest("/profile", props);
       return;
     } else {
       setValues({ ...values, errors: lg.errors });
@@ -72,13 +105,13 @@ const Login = (props) => {
           </Typography>
           <TextField
             className={classes.textField}
-            id="email"
-            label="Email"
-            name="email"
+            id="username"
+            label="Username"
+            name="username"
             margin="normal"
             onChange={(evt) => handleChange(evt)}
-            type="email"
-            value={this.state.email}
+            type="username"
+            value={values.username}
           ></TextField>
           <br />
           <TextField
@@ -89,7 +122,7 @@ const Login = (props) => {
             margin="normal"
             onChange={(evt) => handleChange(evt)}
             type="password"
-            value={this.state.password}
+            value={values.password}
           />
           {values.error && (
             <Typography color="error" component="p">

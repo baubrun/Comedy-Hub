@@ -1,9 +1,10 @@
 import axios from "axios"
 
-let herokuPrefix = "https://b-cc-hub.herokuapp.com" 
+// let herokuPrefix = "https://b-cc-hub.herokuapp.com" 
+let herokuPrefix = "http://localhost:5000" 
 
 
-export const goToEndpoint = (str, props) => props.history.push(herokuPrefix + str);
+export const fetchRequest = (str, props) => props.history.push(herokuPrefix + str);
 
 export const dataRequestGet = async (url) => {
     const resp = await axios.get(herokuPrefix + url);
@@ -17,7 +18,7 @@ export const dataRequestPost = async (url, data) => {
         body: data
     })
     const body = await response.text()
-    console.log(body)
+    // console.log(body)
     const parser = JSON.parse(body);
     return parser
 }

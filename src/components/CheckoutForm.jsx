@@ -12,7 +12,7 @@ import { orderNumber, formattedAmount } from "../Utils";
 import  FormInput  from "./FormInput";
 import  Button  from "./Button";
 // import "./CheckoutForm.css";
-import { dataRequestPost, goToEndpoint } from "../api";
+import { dataRequestPost, fetchRequest } from "../api";
 
 const CARD_OPTIONS = {
   style: {
@@ -78,7 +78,7 @@ const CheckoutForm = (props) => {
     
     if (ckout.success) {
       dispatchEmptyCart();
-      goToEndpoint("/confirmation", props);
+      fetchRequest("/confirmation", props);
     } else {
       console.log(ckout.msg);
     }

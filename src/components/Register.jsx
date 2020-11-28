@@ -5,7 +5,7 @@ import  Header  from "./Header";
 import  Button  from "./Button";
 import { Link } from "react-router-dom";
 import FormInput  from "./FormInput";
-import { dataRequestPost, goToEndpoint } from "../api";
+import { dataRequestPost, fetchRequest } from "../api";
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -50,7 +50,7 @@ class Register extends Component {
     const rg = dataRequestPost("/register", data)
     if (rg.success) {
       this.dispatchLogin(rg.hostId);
-      goToEndpoint("/profile", this.props);
+      fetchRequest("/profile", this.props);
     }
     else {
       this.setState({ errors: rg.errors });
