@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const userController = require("../controllers/user")
-const upload = require("../lib/multer")
+const multer = require("multer")
+const mul = require("../lib/multer")
+const upload = multer ({storage: mul.storage})
 
 
 

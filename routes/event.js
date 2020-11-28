@@ -1,9 +1,9 @@
 const express = require("express")
 const router = express.Router()
-const upload = require("../lib/multer")
 const eventController = require("../controllers/event")
-
-
+const multer = require("multer")
+const mul = require("../lib/multer")
+const upload = multer ({storage: mul.storage})
 
 
 router.route("/deleteEvents")

@@ -1,153 +1,128 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { logInAction } from "../actions/actions";
-import  FormInput  from "./FormInput";
-import  Button  from "./Button";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Icon from "@material-ui/core/Icon";
+import { makeStyles } from "@material-ui/core/styles";
+
 // import "./Login.css";
 import { Link } from "react-router-dom";
 import { dataRequestPost, goToEndpoint } from "../api";
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
+const useStyles = makeStyles({});
 
-    this.state = {
-      username: "",
-      password: "",
-      errors: [],
-    };
-  }
+const Login = (props) => {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const [values, setValues] = useState({
+    username: "",
+    password: "",
+    errors: [],
+  });
 
-  dispatchLogin = (hostId) => {
-    this.props.loginUser(hostId);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
   };
 
-  handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    this.setState({ [name]: value });
+  const handleRegister = () => {
+    goToEndpoint("/register", props);
   };
 
-  handleRegister = () => {
-    goToEndpoint("/register", this.props) 
-  };
-
-  handleSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData();
     data.append("username", this.state.username);
     data.append("password", this.state.password);
-    this.setState({
+    setValues({
+      ...values,
       username: "",
       password: "",
     });
 
-    const lg = await dataRequestPost("/login", data)
+    const lg = await dataRequestPost("/login", data);
     if (lg.success) {
-      this.dispatchLogin(lg.hostId);
-      goToEndpoint("/profile", this.props)
+      dispatch(logInAction(lg.hostId));
+      goToEndpoint("/profile", props);
       return;
-    }else {
-      this.setState({ errors: lg.errors });
+    } else {
+      setValues({ ...values, errors: lg.errors });
       return;
     }
   };
 
-  handleCloseErrors = () => {
-    this.setState({ errors: [] });
+  const handleCloseErrors = () => {
+    setValues({ ...values, errors: [] });
   };
 
-  render() {
-    return (
-      <div id="login-page" className="">
+  return (
+    <form>
+      <Card className={classes.card}>
+        <CardContent>
+          <Typography className={classes.title} variant="h6">
+            Sign In
+          </Typography>
+          <TextField
+            className={classes.textField}
+            id="email"
+            label="Email"
+            name="email"
+            margin="normal"
+            onChange={(evt) => handleChange(evt)}
+            type="email"
+            value={this.state.email}
+          ></TextField>
+          <br />
+          <TextField
+            className={classes.textField}
+            id="password"
+            label="Password"
+            name="password"
+            margin="normal"
+            onChange={(evt) => handleChange(evt)}
+            type="password"
+            value={this.state.password}
+          />
+          {values.error && (
+            <Typography color="error" component="p">
+              <Icon className={classes.error} color="error">
+                error
+              </Icon>
+              {values.error}
+            </Typography>
+          )}
+        </CardContent>
+        <CardActions>
+          <Button
+            className={classes.submit}
+            color="primary"
+            onClick={(evt) => handleSubmit(evt)}
+            variant="contained"
+          >
+            submit
+          </Button>
+        </CardActions>
+        <br />
 
-        <div className="container my-5 ">
-          <div className="row justify-content-center">
-            <div className="col-12 col-md-8">
-              <form onSubmit={this.handleSubmit}>
-                <div
-                  id="login-card"
-                  className="card border-primary border-0 mt-5"
-                >
-                  <div className="card-header p-0">
-                    <div className="bg-primary text-white text-center py-2">
-                      <h3>
-                        <i className="fas fa-user-circle fa-2x"></i> Login
-                      </h3>
-                    </div>
-                  </div>
-
-                  <div onClick={this.handleCloseErrors} style={{cursor: "pointer"}}>
-                      {this.state.errors.map((err, idx) => {
-                          return (
-                            <div className="bg-danger text-light text-center py-2" key={idx} id="errors">
-                              {err.msg}
-                            </div>)
-                        })}
-                  </div>
-
-                  <div className="card-body border-primary p-3">
-                    <div className="form-group">
-                      <div className="input-group mb-2 p">
-                        <div className="input-group-prepend">
-                          <div className="input-group-text">
-                            <i className="fa fa-user text-primary"></i>
-                          </div>
-                        </div>
-                        <FormInput
-                          name="username"
-                          onChange={this.handleChange}
-                          placeholder="Username"
-                          type="text"
-                          value={this.state.username}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="form-group">
-                      <div className="input-group mb-2">
-                        <div className="input-group-prepend">
-                          <div className="input-group-text">
-                            <i className="fa fa-key text-primary"></i>
-                          </div>
-                        </div>
-                        <FormInput
-                          name="password"
-                          onChange={this.handleChange}
-                          placeholder="Password"
-                          type="text"
-                          value={this.state.password}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="text-center">
-                      <Button
-                        color="primary btn-block rounded-0"
-                        text="login"
-                        type="submit"
-                      />
-                    </div>
-                    <div>
-                      <Link className="text-white font-weight-bold" to="/register">
-                        Register Here.
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loginUser: (hostId) => dispatch(logInAction(hostId)),
-  };
+        <Typography variant="body2" component="p">
+          Not registered? &nbsp;
+          <span>
+            <Link className={classes.signUp} to="//register">
+              Sign Up
+            </Link>
+          </span>
+        </Typography>
+      </Card>
+    </form>
+  );
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default Login;
