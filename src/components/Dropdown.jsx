@@ -1,5 +1,5 @@
-import React, { useState,  } from "react";
-import {useDispatch, useSelector} from "react-redux"
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -13,11 +13,9 @@ import Box from "@material-ui/core/Box";
 import StreetviewIcon from "@material-ui/icons/Streetview";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
-
-
-import {logOut} from "../redux/authSlice"
-import {clearCart} from "../redux/cartSlice"
-import {clearEvents} from "../redux/eventsSlice"
+import { logOut } from "../redux/authSlice";
+import { clearCart } from "../redux/cartSlice";
+import { clearEvents } from "../redux/eventsSlice";
 
 const StyledMenu = withStyles({
   paper: {
@@ -50,24 +48,20 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-
 export const Dropdown = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const dispatch = useDispatch()
-  const {loggedIn} = useSelector(state => state.auth)
-  const history = useHistory()
-
+  const dispatch = useDispatch();
+  const { loggedIn } = useSelector((state) => state.auth);
+  const history = useHistory();
+  const location = useLocation();
+  const isNotLoginPage = location.pathname !== "/login";
 
   const logout = () => {
-    dispatch(logOut())
-    dispatch(clearCart())
-    dispatch(clearEvents())
-    history.push("/")
+    dispatch(logOut());
+    dispatch(clearCart());
+    dispatch(clearEvents());
+    history.push("/");
   };
-
-
-
-
 
   const handleClick = (evt) => {
     setAnchorEl(evt.currentTarget);
@@ -98,16 +92,23 @@ export const Dropdown = (props) => {
         open={Boolean(anchorEl)}
         onClose={(evt) => handleClose(evt)}
       >
-        <Link to={`${loggedIn ? "/profile" : "/login"} `}>
-          <StyledMenuItem>
-            <ListItemIcon color="secondary">
-              <PersonIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText
-              primary={`${loggedIn ? "PROFILE" : "LOGIN"} `}
-            />
-          </StyledMenuItem>
-        </Link>
+            <Link to="/profile">
+              <StyledMenuItem>
+                <ListItemIcon color="secondary">
+                  <PersonIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="PROFILE" />
+              </StyledMenuItem>
+            </Link>
+            
+          <Link to="/login">
+            <StyledMenuItem>
+              <ListItemIcon color="secondary">
+                <PersonIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="LOGIN" />
+            </StyledMenuItem>
+          </Link>
 
         <Link to="/events">
           <StyledMenuItem>
@@ -137,11 +138,6 @@ export const Dropdown = (props) => {
             </StyledMenuItem>
           </Link>
         )}
-
-
-
-
-
       </StyledMenu>
     </>
   );

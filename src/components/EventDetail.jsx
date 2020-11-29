@@ -35,11 +35,6 @@ const ED = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const dispatchAddToCart = () => {
-    console.log("props.event  evt Dt:>> ", props.event);
-    dispatch(addToCart(props.event));
-  };
-
   const {
     title,
     venue,
@@ -76,7 +71,7 @@ const ED = (props) => {
               <Button
                 text="RESERVE"
                 color="primary"
-                onClick={() => dispatchAddToCart()}
+                onClick={() => dispatch(addToCart(props.event))}
                 size="large"
               />
             </Link>

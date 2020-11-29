@@ -7,18 +7,18 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 
 import Nav from "./Nav";
 
-
 import {
- getTotal,
- removeItem,
- clearCart,
- toggleAmount,
+  getTotal,
+  removeItem,
+  clearCart,
+  toggleAmount,
 } from "../redux/cartSlice";
 
 export const currencyFormat = (amount) => {
@@ -47,7 +47,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const totalRow = (classes, total) => {
+const TotalRow = ({ classes, total }) => {
+  const dispatch = useDispatch();
+
   return (
     <Grid
       className={classes.toolbar}
@@ -56,8 +58,22 @@ const totalRow = (classes, total) => {
       direction="row"
       alignItems="center"
     >
-      <Grid container justify="center" direction="row" alignItems="center" item>
-        <Typography variant="h4">Total : $ {total}</Typography>
+      <Grid container justify="space-between" direction="row" alignItems="center" item>
+      <Grid item>
+          <Button
+            color="error"
+            variant="contained"
+            onClick={() => dispatch(clearCart())}
+          >
+            CLEAR CART
+          </Button>
+        </Grid>
+        
+        <Grid item>
+          <Typography variant="h4">Total : $ {total}</Typography>
+        </Grid>
+
+       
       </Grid>
     </Grid>
   );
@@ -76,11 +92,7 @@ const Cart = () => {
 
   if (items && items.length < 1) {
     return (
-      <Grid 
-      container 
-      direction="row" 
-      justify="center" 
-      alignItems="center">
+      <Grid container direction="row" justify="center" alignItems="center">
         <Grid item>
           <Typography variant="h3"> Cart is Empty</Typography>
         </Grid>
@@ -90,7 +102,7 @@ const Cart = () => {
 
   return (
     <>
-      <Nav text="Cart" type="dark"></Nav>
+      <Nav text="MORE TICKETS" loc="events"></Nav>
       <Box className={classes.table}>
         <MaterialTable
           title=""
@@ -98,7 +110,7 @@ const Cart = () => {
             Toolbar: (props) => (
               <div>
                 <MTableToolbar {...props} />
-                {totalRow(classes, total)}
+                <TotalRow classes={classes} total={total} />
               </div>
             ),
           }}
@@ -125,43 +137,50 @@ const Cart = () => {
             { title: "Venue", field: "venue" },
             { title: "_id", field: "_id", hidden: true },
           ]}
-          data={items && items.map((item) => {
-            return {
-              event: item.title,
-              performer: item.performer,
-              venue: item.venue,
-              price: item.price,
-              qty: item.amount,
-            };
-          })}
+          data={
+            items &&
+            items.map((item) => {
+              return {
+                event: item.title,
+                performer: item.performer,
+                venue: item.venue,
+                price: item.price,
+                qty: item.amount,
+                _id: item._id,
+              };
+            })
+          }
           actions={[
             {
               icon: () => <DeleteForeverIcon color="secondary" />,
               tooltip: "Remove",
-              onClick: (evt, rowData) =>
-                dispatch(removeItem(rowData._id)),
+              onClick: (evt, rowData) => dispatch(removeItem(rowData._id)),
             },
             {
               icon: () => <RemoveCircleOutlineIcon color="primary" />,
               tooltip: "",
-              onClick: (evt, rowData) =>
+              onClick: (evt, rowData) => {
+                console.log("rowData Rem :>> ", rowData);
                 dispatch(
                   toggleAmount({
-                    toggle: "dec",
-                    id: rowData._id,
+                    toggle: "inc",
+                    _id: rowData._id,
                   })
-                ),
+                );
+              },
             },
             {
               icon: () => <AddCircleOutlineIcon color="secondary" />,
               tooltip: "",
-              onClick: (evt, rowData) =>
+              onClick: (evt, rowData) => {
+                console.log("rowData Add :>> ", rowData);
                 dispatch(
                   toggleAmount({
                     toggle: "inc",
-                    id: rowData._id,
+                    _id: rowData._id,
                   })
-                ),
+                );
+              },
             },
           ]}
           // localization={{

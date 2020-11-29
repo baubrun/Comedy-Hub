@@ -18,7 +18,7 @@ export const cartSlice = createSlice({
       state.items = [];
     },
     removeItem: (state, action) => {
-      state.items = state.items.filter((item) => item.id !== action.payload.id);
+      state.items = state.items.filter((item) => item._id !== action.payload._id);
     },
     getTotal: (state) => {
       let { total, amount } = state.items.reduce(
@@ -41,8 +41,13 @@ export const cartSlice = createSlice({
       state.amount = amount;
     },
     toggleAmount: (state, action) => {
-      state.items = state.items.map((item) => {
-        if (item.id === action.payload.id) {
+      const foundIdx = state.items.findIndex(i => i._id === action.payload._id)
+        console.log('foundIdx :>>', foundIdx)
+        console.log('action.payload._id :>>', action.payload._id)
+        state.items = state.items.map((item) => {
+          console.log('item._id :>>', item._id)
+
+        if (item._id === action.payload._id) {
           if (action.payload.toggle === "inc") {
             return {
               ...item,
@@ -56,7 +61,25 @@ export const cartSlice = createSlice({
           }
         }
         return item;
-      });
+      }); 
+      
+      
+      //       state.items = state.items.map((item) => {
+      //   if (item.id === action.payload.id) {
+      //     if (action.payload.toggle === "inc") {
+      //       return {
+      //         ...item,
+      //         amount: item.amount + 1,
+      //       }
+      //     } else {
+      //       return {
+      //         ...item,
+      //         amount: item.amount - 1,
+      //       }
+      //     }
+      //   }
+      //   return item;
+      // });
       
     },
   },
