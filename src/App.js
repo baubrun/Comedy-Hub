@@ -9,7 +9,7 @@ import Login from "./components/Login"
 import NavBar from "./components/NavBar"
 import Checkout from "./components/Checkout"
 import Confirmation from "./components/Confirmation"
-import RenderCart from "./components/RenderCart"
+import Cart from "./components/Cart"
 import  {connect, useSelector}  from "react-redux";
 
   const App = () => {
@@ -35,7 +35,7 @@ import  {connect, useSelector}  from "react-redux";
         </Route>
 
 
-        <Route exact={true} path="/cart" component={RenderCart}/>
+        <Route exact={true} path="/cart" component={Cart}/>
         <Route exact={true} path="/checkout" component={Checkout}/>
         <Route exact={true} path="/confirmation">
           {checkout.length < 1 ? <Redirect to="/events" /> : <Confirmation />}
