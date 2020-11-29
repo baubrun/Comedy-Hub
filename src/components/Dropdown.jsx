@@ -14,11 +14,10 @@ import StreetviewIcon from "@material-ui/icons/Streetview";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
 
-import {
-  logOutAction,
-  clearCartAction,
-  clearEvents,
-} from "../actions/actions";
+
+import {logOut} from "../../lib/redux/authSlice"
+import {clearCart} from "../../lib/redux/cartSlice"
+import {clearEvents} from "../../lib/redux/eventsSlice"
 
 const StyledMenu = withStyles({
   paper: {
@@ -60,8 +59,8 @@ export const Dropdown = (props) => {
 
 
   const logout = () => {
-    dispatch(logOutAction())
-    dispatch(clearCartAction())
+    dispatch(logOut())
+    dispatch(clearCart())
     dispatch(clearEvents())
     history.push("/")
   };

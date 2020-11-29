@@ -13,16 +13,13 @@ import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 
 import Nav from "./Nav";
 
+
 import {
-  REMOVED_ITEM,
-  TOGGLED_AMOUNT,
-  GOT_TOTAL,
-} from "../actions/actionTypes";
-import {
-  removeItemAction,
-  toggleAmountAction,
-  getTotalAction,
-} from "../actions/actions";
+ getTotal,
+ removeItem,
+ clearCart,
+ toggleAmount,
+} from "../../lib/redux/cartSlice";
 
 export const currencyFormat = (amount) => {
   return new Intl.NumberFormat("decimal", {
@@ -73,7 +70,7 @@ const Cart = () => {
 
   useEffect(() => {
     if (items && items.length > 0) {
-      dispatch(getTotalAction());
+      dispatch(getTotal());
     }
   }, [items]);
 
@@ -140,14 +137,14 @@ const Cart = () => {
               icon: () => <DeleteForeverIcon color="secondary" />,
               tooltip: "Remove",
               onClick: (evt, rowData) =>
-                dispatch(removeItemAction(rowData._id)),
+                dispatch(removeItem(rowData._id)),
             },
             {
               icon: () => <RemoveCircleOutlineIcon color="primary" />,
               tooltip: "",
               onClick: (evt, rowData) =>
                 dispatch(
-                  toggleAmountAction({
+                  toggleAmount({
                     toggle: "dec",
                     id: rowData._id,
                   })
@@ -158,7 +155,7 @@ const Cart = () => {
               tooltip: "",
               onClick: (evt, rowData) =>
                 dispatch(
-                  toggleAmountAction({
+                  toggleAmount({
                     toggle: "inc",
                     id: rowData._id,
                   })
