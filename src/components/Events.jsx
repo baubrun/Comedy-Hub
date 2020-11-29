@@ -33,7 +33,9 @@ const useStyles = makeStyles((theme) => ({
     borderColor: theme.palette.secondary,
   },
   icons: {
-    margin: theme.spacing(1),
+    margin: "0 24px" ,
+    width: 60,
+    height: 60,
   }
 }));
 
@@ -167,13 +169,13 @@ const Events = () => {
           justify="space-evenly"
           alignItems="center"
         >
-          <Box className={classes.icons}>
-            <IconButton id="list-view" onClick={toggleCalendarView} color="secondary">
-              <ListIcon />
+          <Box display="flex" >
+            <IconButton  id="list-view" onClick={toggleCalendarView} color="secondary">
+              <ListIcon className={classes.icons}/>
             </IconButton>
 
             <IconButton  id="calendar-view" onClick={toggleCalendarView} color="primary">
-              <CalendarTodayIcon />
+              <CalendarTodayIcon className={classes.icons}/>
             </IconButton>
           </Box>
         </Grid>
