@@ -67,7 +67,11 @@ const TotalRow = ({ classes, total }) => {
       >
         <Grid item>
           <Button
-            color="red"
+            style={{
+              backgroundColor: "red",
+              color: "white",
+              fontWeight: "bolder",
+            }}
             variant="contained"
             onClick={() => dispatch(clearCart())}
           >
@@ -91,12 +95,6 @@ const Cart = () => {
   useEffect(() => {
     dispatch(getTotal());
   });
-
-  // useEffect(() => {
-  //   if (items && items.length > 0) {
-  //     dispatch(getTotal());
-  //   }
-  // }, [items]);
 
   if (items && items.length < 1) {
     return (
