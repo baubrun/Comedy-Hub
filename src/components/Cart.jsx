@@ -1,10 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+
+
 import MaterialTable, { MTableToolbar } from "material-table";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
+
 import Nav from "./Nav";
 import { deleteFromCartAction, getItemsBoughtAction } from "../actions/actions";
 
@@ -45,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     margin: "8px",
   },
+  table: {
+    margin : "0 8px"
+  }
 }));
 
 const Cart = () => {
@@ -52,6 +61,10 @@ const Cart = () => {
   return (
     <>
       <Nav text="Cart" type="dark"></Nav>
+      <Box className={classes.table}>
+        
+
+      
       <MaterialTable
       title=""
         components={{
@@ -73,6 +86,9 @@ const Cart = () => {
             fontWeight: "bolder",
             letterSpacing: "2px",
           },
+          rowStyle: {
+            fontSize: "20px",
+          }
         }}
         columns={[
           { title: "Event", field: "event" },
@@ -81,27 +97,32 @@ const Cart = () => {
           { title: "Qty", field: "qty", type: "numeric" },
         ]}
         data={[
-          { name: "Mehmet", surname: "Baran", birthYear: 1987, birthCity: 63 },
-          {
-            name: "Zerya Betül",
-            surname: "Baran",
-            birthYear: 2017,
-            birthCity: 34,
-          },
+          { event: "Mehmet", venue: "Baran", price: 1987, qty: 63 },
         ]}
         actions={[
           {
-            icon: () => <DeleteForeverIcon />,
+            icon: () => <DeleteForeverIcon color="secondary"/>,
             tooltip: "Remove",
             onClick: (event, rowData) => alert("You saved " + rowData.name),
           },
-        ]}
-        localization={{
-          header: {
-            actions: "",
+          {
+            icon: () => <RemoveCircleOutlineIcon color="primary"/>,
+            tooltip: "",
+            onClick: (event, rowData) => alert("You saved " + rowData.name),
           },
-        }}
+          {
+            icon: () => <AddCircleOutlineIcon color="secondary"/>,
+            tooltip: "",
+            onClick: (event, rowData) => alert("You saved " + rowData.name),
+          },
+        ]}
+        // localization={{
+        //   header: {
+        //     actions: "",
+        //   },
+        // }}
       />
+      </Box>
     </>
   );
 };
