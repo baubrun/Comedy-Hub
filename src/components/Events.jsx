@@ -7,14 +7,18 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Grid from "@material-ui/core/Grid";
 import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import Box from "@material-ui/core/Box";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListIcon from "@material-ui/icons/List";
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 
 
-import {
-  getEventsAction,
-} from "../actions/actions";
+
+import { getEventsAction } from "../actions/actions";
 import { compareDates } from "../Utils";
 import Header from "./Header";
 import { dataRequestGet } from "../api";
@@ -22,17 +26,16 @@ import { dataRequestGet } from "../api";
 import CalendarView from "./CalendarView";
 import Event from "./Event";
 
-
-
-
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
-    borderColor: theme.palette.secondary
+    borderColor: theme.palette.secondary,
   },
+  icons: {
+    margin: theme.spacing(1),
+  }
 }));
-
 
 const Events = () => {
   const classes = useStyles();
@@ -99,7 +102,7 @@ const Events = () => {
 
   const showEvents = () => {
     if ((!values.listViewShow && values.events.length < 1) || !values.venue) {
-      return <h3 className="text-center">NO EVENTS</h3>;
+      return <Typography variant="h3">NO EVENTS</Typography>;
     }
     if (values.listViewShow && values.events.length > 0) {
       return values.events
@@ -117,21 +120,29 @@ const Events = () => {
     }
     if (values.calendarViewShow)
       return (
-        <div className="container-fluid">
-          <CalendarView events={values.events} />
-        </div>
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+          className="container-fluid"
+        >
+          <Grid item>
+            <CalendarView events={values.events} />
+          </Grid>
+        </Grid>
       );
     else {
-      return <h3>NO EVENTS</h3>;
+      return <Typography variant="h3">NO EVENTS</Typography>;
     }
   };
 
   return (
     <>
       <Header text="EVENTS" />
-      <Grid container direction="row" justify="center" alignItems="center">
+      <Grid container direction="column" justify="center" alignItems="center">
         <Grid item>
-          <FormControl variant="outlined" className={classes.formControl} >
+          <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel id="select">Venue</InputLabel>
             <Select
               labelId="select"
@@ -149,31 +160,28 @@ const Events = () => {
             </Select>
           </FormControl>
         </Grid>
+
+        <Grid
+          container
+          direction="row"
+          justify="space-evenly"
+          alignItems="center"
+        >
+          <Box className={classes.icons}>
+            <IconButton id="list-view" onClick={toggleCalendarView} color="secondary">
+              <ListIcon />
+            </IconButton>
+
+            <IconButton  id="calendar-view" onClick={toggleCalendarView} color="primary">
+              <CalendarTodayIcon />
+            </IconButton>
+          </Box>
+        </Grid>
+
+        <Grid item id="events-body">
+          {showEvents()}
+        </Grid>
       </Grid>
-      <div className="row mb-4 events-toggler">
-        <div className="col text-right">
-          <img
-            id="list-view"
-            onClick={toggleListView}
-            src="list-view-30px.png"
-            alt="list-view"
-          />
-        </div>
-        <div className="col">
-          <img
-            id="calendar-view"
-            onClick={toggleCalendarView}
-            src="calendar2-view-30px.png"
-            alt="calendar-view"
-          />
-        </div>
-      </div>
-      <div
-        className="d-md-flex flex-wrap justify-content-center"
-        id="events-body"
-      >
-        {showEvents()}
-      </div>
     </>
   );
 };
