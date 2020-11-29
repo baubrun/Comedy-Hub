@@ -1,19 +1,29 @@
 import React from "react";
 import Loader from "react-loader-spinner";
+import Button from "@material-ui/core/Button";
 
 
-const Button = ({color, id, text, onClick, name, size ,disabled, loading}) => {
+
+
+const MyButton = (
+  {color, id, text, onClick, 
+    name, size ,disabled, loading}
+  ) => {
+
+
   return (
-    <button
+    <Button
     id={id} 
-    className={`btn btn-${color} btn-${size} `} 
+    color={`${color}`} 
     name={name} 
     onClick={onClick}
     disabled={disabled}
+    size={size}
+    variant="contained"
     >
       {text}
 
-      {loading && (<div className="stripe-spinner">
+      {loading && (
           <Loader
             type="BallTriangle"
             color="white"
@@ -21,10 +31,10 @@ const Button = ({color, id, text, onClick, name, size ,disabled, loading}) => {
             width={30}
             visible={loading}
           />
-        </div> )}
+        )}
 
-    </button>
+    </Button>
   );
 };
 
-export default Button;
+export default MyButton;

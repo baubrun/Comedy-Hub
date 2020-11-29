@@ -10,12 +10,16 @@ import NavBar from "./components/NavBar"
 import Checkout from "./components/Checkout"
 import Confirmation from "./components/Confirmation"
 import RenderCart from "./components/RenderCart"
-import  {connect}  from "react-redux";
+import  {connect, useSelector}  from "react-redux";
 
-class App extends Component {
+  const App = () => {
 
 
-  render() {
+  const events = useSelector(state => state.events)
+  const {loggedIn} = useSelector(state => state.auth)
+  const checkout = useSelector(state => state.checkout)
+
+
     return (
       <div>
         <BrowserRouter>
@@ -24,21 +28,26 @@ class App extends Component {
         <Route exact={true} path="/login" component={Login}/>
         <Route exact={true} path="/register" component={Register}/>
         <Route exact={true} path="/events" component={Events}/>
-        <Route exact={true} path="/event/:id" component={EventDetail}/>
+        {/* <Route exact={true} path="/event/:id" component={EventDetail}/> */}
+
+        <Route exact={true} path="/event/:id">
+          {events.length < 1 ? <Redirect to="/events" /> : <EventDetail />}
+        </Route>
+
+
         <Route exact={true} path="/cart" component={RenderCart}/>
         <Route exact={true} path="/checkout" component={Checkout}/>
         <Route exact={true} path="/confirmation">
-          {this.props.checkout.length < 1 ? <Redirect to="/events" /> : <Confirmation />}
+          {checkout.length < 1 ? <Redirect to="/events" /> : <Confirmation />}
         </Route>
         <Route exact={true} path="/profile">
-          {!this.props.loggedIn ? <Redirect to="/login" /> : <Profile/>}
+          {!loggedIn ? <Redirect to="/login" /> : <Profile/>}
         </Route >
         </BrowserRouter>
 
       </div>
     )
   }
-}
 
 
 
