@@ -12,9 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Box from "@material-ui/core/Box";
 import ListIcon from "@material-ui/icons/List";
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-
-
+import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 
 import { getEventsAction } from "../actions/actions";
 import { compareDates } from "../Utils";
@@ -31,10 +29,10 @@ const useStyles = makeStyles((theme) => ({
     borderColor: theme.palette.secondary,
   },
   icons: {
-    margin: "0 24px" ,
+    margin: "0 24px",
     width: 60,
     height: 60,
-  }
+  },
 }));
 
 const Events = () => {
@@ -111,13 +109,14 @@ const Events = () => {
         )
         .map((event, idx) => (
           <Event
-            events={event}
+            event={event}
             key={idx}
             // seatsAvail={seatsAvail}
             venue={values.venue}
           />
         ));
     }
+
     if (values.calendarViewShow)
       return (
         <Grid
@@ -167,13 +166,21 @@ const Events = () => {
           justify="space-evenly"
           alignItems="center"
         >
-          <Box display="flex" >
-            <IconButton  id="list-view" onClick={toggleListView} color="secondary">
-              <ListIcon className={classes.icons}/>
+          <Box display="flex">
+            <IconButton
+              id="list-view"
+              onClick={toggleListView}
+              color="secondary"
+            >
+              <ListIcon className={classes.icons} />
             </IconButton>
 
-            <IconButton  id="calendar-view" onClick={toggleCalendarView} color="primary">
-              <CalendarTodayIcon className={classes.icons}/>
+            <IconButton
+              id="calendar-view"
+              onClick={toggleCalendarView}
+              color="primary"
+            >
+              <CalendarTodayIcon className={classes.icons} />
             </IconButton>
           </Box>
         </Grid>

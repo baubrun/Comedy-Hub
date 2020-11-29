@@ -3,7 +3,7 @@ import HomePage from "./components/HomePage"
 import {BrowserRouter, Route, Redirect} from "react-router-dom"
 import Register from "./components/Register";
 import Events from "./components/Events";
-import RenderEvent from "./components/EventDetail"
+import EventDetail from "./components/EventDetail"
 import Profile from "./components/Profile"
 import Login from "./components/Login"
 import NavBar from "./components/NavBar"
@@ -24,7 +24,7 @@ class App extends Component {
         <Route exact={true} path="/login" component={Login}/>
         <Route exact={true} path="/register" component={Register}/>
         <Route exact={true} path="/events" component={Events}/>
-        <Route exact={true} path="/event/:title" component={RenderEvent}/>
+        <Route exact={true} path="/event/:id" component={EventDetail}/>
         <Route exact={true} path="/cart" component={RenderCart}/>
         <Route exact={true} path="/checkout" component={Checkout}/>
         <Route exact={true} path="/confirmation">
