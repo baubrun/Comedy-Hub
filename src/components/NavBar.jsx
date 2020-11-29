@@ -15,7 +15,6 @@ import Badge from "@material-ui/core/Badge";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { withStyles } from "@material-ui/core/styles";
 
-
 const StyledBadge = withStyles((theme) => ({
   badge: {
     top: 15,
@@ -44,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavBar = () => {
-  const {items} = useSelector(state => state.cart)
+  const { items } = useSelector((state) => state.cart);
   const classes = useStyles();
 
   return (
@@ -78,8 +77,13 @@ const NavBar = () => {
                 <Dropdown />
               </Grid>
               <Grid item>
-                <StyledBadge badgeContent={items.length} color="secondary">
-                  {items.length > 0 && <ShoppingCartIcon style={{ fontSize: 40 }} />}
+                <StyledBadge
+                  badgeContent={(items && items.length)}
+                  color="secondary"
+                >
+                  {items && items.length > 0 && (
+                    <ShoppingCartIcon style={{ fontSize: 40 }} />
+                  )}
                 </StyledBadge>
               </Grid>
             </Grid>

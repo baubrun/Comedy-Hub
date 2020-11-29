@@ -69,7 +69,7 @@ const Cart = () => {
 
 
 
-  if (items.length === 0) {
+  if (items.length < 1) {
     return (
       <Grid container>
         <Grid item>

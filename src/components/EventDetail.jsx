@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleAmountAction } from "../actions/actions";
+import { toggleAmountAction, addToCartAction } from "../actions/actions";
 import moment from "moment";
 import { Link, useRouteMatch, useHistory } from "react-router-dom";
 
@@ -34,8 +34,10 @@ const ED = (props) => {
   const dispatch = useDispatch();
 
   const dispatchAddToCart = () => {
-    dispatch(toggleAmountAction(props.event));
+    dispatch(addToCartAction(props.event));
   };
+
+  console.log('props.event :>> ', props.event);
 
   const {
     title,
@@ -73,7 +75,7 @@ const ED = (props) => {
               <Button
                 text="RESERVE"
                 color="primary"
-                onClick={dispatchAddToCart}
+                onClick={() => dispatchAddToCart()}
                 size="large"
               />
             </Link>
@@ -161,10 +163,10 @@ const EventDetail = () => {
   }
 
   const eventID = match.params.id;
-  const selectedTitle = events.find((event) => {
+  const selected = events.find((event) => {
     return event._id === eventID;
   });
-  return <ED event={selectedTitle} addToCart={addToCart} />;
+  return <ED event={selected} />;
 };
 
 export default EventDetail;

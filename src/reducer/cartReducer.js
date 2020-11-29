@@ -3,6 +3,7 @@ import {
   REMOVED_ITEM,
   GOT_TOTAL,
   TOGGLED_AMOUNT,
+  ADDED_TO_CART,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -13,7 +14,14 @@ const initialState = {
 
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
-      
+
+    case ADDED_TO_CART:
+        const index = 
+        state.items.findIndex(i => i._id === action.payload._id)
+        if (index === -1) 
+        state.items = [...state.items, action.payload]
+        return state
+
     case CLEARED_CART:
       return (state.items = []);
 

@@ -18,7 +18,7 @@ import  {connect, useSelector}  from "react-redux";
   const events = useSelector(state => state.events)
   const {loggedIn} = useSelector(state => state.auth)
   const {items} = useSelector(state => state.cart)
-
+    console.log('items :>>', items)
 
     return (
       <div>
@@ -38,7 +38,7 @@ import  {connect, useSelector}  from "react-redux";
         <Route exact={true} path="/cart" component={Cart}/>
         <Route exact={true} path="/checkout" component={Checkout}/>
         <Route exact={true} path="/confirmation">
-          {items.length < 1 ? <Redirect to="/events" /> : <Confirmation />}
+          {items && items.length < 1 ? <Redirect to="/events" /> : <Confirmation />}
         </Route>
         <Route exact={true} path="/profile">
           {!loggedIn ? <Redirect to="/login" /> : <Profile/>}
