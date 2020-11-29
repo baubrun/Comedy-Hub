@@ -1,7 +1,5 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleAmountAction, addToCartAction } from "../actions/actions";
-import { ADDED_TO_CART } from "../actions/actionTypes";
 import moment from "moment";
 import { Link, useRouteMatch, useHistory } from "react-router-dom";
 
@@ -14,6 +12,9 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+
+
+import {addToCart} from "../../lib/redux/cartSlice"
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -36,7 +37,7 @@ const ED = (props) => {
 
   const dispatchAddToCart = () => {
     console.log("props.event  evt Dt:>> ", props.event);
-    dispatch(addToCartAction(props.event));
+    dispatch(addToCart(props.event));
   };
 
   const {
