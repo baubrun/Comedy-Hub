@@ -41,12 +41,7 @@ export const cartSlice = createSlice({
       state.amount = amount;
     },
     toggleAmount: (state, action) => {
-      const foundIdx = state.items.findIndex(i => i._id === action.payload._id)
-        console.log('foundIdx :>>', foundIdx)
-        console.log('action.payload._id :>>', action.payload._id)
         state.items = state.items.map((item) => {
-          console.log('item._id :>>', item._id)
-
         if (item._id === action.payload._id) {
           if (action.payload.toggle === "inc") {
             return {
