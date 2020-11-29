@@ -14,7 +14,7 @@ import Box from "@material-ui/core/Box";
 import ListIcon from "@material-ui/icons/List";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 
-import { getEvents } from "../../lib/redux/eventsSlice";
+import { getEvents } from "../redux/eventsSlice";
 import { compareDates } from "../Utils";
 import Header from "./Header";
 import { dataRequestGet } from "../api";

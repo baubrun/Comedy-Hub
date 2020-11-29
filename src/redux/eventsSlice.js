@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const EventsSlice = createSlice({
   name: "events",
-  initialAuthState: {
+  initialState: {
     events: [],
 },
   reducers: {
@@ -16,7 +16,7 @@ export const EventsSlice = createSlice({
   },
 });
 
-export const { getEvents } = EventsSlice.actions;
+export const { getEvents, clearEvents } = EventsSlice.actions;
 
 export const eventsState = (state) => state.events
 export default EventsSlice.reducer;

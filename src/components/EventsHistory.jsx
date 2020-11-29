@@ -1,13 +1,17 @@
 import React from "react";
 import moment from "moment";
-import { loadingAction, loadedAction } from "../actions/actions";
-import { connect } from "react-redux";
+import { loading, loaded } from "../redux/loadingSlice";
+import { useDispatch, useSelector } from "react-redux";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
-// import "./EventsHistory.css";
 import  Header  from "./Header";
 
+
+
 export const EventsHistory = (props) => {
+  const dispatch = useDispatch()
+  const stateprops = useSelector()
+
   const loadingSize = 200;
   return (
     <div className="container-fluid">
@@ -20,12 +24,12 @@ export const EventsHistory = (props) => {
             color="rgba(224, 151, 33, 0.7)"
             height={loadingSize}
             width={loadingSize}
-            visible={props.loading}
+            visible={loading}
           />
         </div>
 
         <div>
-          {!props.loading &&
+          {!loading &&
             (props.userEvents.length > 0 ? (
               props.userEvents.map((event, idx) => (
                 <div
@@ -156,18 +160,18 @@ export const EventsHistory = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    seatsAvail: state.seatsAvail,
-    loading: state.loading,
-  };
-};
+// const mapStateToProps = (state) => {
+//   return {
+//     seatsAvail: state.seatsAvail,
+//     loading: state.loading,
+//   };
+// };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loadingData: () => dispatch(loadingAction()),
-    loadedData: () => dispatch(loadedAction()),
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     loadingData: () => dispatch(loadingAction()),
+//     loadedData: () => dispatch(loadedAction()),
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventsHistory);
+export default EventsHistory

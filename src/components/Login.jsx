@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { logInAction } from "../actions/actions";
+import { logIn } from "../redux/authSlice";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -82,7 +82,7 @@ const Login = (props) => {
 
     const lg = await dataRequestPost("/login", data);
     if (lg.success) {
-      dispatch(logInAction(lg.hostId));
+      dispatch(logIn(lg.hostId));
       fetchRequest("/profile", props);
       return;
     } else {

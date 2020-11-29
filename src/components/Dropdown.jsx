@@ -15,9 +15,9 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
 
 
-import {logOut} from "../../lib/redux/authSlice"
-import {clearCart} from "../../lib/redux/cartSlice"
-import {clearEvents} from "../../lib/redux/eventsSlice"
+import {logOut} from "../redux/authSlice"
+import {clearCart} from "../redux/cartSlice"
+import {clearEvents} from "../redux/eventsSlice"
 
 const StyledMenu = withStyles({
   paper: {

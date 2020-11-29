@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 // import Loader from "react-loader-spinner";
-import {
-  loadingAction,
-  loadedAction,
-  clearCartAction,
-} from "../actions/actions";
+// import {
+//   loadingAction,
+//   loadedAction,
+//   clearCartAction,
+// } from "../actions/actions";
 import { connect } from "react-redux";
 import { orderNumber, formattedAmount } from "../Utils";
 import  FormInput  from "./FormInput";
@@ -170,18 +170,18 @@ const CheckoutForm = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    loading: state.loading,
-  };
-};
+// const mapStateToProps = (state) => {
+//   return {
+//     loading: state.loading,
+//   };
+// };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loadingData: () => dispatch(loadingAction()),
-    loadedData: () => dispatch(loadedAction()),
-    emptyCart: () => dispatch(clearCartAction()),
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     loadingData: () => dispatch(loadingAction()),
+//     loadedData: () => dispatch(loadedAction()),
+//     emptyCart: () => dispatch(clearCartAction()),
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CheckoutForm);
+export default CheckoutForm

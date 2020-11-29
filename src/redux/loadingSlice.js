@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const loadingSlice = createSlice({
   name: "loading",
-  initialAuthState: {
+  initialState: {
     loading: false,
 },
   reducers: {

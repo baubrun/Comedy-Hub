@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import  EventsHistory  from "./EventsHistory";
 import  AddEventContainer  from "./AddEventContainer";
 import UpdateEvent from "./UpdateEvent";
@@ -7,12 +7,14 @@ import UpdateEvent from "./UpdateEvent";
 import { compareDates, 
   toggleProfileButtons 
 } from "../Utils";
+
 import {
-  getEventsAction,
-  getSeatsAvailAction,
-  loadingAction,
-  loadedAction,
-} from "../actions/actions";
+  getEvents,
+} from "../redux/eventsSlice";
+import {
+  loading, loaded
+} from "../redux/loadingSlice";
+
 import  Button  from "./Button";
 import  Header  from "./Header";
 // import "./Profile.css";
@@ -20,50 +22,40 @@ import { dataRequestGet, dataRequestPost } from "../api";
 
 
 
-class Profile extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showHistory: false,
+const Profile = () => {
+  const dispatch = useDispatch()
+  const [state, setState] = useState({
+    showHistory: false,
       showAddEvent: false,
       showUpdateEvent: false,
       selectedEvent: [],
       selectedOption: "",
       userEvents: [],
-    };
-  }
+    
+  })
 
-  dispatchLoaded = () => {
-    this.props.loadedData();
-  };
+ 
+  useEffect(() => {
+    toggleProfileButtons();
+  }, [state.showAddEvent, state.showUpdateEvent])
 
-  dispatchLoading = async () => {
-    this.props.loadingData();
+  const dispatchLoading = async () => {
+    dispatch(loading())
 
     try {
       const data = await dataRequestGet("/events");
-      this.dispatchGetEvents(data);
+      dispatch(getEvents(data));
       setTimeout(() => {
-        this.dispatchLoaded();
+        dispatch(loaded());
         }, 2000);
       ;
       this.showEvents();
     } catch (error) {
       console.log(error);
     }
-  };
+  
 
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.showAddEvent !== this.state.showAddEvent ||
-      prevState.showUpdateEvent !== this.state.showUpdateEvent
-    ) {
-      toggleProfileButtons();
-    }
-  }
-
-  showEvents = () => {
+  const showEvents = () => {
     this.setState({
       userEvents: this.getHostEvents(),
       showHistory: true,
@@ -73,15 +65,15 @@ class Profile extends Component {
     });
   };
 
-  dispatchGetEvents = (events) => {
+  const dispatchGetEvents = (events) => {
     this.props.getEvents(events);
   };
 
-  dispatchGetSeatsAvail = (seats) => {
+  const dispatchGetSeatsAvail = (seats) => {
     this.props.getSeatsAvail(seats);
   };
 
-  deleteEvent = async () => {
+  const deleteEvent = async () => {
     if (this.state.selectedOption === "") {
       window.alert("Please select an event.");
       return;
@@ -93,7 +85,7 @@ class Profile extends Component {
         
         try {
           await dataRequestPost("/deleteEvents", dataEvents);
-          this.dispatchLoading();
+          dispatch(loading());
         } catch (error) {
           console.log(error);
         }
@@ -101,7 +93,7 @@ class Profile extends Component {
     }
   };
 
-  getHostEvents = () => {
+  const getHostEvents = () => {
     const events = this.props.events.filter(
       (event) =>
         event.hostId.toLowerCase().indexOf(this.props.hostId.toLowerCase()) !==
@@ -110,14 +102,14 @@ class Profile extends Component {
     return events.sort(compareDates);
   };
 
-  getSelectedEvent = () => {
+  const getSelectedEvent = () => {
     const event = this.state.userEvents.find(
       (evt) => evt._id === this.state.selectedOption
     );
     return event;
   };
 
-  handleOptionChange = (event) => {
+  const handleOptionChange = (event) => {
     this.setState({
       selectedOption: event.target.value,
     });
@@ -134,7 +126,7 @@ class Profile extends Component {
   //   }
   // };
 
-  showAddEvent = () => {
+  const showAddEvent = () => {
     this.setState({
       showHistory: false,
       showAddEvent: true,
@@ -143,7 +135,7 @@ class Profile extends Component {
     });
   };
 
-  showUpdateEventForm = () => {
+  const showUpdateEventForm = () => {
     if (this.state.selectedOption === "") {
       window.alert("Please select an event.");
       return;
@@ -159,7 +151,7 @@ class Profile extends Component {
 
 
 
-  renderProfileButtons = () => {
+  const renderProfileButtons = () => {
     return (
       <div id="profile-btns" className="row sticky-top text-center" style={{ backgroundColor: "white" }}>
         <div className="col-6 col-md-3 my-2 justify-content-center">
@@ -198,7 +190,6 @@ class Profile extends Component {
     );
   };
 
-  render() {
     return (
       <div>
         <Header text="PROFILE" type="dark" />
@@ -229,25 +220,7 @@ class Profile extends Component {
         </div>
       </div>
     );
-  }
-}
+          }
+        }
 
-const mapStateToProps = (state) => {
-  return {
-    events: state.events,
-    hostId: state.auth.hostId,
-    seatsAvail: state.seatsAvail.venue,
-    loading: state.loading,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getEvents: (events) => dispatch(getEventsAction(events)),
-    getSeatsAvail: (seats) => dispatch(getSeatsAvailAction(seats)),
-    loadingData: () => dispatch(loadingAction()),
-    loadedData: () => dispatch(loadedAction()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default Profile

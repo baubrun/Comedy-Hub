@@ -14,7 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
 
-import {addToCart} from "../../lib/redux/cartSlice"
+import {addToCart} from "../redux/cartSlice"
 
 const useStyles = makeStyles((theme) => ({
   grid: {

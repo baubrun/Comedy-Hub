@@ -4,7 +4,7 @@ import "./css/custom.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
-import store from "./store";
+import store from "./redux/store";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { theme } from "./css/theme";
 import 'fontsource-roboto';

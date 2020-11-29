@@ -19,7 +19,7 @@ import {
  removeItem,
  clearCart,
  toggleAmount,
-} from "../../lib/redux/cartSlice";
+} from "../redux/cartSlice";
 
 export const currencyFormat = (amount) => {
   return new Intl.NumberFormat("decimal", {

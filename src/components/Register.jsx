@@ -1,46 +1,43 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { logInAction } from "../actions/actions";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logIn } from "../redux/authSlice";
 import  Header  from "./Header";
 import  Button  from "./Button";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import FormInput  from "./FormInput";
 import { dataRequestPost, fetchRequest } from "../api";
-class Register extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
+
+const Register = (props) => { 
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const [state, setState] = useState({
       username: "",
       password: "",
       email: "",
       hostId: "",
       errors: [],
-    };
-  }
+    
+  })
 
-  dispatchLogin = (hostId) => {
-    this.props.loginUser(hostId);
-  };
-
-  handleChange = (event) => {
+  const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-    this.setState({ [name]: value });
+    setState({ [name]: value });
   };
 
-  handleCancel = () => {
-    this.props.history.push("/");
+  const handleCancel = () => {
+    history.push("/");
   };
 
-  handleSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData();
-    data.append("username", this.state.username);
-    data.append("password", this.state.password);
-    data.append("email", this.state.email);
-    data.append("hostId", this.state.hostId);
-    this.setState({
+    data.append("username", state.username);
+    data.append("password", state.password);
+    data.append("email", state.email);
+    data.append("hostId", state.hostId);
+    setState({
       username: "",
       password: "",
       email: "",
@@ -49,26 +46,25 @@ class Register extends Component {
 
     const rg = dataRequestPost("/register", data)
     if (rg.success) {
-      this.dispatchLogin(rg.hostId);
-      fetchRequest("/profile", this.props);
+      dispatch(logIn(rg.hostId));
+      fetchRequest("/profile", props);
     }
     else {
-      this.setState({ errors: rg.errors });
+      setState({ errors: rg.errors });
     }
   };
 
-  handleCloseErrors = () => {
-    this.setState({ errors: [] });
+  const handleCloseErrors = () => {
+    setState({ errors: [] });
   };
 
-  render() {
     return (
       <>
         <Header text="BIENVENUE TO THE COMEDY HUB" type="dark" />
         <div className="container ">
           <div className="row justify-content-center">
             <div className="col-12 col-md-8">
-              <form onSubmit={this.handleSubmit}>
+              <form onSubmit={handleSubmit}>
                 <div
                   id="login-card"
                   className="card border-secondary border-0 mt-5"
@@ -81,8 +77,8 @@ class Register extends Component {
                     </div>
                   </div>
 
-                  <div onClick={this.handleCloseErrors} style={{cursor: "pointer"}}>
-                      {this.state.errors.map((err, idx) => {
+                  <div onClick={handleCloseErrors} style={{cursor: "pointer"}}>
+                      {state.errors.map((err, idx) => {
                           return (
                             <div className="bg-danger text-light text-center py-2" key={idx} id="errors">
                               {err.msg}
@@ -101,10 +97,10 @@ class Register extends Component {
                         </div>
                         <FormInput
                           name="username"
-                          onChange={this.handleChange}
+                          onChange={handleChange}
                           placeholder="Username"
                           type="text"
-                          value={this.state.username}
+                          value={state.username}
                         />
                       </div>
                     </div>
@@ -118,10 +114,10 @@ class Register extends Component {
                         </div>
                         <FormInput
                           name="password"
-                          onChange={this.handleChange}
+                          onChange={handleChange}
                           placeholder="Password"
                           type="text"
-                          value={this.state.password}
+                          value={state.password}
                         />
                       </div>
                     </div>
@@ -137,8 +133,8 @@ class Register extends Component {
                           type="email"
                           placeholder="Email"
                           name="email"
-                          value={this.state.email}
-                          onChange={this.handleChange}
+                          value={state.email}
+                          onChange={handleChange}
                         />
                       </div>
                     </div>
@@ -162,8 +158,8 @@ class Register extends Component {
                           type="text"
                           name="hostId"
                           placeholder="Host Name"
-                          onChange={this.handleChange}
-                          value={this.state.hostId}
+                          onChange={handleChange}
+                          value={state.hostId}
                         />
                       </div>
                     </div>
@@ -173,7 +169,7 @@ class Register extends Component {
                         color="secondary btn-block rounded-0"
                         text="REGISTER"
                         type="submit"
-                        onClick={this.handleSubmit}
+                        onClick={handleSubmit}
                       />
                     </div>
                     <div>
@@ -182,7 +178,7 @@ class Register extends Component {
                         color="danger btn-block rounded-0"
                         text="CANCEL"
                         type="submit"
-                        onClick={this.handleCancel}
+                        onClick={handleCancel}
                       />
                     </div>
                     <Link
@@ -202,12 +198,5 @@ class Register extends Component {
       </>
     );
   }
-}
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loginUser: (hostId) => dispatch(logInAction(hostId)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Register);
+export default Register

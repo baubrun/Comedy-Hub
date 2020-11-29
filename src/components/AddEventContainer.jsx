@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { getSeatsAvailAction } from "../actions/actions";
 import CalendarView from "./CalendarView";
 import AddEvent from "./AddEvent";
 
@@ -54,9 +52,6 @@ class AddEventContainer extends Component {
     this.setState({ userEvents: userEvents });
   };
 
-  dispatchGetSeatsAvail = (seats) => {
-    this.props.getSeatsAvail(seats);
-  };
 
   handleSubmit = async (event) => {
     event.preventDefault();
@@ -128,18 +123,7 @@ class AddEventContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    loggedIn: state.auth.loggedIn,
-    hostId: state.auth.hostId,
-    seatsAvail: state.seatsAvail.venue,
-  };
-};
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getSeatsAvail: (seats) => dispatch(getSeatsAvailAction(seats)),
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddEventContainer);
+
+export default AddEventContainer
