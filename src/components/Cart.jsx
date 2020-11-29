@@ -173,12 +173,18 @@ const Cart = () => {
               icon: () => <RemoveCircleOutlineIcon color="primary" />,
               tooltip: "",
               onClick: (evt, rowData) => {
-                dispatch(
-                  toggleAmount({
-                    toggle: "dec",
-                    _id: rowData._id,
-                  })
-                );
+                rowData.qty === 1
+                  ? dispatch(
+                      removeItem({
+                        _id: rowData._id,
+                      })
+                    )
+                  : dispatch(
+                      toggleAmount({
+                        toggle: "dec",
+                        _id: rowData._id,
+                      })
+                    );
               },
             },
             {
