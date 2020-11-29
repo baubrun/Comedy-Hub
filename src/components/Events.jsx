@@ -11,8 +11,6 @@ import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Box from "@material-ui/core/Box";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
 import ListIcon from "@material-ui/icons/List";
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 
@@ -170,7 +168,7 @@ const Events = () => {
           alignItems="center"
         >
           <Box display="flex" >
-            <IconButton  id="list-view" onClick={toggleCalendarView} color="secondary">
+            <IconButton  id="list-view" onClick={toggleListView} color="secondary">
               <ListIcon className={classes.icons}/>
             </IconButton>
 
