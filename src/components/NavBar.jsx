@@ -1,13 +1,7 @@
 import React from "react";
-import { connect } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
-import {
-  logOutAction,
-  resetSeatsAvailAction,
-  resetEventsAction,
-  clearCartAction,
-} from "../actions/actions";
 
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -21,33 +15,15 @@ import Badge from "@material-ui/core/Badge";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { withStyles } from "@material-ui/core/styles";
 
-// const mapStateToProps = (state) => {
-//   return {
-//     loggedIn: state.auth.loggedIn,
-//     hostId: state.auth.hostId,
-//     cart: state.cart,
-//     checkedOut: state.checkedOut,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     logoutUser: () => dispatch(logOutAction()),
-//     resetSeatsAvail: () => dispatch(resetSeatsAvailAction()),
-//     resetEvents: () => dispatch(resetEventsAction()),
-//     emptyCart: () => dispatch(clearCartAction()),
-//   };
-// };
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
     top: 15,
-    left: -45,
+    left: -50,
     height: 36,
     width: 36,
     border: `2px solid ${theme.palette.background.paper}`,
     padding: "0 4px",
-    // marginLeft: "4px"
   },
 }))(Badge);
 
@@ -67,8 +43,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavBar = (props) => {
-  const currentPage = useLocation().pathname;
+const NavBar = () => {
+  const {items} = useSelector(state => state.cart)
   const classes = useStyles();
 
   return (
@@ -102,8 +78,8 @@ const NavBar = (props) => {
                 <Dropdown />
               </Grid>
               <Grid item>
-                <StyledBadge badgeContent={100} color="secondary">
-                  <ShoppingCartIcon style={{ fontSize: 40 }} />
+                <StyledBadge badgeContent={items.length} color="secondary">
+                  {items.length > 0 && <ShoppingCartIcon style={{ fontSize: 40 }} />}
                 </StyledBadge>
               </Grid>
             </Grid>
@@ -114,5 +90,4 @@ const NavBar = (props) => {
   );
 };
 
-// export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
 export default NavBar;
