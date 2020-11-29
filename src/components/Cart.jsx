@@ -58,22 +58,26 @@ const TotalRow = ({ classes, total }) => {
       direction="row"
       alignItems="center"
     >
-      <Grid container justify="space-between" direction="row" alignItems="center" item>
-      <Grid item>
+      <Grid
+        container
+        justify="space-evenly"
+        direction="row"
+        alignItems="center"
+        item
+      >
+        <Grid item>
           <Button
-            color="error"
+            color="red"
             variant="contained"
             onClick={() => dispatch(clearCart())}
           >
             CLEAR CART
           </Button>
         </Grid>
-        
+
         <Grid item>
           <Typography variant="h4">Total : $ {total}</Typography>
         </Grid>
-
-       
       </Grid>
     </Grid>
   );
@@ -85,10 +89,14 @@ const Cart = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    if (items && items.length > 0) {
-      dispatch(getTotal());
-    }
-  }, [items]);
+    dispatch(getTotal());
+  });
+
+  // useEffect(() => {
+  //   if (items && items.length > 0) {
+  //     dispatch(getTotal());
+  //   }
+  // }, [items]);
 
   if (items && items.length < 1) {
     return (
@@ -154,16 +162,20 @@ const Cart = () => {
             {
               icon: () => <DeleteForeverIcon color="secondary" />,
               tooltip: "Remove",
-              onClick: (evt, rowData) => dispatch(removeItem(rowData._id)),
+              onClick: (evt, rowData) =>
+                dispatch(
+                  removeItem({
+                    _id: rowData._id,
+                  })
+                ),
             },
             {
               icon: () => <RemoveCircleOutlineIcon color="primary" />,
               tooltip: "",
               onClick: (evt, rowData) => {
-                console.log("rowData Rem :>> ", rowData);
                 dispatch(
                   toggleAmount({
-                    toggle: "inc",
+                    toggle: "dec",
                     _id: rowData._id,
                   })
                 );
