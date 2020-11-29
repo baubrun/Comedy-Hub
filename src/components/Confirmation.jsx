@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { confirmCheckoutAction, emptyCartAction } from "../actions/actions";
+import { confirmCheckoutAction, clearCartAction } from "../actions/actions";
 // import "./Confirmation.css"
 import Header from "./Header"
 import { dataRequestGet } from "../api";
@@ -99,7 +99,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     confirmCheckout: () => dispatch(confirmCheckoutAction()),
-    emptyCart: () => dispatch(emptyCartAction()),
+    emptyCart: () => dispatch(clearCartAction()),
   };
 };
 

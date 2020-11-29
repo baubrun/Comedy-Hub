@@ -5,7 +5,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {
   loadingAction,
   loadedAction,
-  emptyCartAction,
+  clearCartAction,
 } from "../actions/actions";
 import { connect } from "react-redux";
 import { orderNumber, formattedAmount } from "../Utils";
@@ -180,7 +180,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loadingData: () => dispatch(loadingAction()),
     loadedData: () => dispatch(loadedAction()),
-    emptyCart: () => dispatch(emptyCartAction()),
+    emptyCart: () => dispatch(clearCartAction()),
   };
 };
 

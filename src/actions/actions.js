@@ -2,13 +2,11 @@ import {
     GOT_EVENTS,
     LOGGED_IN,
     LOGGED_OUT,
-    ADDED_TO_CART,
-    DELETED_FROM_CART,
-    GOT_CART,
-    GOT_ITEMS_BOUGHT,
+    TOGGLED_AMOUNT,
+    REMOVED_ITEM,
+    GOT_TOTAL,
     CONFIRMED_CHECKOUT,
-    EMPTIED_CART,
-    RESET_CHECKOUT,
+    CLEARED_CART,
     GOT_SEATS_AVAIL,
     RESET_EVENTS,
     RESET_SEATS_AVAIL,
@@ -16,39 +14,33 @@ import {
     LOADED
 } from "./actionTypes"
 
-export const addToCartAction = item => ({
-    type: ADDED_TO_CART,
-    payload: item
-})
+
 
 export const confirmCheckoutAction = () => ({
     type: CONFIRMED_CHECKOUT,
     payload: true
 })
 
-export const deleteFromCartAction = itemIdx => ({
-    type: DELETED_FROM_CART,
+export const removeItemAction = itemIdx => ({
+    type: REMOVED_ITEM,
     payload: itemIdx
 })
 
-export const emptyCartAction = () => ({
-    type: EMPTIED_CART,
+export const clearCartAction = () => ({
+    type: CLEARED_CART,
     payload: []
 })
 
-export const getCartAction = items => ({
-    type: GOT_CART,
-    payload: items
+export const getTotalAction = items => ({
+    type: GOT_TOTAL
 })
+
+
 export const getEventsAction = events => ({
     type: GOT_EVENTS,
     payload: events
 })
 
-export const getItemsBoughtAction = items => ({
-    type: GOT_ITEMS_BOUGHT,
-    payload: items
-})
 export const getSeatsAvailAction = seats => ({
     type: GOT_SEATS_AVAIL,
     payload: seats
@@ -80,10 +72,6 @@ export const logOutAction = () => ({
     }
 })
 
-export const resetCheckoutAction = () => ({
-    type: RESET_CHECKOUT,
-    payload: false
-})
 
 
 export const resetEventsAction = () => ({
@@ -97,3 +85,8 @@ export const resetSeatsAvailAction = () => ({
     payload: []
 })
 
+// changed addedToCartAction to toggleAmountAction
+export const toggleAmountAction = item => ({
+    type: TOGGLED_AMOUNT,
+    payload: item
+})

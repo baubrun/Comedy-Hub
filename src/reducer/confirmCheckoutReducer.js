@@ -1,15 +1,12 @@
 import {
-    CONFIRMED_CHECKOUT,
-    RESET_CHECKOUT
+    GOT_TOTAL
 } from "../actions/actionTypes"
 
 
-const confirmCheckoutReducer = (state = false, action) => {
+const confirmCheckoutReducer = 
+(state = false, action) => {
     switch (action.type) {
-        case CONFIRMED_CHECKOUT:
-            return action.payload
-        case RESET_CHECKOUT:
-            return action.payload
+        case GOT_TOTAL:
         default:
             return state
     }

@@ -16,7 +16,7 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
 import {
   logOutAction,
-  emptyCartAction,
+  clearCartAction,
   resetEventsAction,
 } from "../actions/actions";
 
@@ -61,7 +61,7 @@ export const Dropdown = (props) => {
 
   const logout = () => {
     dispatch(logOutAction())
-    dispatch(emptyCartAction())
+    dispatch(clearCartAction())
     dispatch(resetEventsAction())
     history.push("/")
   };

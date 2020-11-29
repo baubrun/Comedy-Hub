@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addToCartAction } from "../actions/actions";
+import { toggleAmountAction } from "../actions/actions";
 import moment from "moment";
 import { Link, useRouteMatch, useHistory } from "react-router-dom";
 
@@ -34,7 +34,7 @@ const ED = (props) => {
   const dispatch = useDispatch();
 
   const dispatchAddToCart = () => {
-    dispatch(addToCartAction(props.event));
+    dispatch(toggleAmountAction(props.event));
   };
 
   const {
