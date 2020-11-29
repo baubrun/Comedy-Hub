@@ -14,7 +14,7 @@ import Box from "@material-ui/core/Box";
 import ListIcon from "@material-ui/icons/List";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 
-import { getEventsAction } from "../actions/actions";
+import { getEvents } from "../../lib/redux/eventsSlice";
 import { compareDates } from "../Utils";
 import Header from "./Header";
 import { dataRequestGet } from "../api";
@@ -57,10 +57,11 @@ const Events = () => {
     eventsByVenue();
   }, [values.venue]);
 
+  
   const fetchData = async () => {
     try {
       const data = await dataRequestGet("/events");
-      dispatch(getEventsAction(data));
+      dispatch(getEvents(data));
     } catch (error) {
       console.log(error);
     }
