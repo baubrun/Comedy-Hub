@@ -17,7 +17,7 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import {
   logOutAction,
   clearCartAction,
-  resetEventsAction,
+  clearEvents,
 } from "../actions/actions";
 
 const StyledMenu = withStyles({
@@ -62,7 +62,7 @@ export const Dropdown = (props) => {
   const logout = () => {
     dispatch(logOutAction())
     dispatch(clearCartAction())
-    dispatch(resetEventsAction())
+    dispatch(clearEvents())
     history.push("/")
   };
 
