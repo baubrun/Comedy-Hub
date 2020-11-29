@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 const Events = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const eventsState = useSelector((state) => state.events);
+  const {events} = useSelector((state) => state.events);
 
   const [values, setValues] = useState({
     calendarViewShow: false,
@@ -68,7 +68,7 @@ const Events = () => {
   };
 
   const eventsByVenue = () => {
-    const found = eventsState.filter(
+    const found = events.filter(
       (event) => event.venue.indexOf(values.venue) !== -1
     );
     const eventsSorted = found.sort(compareDates);

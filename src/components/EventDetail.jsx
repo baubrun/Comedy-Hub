@@ -155,8 +155,7 @@ const ED = (props) => {
 
 const EventDetail = () => {
   const history = useHistory();
-  const events = useSelector((state) => state.events);
-  const { addToCart } = useSelector((state) => state.cart);
+  const {events} = useSelector((state) => state.events);
   const match = useRouteMatch();
 
   if (events.length < 1) {

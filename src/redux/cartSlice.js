@@ -8,8 +8,11 @@ export const cartSlice = createSlice({
     total: 0,
   },
   reducers: {
-    addToCart: (state) => {
-      state.items = [];
+    addToCart: (state, action) => {
+      const found = state.items.findIndex(i => i._id === action.payload._id)
+      if (found === -1){
+        state.items = [...state.items, action.payload]
+      }
     },
     clearCart: (state) => {
       state.items = [];

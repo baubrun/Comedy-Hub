@@ -119,14 +119,16 @@ const Cart = () => {
           }}
           columns={[
             { title: "Event", field: "event" },
-            { title: "Venue", field: "venue" },
+            { title: "Performer", field: "performer" },
             { title: "Price", field: "price", type: "numeric" },
             { title: "Qty", field: "qty", type: "numeric" },
+            { title: "Venue", field: "venue" },
             { title: "_id", field: "_id", hidden: true },
           ]}
           data={items && items.map((item) => {
             return {
-              event: item.event,
+              event: item.title,
+              performer: item.performer,
               venue: item.venue,
               price: item.price,
               qty: item.amount,
