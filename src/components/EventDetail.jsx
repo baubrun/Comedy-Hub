@@ -72,7 +72,7 @@ const ED = (props) => {
             <Link to="/cart">
               <Button
                 text="RESERVE"
-                color="secondary"
+                color="primary"
                 onClick={dispatchAddToCart}
                 size="large"
               />
