@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import MaterialTable, {MTableToolbar,} from "material-table";
+import MaterialTable, { MTableToolbar } from "material-table";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-
+import Nav from "./Nav";
 import { deleteFromCartAction, getItemsBoughtAction } from "../actions/actions";
 
 export const currencyFormat = (amount) => {
@@ -15,16 +15,21 @@ export const currencyFormat = (amount) => {
   }).format(amount);
 };
 
-const totalRow = () => {
+const totalRow = (classes) => {
   return (
-    <Grid container justify="space-evenly" direction="row" alignItems="center">
-    <Grid item>
-      <Typography variant="h4">Total : $ 456</Typography>
+    <Grid
+      className={classes.toolbar}
+      container
+      justify="space-evenly"
+      direction="row"
+      alignItems="center"
+    >
+      <Grid item>
+        <Typography variant="h4">Total : $ 456</Typography>
+      </Grid>
     </Grid>
-   </Grid>
-
-  )
-}
+  );
+};
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -37,59 +42,67 @@ const useStyles = makeStyles((theme) => ({
     width: 60,
     height: 60,
   },
+  toolbar: {
+    margin: "8px",
+  },
 }));
 
-
 const Cart = () => {
+  const classes = useStyles();
   return (
-    <MaterialTable
-    components={{
-      Toolbar: props => (
-        <div>
-          <MTableToolbar {...props} />
-          {totalRow()}
-        </div>
-      ),
-    }}
-      options={{
-        search: false,
-        sorting: false,
-        draggable: false
-       
-      }}
-      title="Simple Action Preview"
-      columns={[
-        { title: "Name", field: "name" },
-        { title: "Surname", field: "surname" },
-        { title: "Birth Year", field: "birthYear", type: "numeric" },
-        {
-          title: "Birth Place",
-          field: "birthCity",
-          lookup: { 34: "İstanbul", 63: "Şanlıurfa" },
-        },
-      ]}
-      data={[
-        { name: "Mehmet", surname: "Baran", birthYear: 1987, birthCity: 63 },
-        {
-          name: "Zerya Betül",
-          surname: "Baran",
-          birthYear: 2017,
-          birthCity: 34,
-        },
-      ]}
-      actions={[
-        {
-          icon: () => <DeleteForeverIcon />,
-          tooltip: "Remove",
-          onClick: (event, rowData) => alert("You saved " + rowData.name),
-        },
-      ]}
-      localization={{
-        header: {
-          actions: "",
-        },
-      }}
-    />
+    <>
+      <Nav text="Cart" type="dark"></Nav>
+      <MaterialTable
+      title=""
+        components={{
+          Toolbar: (props) => (
+            <div>
+              <MTableToolbar {...props} />
+              {totalRow(classes)}
+            </div>
+          ),
+        }}
+        options={{
+          search: false,
+          sorting: false,
+          draggable: false,
+          headerStyle: {
+            backgroundColor: "#E09721",
+            color: "#fff",
+            fontSize: "20px",
+            fontWeight: "bolder",
+            letterSpacing: "2px",
+          },
+        }}
+        columns={[
+          { title: "Event", field: "event" },
+          { title: "Venue", field: "venue" },
+          { title: "Price", field: "price", type: "numeric" },
+          { title: "Qty", field: "qty", type: "numeric" },
+        ]}
+        data={[
+          { name: "Mehmet", surname: "Baran", birthYear: 1987, birthCity: 63 },
+          {
+            name: "Zerya Betül",
+            surname: "Baran",
+            birthYear: 2017,
+            birthCity: 34,
+          },
+        ]}
+        actions={[
+          {
+            icon: () => <DeleteForeverIcon />,
+            tooltip: "Remove",
+            onClick: (event, rowData) => alert("You saved " + rowData.name),
+          },
+        ]}
+        localization={{
+          header: {
+            actions: "",
+          },
+        }}
+      />
+    </>
   );
 };
 
