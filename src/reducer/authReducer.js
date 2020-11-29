@@ -5,7 +5,7 @@ import {
 
 
 const initialAuthState = {
-    loggedIn: false,
+    loggedIn: true,
     hostId: ""
 }
 

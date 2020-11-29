@@ -1,114 +1,124 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import  CalendarView  from "./CalendarView";
-import  Event  from "./Event";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { makeStyles } from "@material-ui/core/styles";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Grid from "@material-ui/core/Grid";
+import FormControl from "@material-ui/core/FormControl";
+import TextField from "@material-ui/core/TextField";
+import Select from "@material-ui/core/Select";
+import Typography from "@material-ui/core/Typography";
+
+
 import {
   getEventsAction,
-  getSeatsAvailAction,
-  loadingAction,
-  loadedAction,
 } from "../actions/actions";
 import { compareDates } from "../Utils";
-// import "./Events.css";
-import  Header  from "./Header";
+import Header from "./Header";
 import { dataRequestGet } from "../api";
 
-class Events extends Component {
-  constructor(props) {
-    super(props);
+import CalendarView from "./CalendarView";
+import Event from "./Event";
 
-    this.state = {
-      calendarViewShow: false,
-      listViewShow: true,
-      venue: "",
-      startDate: "",
-      events: [],
-    };
-  }
 
-  componentDidMount() {
-    this.fetchData();
-    this.eventsByVenue();
-  }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.venue !== this.state.venue) {
-      this.eventsByVenue();
-    }
-  }
 
-  dispatchGetEvents = (events) => {
-    this.props.getEvents(events);
-  };
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    borderColor: theme.palette.secondary
+  },
+}));
 
-  dispatchGetSeatsAvail = (seats) => {
-    this.props.getSeatsAvail(seats);
-  };
 
-  fetchData = async () => {
+const Events = () => {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const eventsState = useSelector((state) => state.events);
+
+  const [values, setValues] = useState({
+    calendarViewShow: false,
+    listViewShow: true,
+    venue: "",
+    startDate: "",
+    events: [],
+  });
+
+  useEffect(() => {
+    fetchData();
+    eventsByVenue();
+  }, []);
+
+  useEffect(() => {
+    eventsByVenue();
+  }, [values.venue]);
+
+  const fetchData = async () => {
     try {
-      const data = await dataRequestGet("/events")
-      this.dispatchGetEvents(data);
+      const data = await dataRequestGet("/events");
+      dispatch(getEventsAction(data));
     } catch (error) {
       console.log(error);
     }
   };
 
-  eventsByVenue = () => {
-    const events = this.props.events.filter(
-      (event) => event.venue.indexOf(this.state.venue) !== -1
+  const eventsByVenue = () => {
+    const found = eventsState.filter(
+      (event) => event.venue.indexOf(values.venue) !== -1
     );
-    const eventsSorted = events.sort(compareDates);
-    this.setState({ events: eventsSorted });
+    const eventsSorted = found.sort(compareDates);
+    setValues({ ...values, events: eventsSorted });
   };
 
-  handleSearchInput = (event) => {
-    this.setState({ searchInput: event.target.value });
+  const handleSearchInput = (event) => {
+    setValues({ ...values, searchInput: event.target.value });
   };
 
-  handleVenueChange = (event) => {
-    this.setState({ venue: event.target.value });
+  const handleVenueChange = (event) => {
+    setValues({ ...values, venue: event.target.value });
   };
 
-  toggleCalendarView = () => {
-    this.setState({
+  const toggleCalendarView = () => {
+    setValues({
+      ...values,
       calendarViewShow: true,
       listViewShow: false,
     });
   };
 
-  toggleListView = () => {
-    this.setState({
+  const toggleListView = () => {
+    setValues({
+      ...values,
       listViewShow: true,
       calendarViewShow: false,
     });
   };
 
-  showEvents = () => {
-    if (
-      (!this.state.listViewShow && this.state.events.length < 1) ||
-      !this.state.venue
-    ) {
+  const showEvents = () => {
+    if ((!values.listViewShow && values.events.length < 1) || !values.venue) {
       return <h3 className="text-center">NO EVENTS</h3>;
     }
-    if (this.state.listViewShow && this.state.events.length > 0) {
-      return this.state.events
+    if (values.listViewShow && values.events.length > 0) {
+      return values.events
         .filter((event) =>
-          event.venue.toLowerCase().includes(this.state.venue.toLowerCase())
+          event.venue.toLowerCase().includes(values.venue.toLowerCase())
         )
         .map((event, idx) => (
           <Event
             events={event}
             key={idx}
-            seatsAvail={this.props.seatsAvail}
-            venue={this.state.venue}
+            // seatsAvail={seatsAvail}
+            venue={values.venue}
           />
         ));
     }
-    if (this.state.calendarViewShow)
+    if (values.calendarViewShow)
       return (
         <div className="container-fluid">
-          <CalendarView events={this.state.events} />
+          <CalendarView events={values.events} />
         </div>
       );
     else {
@@ -116,75 +126,56 @@ class Events extends Component {
     }
   };
 
-  render() {
-    return (
-      <div className="container-fluid">
-        <div className="row events-header">
-          <div className="col">
-            <div>
-              <Header text="EVENTS" type="dark" />
-            </div>
-          </div>
-        </div>
-        <div className="row select-option ">
-          <div className="mx-auto my-2">
-            <select
-              className="custom-select custom-select-lg bg-secondary text-center"
-              onChange={this.handleVenueChange}
-              name="venue"
+  return (
+    <>
+      <Header text="EVENTS" />
+      <Grid container direction="row" justify="center" alignItems="center">
+        <Grid item>
+          <FormControl variant="outlined" className={classes.formControl} >
+            <InputLabel id="select">Venue</InputLabel>
+            <Select
+              labelId="select"
+              id="select"
+              value={values.venue}
+              onChange={handleVenueChange}
+              label="Venue"
             >
-              <option value="" default>
-                CHOOSE A VENUE
-              </option>
-              <option value="LE_FOU_FOU">LE FOU FOU</option>
-              <option value="JOKES_BLAGUES">JOKES BLAGUES</option>
-              <option value="RIRE_NOW">RIRE NOW</option>
-            </select>
-          </div>
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="LE_FOU_FOU">LE FOU FOU</MenuItem>
+              <MenuItem value="JOKES_BLAGUES">JOKES BLAGUES</MenuItem>
+              <MenuItem value="RIRE_NOW">RIRE NOW</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
+      <div className="row mb-4 events-toggler">
+        <div className="col text-right">
+          <img
+            id="list-view"
+            onClick={toggleListView}
+            src="list-view-30px.png"
+            alt="list-view"
+          />
         </div>
-        <div className="row mb-4 events-toggler">
-          <div className="col text-right">
-            <img
-              id="list-view"
-              onClick={this.toggleListView}
-              src="list-view-30px.png"
-              alt="list-view"
-            />
-          </div>
-          <div className="col">
-            <img
-              id="calendar-view"
-              onClick={this.toggleCalendarView}
-              src="calendar2-view-30px.png"
-              alt="calendar-view"
-            />
-          </div>
-        </div>
-        <div
-          className="d-md-flex flex-wrap justify-content-center"
-          id="events-body">
-            {this.showEvents()}
+        <div className="col">
+          <img
+            id="calendar-view"
+            onClick={toggleCalendarView}
+            src="calendar2-view-30px.png"
+            alt="calendar-view"
+          />
         </div>
       </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    events: state.events,
-    seatsAvail: state.seatsAvail,
-    loading: state.loading,
-  };
+      <div
+        className="d-md-flex flex-wrap justify-content-center"
+        id="events-body"
+      >
+        {showEvents()}
+      </div>
+    </>
+  );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getEvents: (events) => dispatch(getEventsAction(events)),
-    getSeatsAvail: (seats) => dispatch(getSeatsAvailAction(seats)),
-    loadingData: () => dispatch(loadingAction()),
-    loadedData: () => dispatch(loadedAction()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Events);
+export default Events;

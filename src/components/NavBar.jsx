@@ -8,22 +8,17 @@ import {
   resetEventsAction,
   emptyCartAction,
 } from "../actions/actions";
-// import "./NavBar.css";
 
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
 
 import Box from "@material-ui/core/Box";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { makeStyles } from "@material-ui/core";
 
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   appBar: {
     bottom: "auto",
     top: 0,
@@ -32,24 +27,21 @@ const useStyles = makeStyles({
     color: "white",
     fontWeight: "bolder",
     padding: "5px"
-  }
+  },
+  toolbar: theme.mixins.toolbar,
+}));
 
-})
+
 
 const NavBar = (props) => {
   const currentPage = useLocation().pathname;
   const classes = useStyles()
 
-  const logout = () => {
-    props.logoutUser();
-    props.emptyCart();
-    props.resetSeatsAvail();
-    props.resetEvents();
-  };
-
   return (
     <>
+    <CssBaseline />
       <AppBar className={classes.appBar} color="primary" position="static">
+        <Toolbar className={classes.toolbar}>
         <Box>
           <Typography component="h1">
             <Link id="logo" className="badge-primary font-weight-bolder" to="/">
@@ -58,9 +50,10 @@ const NavBar = (props) => {
               </Typography>
             </Link>
           </Typography>
-          <Dropdown logout={logout}/>
+          <Dropdown />
     
         </Box>
+        </Toolbar>
       </AppBar>
     </>
   );

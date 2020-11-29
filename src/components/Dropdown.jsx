@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState,  } from "react";
+import {useDispatch, useSelector} from "react-redux"
+import { Link, useLocation, useHistory } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
@@ -7,12 +8,17 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
-import DraftsIcon from "@material-ui/icons/Drafts";
 import PersonIcon from "@material-ui/icons/Person";
 import Box from "@material-ui/core/Box";
 import StreetviewIcon from "@material-ui/icons/Streetview";
-import EventIcon from "@material-ui/icons/Event";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+
+
+import {
+  logOutAction,
+  emptyCartAction,
+  resetEventsAction,
+} from "../actions/actions";
 
 const StyledMenu = withStyles({
   paper: {
@@ -45,9 +51,24 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
+
 export const Dropdown = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const currentPage = useLocation().pathname;
+  const dispatch = useDispatch()
+  const {loggedIn} = useSelector(state => state.auth)
+  const history = useHistory()
+
+
+  const logout = () => {
+    dispatch(logOutAction())
+    dispatch(emptyCartAction())
+    dispatch(resetEventsAction())
+    history.push("/")
+  };
+
+
+
+
 
   const handleClick = (evt) => {
     setAnchorEl(evt.currentTarget);
@@ -78,32 +99,14 @@ export const Dropdown = (props) => {
         open={Boolean(anchorEl)}
         onClose={(evt) => handleClose(evt)}
       >
-        {!props.loggedIn && currentPage !== "/login" ? (
-          <Link to="/profile">
-            <StyledMenuItem>
-              <ListItemIcon color="secondary">
-                <PersonIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="PROFILE" />
-            </StyledMenuItem>
-          </Link>
-        ) : (
-          <Link to="/">
-            <StyledMenuItem>
-              <ListItemIcon>
-                <InboxIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText onClick={() => props.logout()} primary="LOGOUT" />
-            </StyledMenuItem>
-          </Link>
-        )}
-
-        <Link to="/events">
+        <Link to={`${loggedIn ? "/profile" : "/login"} `}>
           <StyledMenuItem>
-            <ListItemIcon>
-              <EventIcon fontSize="small" />
+            <ListItemIcon color="secondary">
+              <PersonIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText primary="HOST AN EVENT" />
+            <ListItemText
+              primary={`${loggedIn ? "PROFILE" : "LOGIN"} `}
+            />
           </StyledMenuItem>
         </Link>
 
@@ -124,6 +127,22 @@ export const Dropdown = (props) => {
             <ListItemText primary="TICKETS" />
           </StyledMenuItem>
         </Link>
+
+        {loggedIn && (
+          <Link to="/">
+            <StyledMenuItem>
+              <ListItemIcon>
+                <InboxIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="LOGOUT" onClick={() => logout()} />
+            </StyledMenuItem>
+          </Link>
+        )}
+
+
+
+
+
       </StyledMenu>
     </>
   );
