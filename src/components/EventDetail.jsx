@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleAmountAction, addToCartAction } from "../actions/actions";
+import { ADDED_TO_CART } from "../actions/actionTypes";
 import moment from "moment";
 import { Link, useRouteMatch, useHistory } from "react-router-dom";
 
@@ -34,10 +35,9 @@ const ED = (props) => {
   const dispatch = useDispatch();
 
   const dispatchAddToCart = () => {
+    console.log("props.event  evt Dt:>> ", props.event);
     dispatch(addToCartAction(props.event));
   };
-
-  console.log('props.event :>> ', props.event);
 
   const {
     title,
@@ -120,7 +120,7 @@ const ED = (props) => {
           <ListItem>
             <ListItemText>
               <Typography variant="h5" className={classes.listItem}>
-              Price: {price} $
+                Price: {price} $
               </Typography>
             </ListItemText>
           </ListItem>

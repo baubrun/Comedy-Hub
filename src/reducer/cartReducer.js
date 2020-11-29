@@ -14,13 +14,13 @@ const initialState = {
 
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
-
     case ADDED_TO_CART:
-        const index = 
-        state.items.findIndex(i => i._id === action.payload._id)
-        if (index === -1) 
-        state.items = [...state.items, action.payload]
-        return state
+      const found = state.items.find((i) => i._id === action.payload._id);
+      if (!found) {
+          console.log('action.payload :>> ', action.payload);
+        state.items.push(action.payload)
+      }
+      return state;
 
     case CLEARED_CART:
       return (state.items = []);
@@ -49,7 +49,7 @@ const cartReducer = (state = initialState, action) => {
       total = parseFloat(total.toFixed(2));
       state.total = total;
       state.amount = amount;
-      break;
+      return {...state}
 
     case TOGGLED_AMOUNT:
       return (state.items = state.items.map((item) => {

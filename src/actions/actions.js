@@ -23,6 +23,7 @@ CART
 export const addToCartAction = (item) => ({
     type: ADDED_TO_CART,
     payload: item
+
 })
 
 export const clearCartAction = () => ({
@@ -35,7 +36,7 @@ export const confirmCheckoutAction = () => ({
     payload: true
 })
 
-export const getTotalAction = items => ({
+export const getTotalAction = () => ({
     type: GOT_TOTAL
 })
 
@@ -106,4 +107,3 @@ export const resetSeatsAvailAction = () => ({
     type: RESET_SEATS_AVAIL,
     payload: []
 })
-

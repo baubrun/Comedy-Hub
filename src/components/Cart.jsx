@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -12,8 +13,16 @@ import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 
 import Nav from "./Nav";
 
-import {REMOVED_ITEM, TOGGLED_AMOUNT, GOT_TOTAL} from "../actions/actionTypes"
-import { removeItemAction, toggleAmountAction, getTotalAction } from "../actions/actions";
+import {
+  REMOVED_ITEM,
+  TOGGLED_AMOUNT,
+  GOT_TOTAL,
+} from "../actions/actionTypes";
+import {
+  removeItemAction,
+  toggleAmountAction,
+  getTotalAction,
+} from "../actions/actions";
 
 export const currencyFormat = (amount) => {
   return new Intl.NumberFormat("decimal", {
@@ -62,16 +71,19 @@ const Cart = () => {
   const { items, total } = useSelector((state) => state.cart);
   const classes = useStyles();
 
-  // useEffect(() => {
-  //   dispatch(getTotalAction({type: GOT_TOTAL}));
-  // });
+  useEffect(() => {
+    if (items && items.length > 0) {
+      dispatch(getTotalAction());
+    }
+  }, [items]);
 
-
-
-
-  if (items.length < 1) {
+  if (items && items.length < 1) {
     return (
-      <Grid container>
+      <Grid 
+      container 
+      direction="row" 
+      justify="center" 
+      alignItems="center">
         <Grid item>
           <Typography variant="h3"> Cart is Empty</Typography>
         </Grid>
@@ -113,9 +125,9 @@ const Cart = () => {
             { title: "Venue", field: "venue" },
             { title: "Price", field: "price", type: "numeric" },
             { title: "Qty", field: "qty", type: "numeric" },
-            { title: "_id", field: "_id", hidden: true}
+            { title: "_id", field: "_id", hidden: true },
           ]}
-          data={items.map((item) => {
+          data={items && items.map((item) => {
             return {
               event: item.event,
               venue: item.venue,
@@ -127,21 +139,30 @@ const Cart = () => {
             {
               icon: () => <DeleteForeverIcon color="secondary" />,
               tooltip: "Remove",
-              onClick: (evt, rowData) => dispatch(removeItemAction(rowData._id)),
+              onClick: (evt, rowData) =>
+                dispatch(removeItemAction(rowData._id)),
             },
             {
               icon: () => <RemoveCircleOutlineIcon color="primary" />,
               tooltip: "",
-              onClick: (evt, rowData) => dispatch(toggleAmountAction({
-                toggle: "dec", id: rowData._id
-              })),
+              onClick: (evt, rowData) =>
+                dispatch(
+                  toggleAmountAction({
+                    toggle: "dec",
+                    id: rowData._id,
+                  })
+                ),
             },
             {
               icon: () => <AddCircleOutlineIcon color="secondary" />,
               tooltip: "",
-              onClick: (evt, rowData) => dispatch(toggleAmountAction({
-                toggle: "inc", id: rowData._id
-              })),
+              onClick: (evt, rowData) =>
+                dispatch(
+                  toggleAmountAction({
+                    toggle: "inc",
+                    id: rowData._id,
+                  })
+                ),
             },
           ]}
           // localization={{

@@ -18,7 +18,6 @@ import  {connect, useSelector}  from "react-redux";
   const events = useSelector(state => state.events)
   const {loggedIn} = useSelector(state => state.auth)
   const {items} = useSelector(state => state.cart)
-    console.log('items :>>', items)
 
     return (
       <div>
