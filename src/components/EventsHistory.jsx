@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   root: {
     minWidth: 350,
     maxWidth: 350,
-    // backgroundColor: "#020202",
+    borderColor: "#ffffcc",
     color: "secondary",
     margin: "12px",
   },
@@ -39,10 +39,6 @@ const useStyles = makeStyles({
     width: 350,
     objectFit: "cover",
   },
-  cardAction: {
-    backgroundColor: "white",
-
-  }
 });
 
 const loadingSize = 200;
@@ -150,7 +146,8 @@ export const EventsHistory = (props) => {
 
                 </CardContent>
 
-                <CardActions>
+                <CardActions className={classes.cardAction}>
+                  
                   <FormControlLabel
                     value={event._id}
                     control={<Radio />}

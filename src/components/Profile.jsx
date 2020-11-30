@@ -15,16 +15,10 @@ import Button from "./Button";
 import Header from "./Header";
 
 import api from "../api";
-import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: "#020202",
-  },
-}));
+
 
 const Profile = (props) => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const { events } = useSelector(eventsState);
   const { hostId } = useSelector(authState);
@@ -43,9 +37,9 @@ const Profile = (props) => {
     }
   }, [events]);
 
-  // useEffect(() => {
-  //   toggleProfileButtons();
-  // }, [state.showAddEvent, state.showUpdateEvent]);
+  useEffect(() => {
+    toggleProfileButtons();
+  }, [state.showAddEvent, state.showUpdateEvent]);
 
   const getHostEvents = () => {
     const ev = events.filter(
@@ -113,16 +107,6 @@ const Profile = (props) => {
     });
   };
 
-  // toggleProfileButtons = () => {
-  //   const doc = document.getElementById("profile-btns");
-  //   const addEventShown = state.showAddEvent;
-  //   const updateEventShown = state.showUpdateEvent;
-  //   if (addEventShown || updateEventShown) {
-  //     doc.style.display = "none";
-  //   } else {
-  //     doc.style.display = "flex";
-  //   }
-  // };
 
   const showAddEvent = () => {
     setState({
@@ -193,7 +177,7 @@ const Profile = (props) => {
   };
 
   return (
-    <div className={classes.root}>
+    <>
       <Header text="PROFILE" type="dark" />
       {renderProfileButtons()}
 
@@ -219,7 +203,7 @@ const Profile = (props) => {
           />
         )}
       </div>
-    </div>
+    </>
   );
 };
 export default Profile;
