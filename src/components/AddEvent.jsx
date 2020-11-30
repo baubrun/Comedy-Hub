@@ -79,8 +79,7 @@ const AddEvent = () => {
 
           <TextField
             className={classes.textField}
-            id="Title"
-            label="title"
+            label="Title"
             name="title"
             margin="normal"
             onChange={(evt) => handleChange(evt)}
@@ -90,7 +89,6 @@ const AddEvent = () => {
           <br />
           <TextField
             className={classes.textField}
-            id="start-date"
             InputLabelProps={{shrink: true}}
             label="Start-date"
             name="startDate"
@@ -102,7 +100,6 @@ const AddEvent = () => {
 
           <TextField
             className={classes.textField}
-            id="start-time"
             label="Start-time"
             name="startTime"
             margin="normal"
@@ -112,7 +109,6 @@ const AddEvent = () => {
 
           <TextField
             className={classes.textField}
-            id="end-date"
             InputLabelProps={{shrink: true}}
             label="End-date"
             name="endDate"
@@ -124,7 +120,6 @@ const AddEvent = () => {
 
           <TextField
             className={classes.textField}
-            id="venue"
             label="End-time"
             name="endTime"
             margin="normal"
@@ -135,7 +130,6 @@ const AddEvent = () => {
           <InputLabel id="select">Venue</InputLabel>
           <Select
             labelId="select"
-            id="select"
             value={values.venue}
             onChange={handleVenueChange}
             label="Venue"
@@ -153,8 +147,7 @@ const AddEvent = () => {
 
           <TextField
             className={classes.textField}
-            id="Facebook"
-            label="facebook"
+            label="Facebook"
             name="facebook"
             margin="normal"
             onChange={(evt) => handleChange(evt)}
@@ -163,8 +156,7 @@ const AddEvent = () => {
 
           <TextField
             className={classes.textField}
-            id="Instagram"
-            label="instagram"
+            label="Instagram"
             name="instagram"
             margin="normal"
             onChange={(evt) => handleChange(evt)}
@@ -172,8 +164,7 @@ const AddEvent = () => {
           />
           <TextField
             className={classes.textField}
-            id="Twitter"
-            label="twitter"
+            label="Twitter"
             name="twitter"
             margin="normal"
             onChange={(evt) => handleChange(evt)}
