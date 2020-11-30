@@ -1,21 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EventsHistory from "./EventsHistory";
 import AddEventContainer from "./AddEventContainer";
 import UpdateEvent from "./UpdateEvent";
 
 import { compareDates, toggleProfileButtons } from "../Utils";
 
-import { getEvents } from "../redux/eventsSlice";
+import { getEvents, eventsState } from "../redux/eventsSlice";
 import { loading, loaded } from "../redux/loadingSlice";
+
+
 
 import Button from "./Button";
 import Header from "./Header";
-// import "./Profile.css";
+
+
 import api from "../api";
+import { makeStyles } from "@material-ui/core/styles";
+
+
+const useStyles = makeStyles((theme) => ({
+ 
+}));
+
+
+
 
 const Profile = (props) => {
+  const classes = useStyles()
   const dispatch = useDispatch();
+  const {events} = useSelector(eventsState);
   const [state, setState] = useState({
     showHistory: false,
     showAddEvent: false,
@@ -26,15 +40,20 @@ const Profile = (props) => {
   });
 
   useEffect(() => {
+   
+  });
+
+
+  useEffect(() => {
     toggleProfileButtons();
   }, [state.showAddEvent, state.showUpdateEvent]);
 
   const getHostEvents = () => {
-    const events = props.events.filter(
+    const ev = events.filter(
       (event) =>
         event.hostId.toLowerCase().indexOf(props.hostId.toLowerCase()) !== -1
     );
-    return events.sort(compareDates);
+    return ev.sort(compareDates);
   };
 
   const showEvents = () => {
@@ -52,7 +71,7 @@ const Profile = (props) => {
 
     try {
       const data = await api.read("/events");
-      if (data.success) {
+      if (data) {
         dispatch(getEvents(data));
         setTimeout(() => {
           dispatch(loaded());
@@ -61,12 +80,9 @@ const Profile = (props) => {
       }
     } catch (error) {
       console.log(error);
-    }
+    }}
 
-    const dispatchGetEvents = (events) => {
-      dispatch(getEvents(events));
-    };
-
+  
     const deleteEvent = async () => {
       if (state.selectedOption === "") {
         window.alert("Please select an event.");
@@ -151,7 +167,7 @@ const Profile = (props) => {
           </div>
           <div className="col-6 col-md-3 my-2">
             <Button
-              color="danger"
+              color="primary"
               id="delete-event-btn"
               text="DELETE EVENT"
               onClick={deleteEvent}
@@ -159,15 +175,15 @@ const Profile = (props) => {
           </div>
           <div className="col-6 col-md-3 my-2">
             <Button
-              color="dark"
+              color="secondary"
               id="events-history-btn"
               text="LOAD EVENTS"
-              onClick={loadEvents}
+              onClick={() => loadEvents()}
             />
           </div>
           <div className="col-6 col-md-3 my-2">
             <Button
-              color="primary text-white"
+              color="primary"
               id="update-event-btn"
               text="UPDATE EVENT"
               onClick={showUpdateEventForm}
@@ -178,7 +194,7 @@ const Profile = (props) => {
     };
 
     return (
-      <div>
+      <div >
         <Header text="PROFILE" type="dark" />
         {renderProfileButtons()}
 
@@ -204,9 +220,10 @@ const Profile = (props) => {
             />
           )}
         </div>
+
+
+
       </div>
     );
   };
-};
-
 export default Profile;

@@ -6,28 +6,27 @@ let domain = "http://localhost:5000"
 
 const login = async (path, data) => {
     try {
-        const req = await fetch(domain + path, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-            },
-            data
-        })
-
-        const res = await req.text();
-        return JSON.parse(res);
+        const res = await axios.post(domain + path, data)
+        return await res.data
     } catch (error) {
         return {
-            error: error.message,
-        };
+            error: error.message
+        }
     }
 
 }
 
 
 const read = async (path) => {
-    const resp = await axios.get(domain + path);
-    return resp.data
+    try {
+        const resp = await axios.get(domain + path);
+        return resp.data
+        } catch (error) {
+        return {
+            error: error.message
+        };
+    }
+
 
 
 }

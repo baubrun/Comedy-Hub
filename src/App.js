@@ -13,11 +13,13 @@ import Cart from "./components/Cart"
 import  {connect, useSelector}  from "react-redux";
 
   const App = () => {
-
-
   const events = useSelector(state => state.events)
   const {loggedIn} = useSelector(state => state.auth)
   const {items} = useSelector(state => state.cart)
+
+
+
+
 
     return (
       <div>
@@ -39,9 +41,12 @@ import  {connect, useSelector}  from "react-redux";
         <Route exact={true} path="/confirmation">
           {items && items.length < 1 ? <Redirect to="/events" /> : <Confirmation />}
         </Route>
-        <Route exact={true} path="/profile">
+        <Route exact={true} path="/profile" component={Profile} />
+         
+        
+        {/* <Route exact={true} path="/profile" component={Profile}>
           {!loggedIn ? <Redirect to="/login" /> : <Profile/>}
-        </Route >
+        </Route >  */}
         </BrowserRouter>
 
       </div>

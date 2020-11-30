@@ -10,14 +10,14 @@ const read = async (req, res) => {
         username,
         password
     } = req.body
-    console.log('req.body', req.body)
+    console.log('req.body read user', req.body)
     try {
         let user = await User.findOne({
             username: username,
         });
 
         if (!user) {
-            return res.json({
+            return res.status(400).json({
                 success: false,
                 error: "User not found.",
             });
@@ -32,8 +32,7 @@ const read = async (req, res) => {
 
             return res.json({
                 success: true,
-                hostId: user.hostId,
-
+                hostId: user.hostId
             });
         }
     } catch (error) {

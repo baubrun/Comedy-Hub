@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { loading, loaded } from "../redux/loadingSlice";
+import { eventsState } from "../redux/eventsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
@@ -10,7 +11,7 @@ import  Header  from "./Header";
 
 export const EventsHistory = (props) => {
   const dispatch = useDispatch()
-  const stateprops = useSelector()
+  const {events} = useSelector(eventsState)
 
   const loadingSize = 200;
   return (
