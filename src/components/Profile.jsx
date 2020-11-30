@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EventsHistory from "./EventsHistory";
@@ -7,6 +8,7 @@ import UpdateEvent from "./UpdateEvent";
 import { compareDates, toggleProfileButtons } from "../Utils";
 
 import { getEvents, eventsState } from "../redux/eventsSlice";
+import { authState } from "../redux/authSlice";
 import { loading, loaded } from "../redux/loadingSlice";
 
 
@@ -30,6 +32,7 @@ const Profile = (props) => {
   const classes = useStyles()
   const dispatch = useDispatch();
   const {events} = useSelector(eventsState);
+  const {hostId} = useSelector(authState);
   const [state, setState] = useState({
     showHistory: false,
     showAddEvent: false,
@@ -40,24 +43,29 @@ const Profile = (props) => {
   });
 
   useEffect(() => {
-   
-  });
+    if (events.length > 0){
+      showEvents()
+    }
+  },[events]);
 
 
-  useEffect(() => {
-    toggleProfileButtons();
-  }, [state.showAddEvent, state.showUpdateEvent]);
+  // useEffect(() => {
+  //   toggleProfileButtons();
+  // }, [state.showAddEvent, state.showUpdateEvent]);
 
   const getHostEvents = () => {
+    console.log('events :>> ', events);
     const ev = events.filter(
       (event) =>
-        event.hostId.toLowerCase().indexOf(props.hostId.toLowerCase()) !== -1
+        event.hostId.toLowerCase().indexOf(hostId.toLowerCase()) !== -1
     );
     return ev.sort(compareDates);
   };
 
   const showEvents = () => {
+    console.log("in show events");
     setState({
+      ...state,
       userEvents: getHostEvents(),
       showHistory: true,
       showAddEvent: false,
@@ -68,16 +76,14 @@ const Profile = (props) => {
 
   const loadEvents = async () => {
     dispatch(loading());
-
     try {
       const data = await api.read("/events");
-      if (data) {
+      console.log('data loadEvents :>> ', data);
         dispatch(getEvents(data));
         setTimeout(() => {
           dispatch(loaded());
         }, 2000);
         showEvents();
-      }
     } catch (error) {
       console.log(error);
     }}
@@ -162,7 +168,7 @@ const Profile = (props) => {
               color="secondary"
               id="add-event-btn"
               text="ADD EVENTS"
-              onClick={showAddEvent}
+              onClick={() => showAddEvent()}
             />
           </div>
           <div className="col-6 col-md-3 my-2">
@@ -170,7 +176,7 @@ const Profile = (props) => {
               color="primary"
               id="delete-event-btn"
               text="DELETE EVENT"
-              onClick={deleteEvent}
+              onClick={() => deleteEvent()}
             />
           </div>
           <div className="col-6 col-md-3 my-2">
@@ -186,7 +192,7 @@ const Profile = (props) => {
               color="primary"
               id="update-event-btn"
               text="UPDATE EVENT"
-              onClick={showUpdateEventForm}
+              onClick={() => showUpdateEventForm()}
             />
           </div>
         </div>

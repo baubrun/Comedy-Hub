@@ -1,8 +1,6 @@
 import React from "react";
 import moment from "moment";
-import { loading, loaded } from "../redux/loadingSlice";
-import { eventsState } from "../redux/eventsSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { loading } from "../redux/loadingSlice";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import  Header  from "./Header";
@@ -10,8 +8,6 @@ import  Header  from "./Header";
 
 
 export const EventsHistory = (props) => {
-  const dispatch = useDispatch()
-  const {events} = useSelector(eventsState)
 
   const loadingSize = 200;
   return (
@@ -19,15 +15,15 @@ export const EventsHistory = (props) => {
       <Header text="EVENTS HISTORY" type="secondary" />
 
       <div>
-        <div className="d-flex justify-content-center">
+        {/* <div className="d-flex justify-content-center">
           <Loader
             type="Rings"
             color="rgba(224, 151, 33, 0.7)"
             height={loadingSize}
             width={loadingSize}
-            visible={loading}
+            visible={loading.loading}
           />
-        </div>
+        </div> */}
 
         <div>
           {!loading &&
@@ -160,19 +156,5 @@ export const EventsHistory = (props) => {
     </div>
   );
 };
-
-// const mapStateToProps = (state) => {
-//   return {
-//     seatsAvail: state.seatsAvail,
-//     loading: state.loading,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     loadingData: () => dispatch(loadingAction()),
-//     loadedData: () => dispatch(loadedAction()),
-//   };
-// };
 
 export default EventsHistory
