@@ -79,18 +79,20 @@ const AddEvent = () => {
 
           <TextField
             className={classes.textField}
-            id="title"
+            id="Title"
             label="title"
             name="title"
             margin="normal"
             onChange={(evt) => handleChange(evt)}
+            
             value={values.title}
           ></TextField>
           <br />
           <TextField
             className={classes.textField}
             id="start-date"
-            label="start-date"
+            InputLabelProps={{shrink: true}}
+            label="Start-date"
             name="startDate"
             margin="normal"
             onChange={(evt) => handleChange(evt)}
@@ -101,7 +103,7 @@ const AddEvent = () => {
           <TextField
             className={classes.textField}
             id="start-time"
-            label="start-time"
+            label="Start-time"
             name="startTime"
             margin="normal"
             onChange={(evt) => handleChange(evt)}
@@ -111,7 +113,8 @@ const AddEvent = () => {
           <TextField
             className={classes.textField}
             id="end-date"
-            label="end-date"
+            InputLabelProps={{shrink: true}}
+            label="End-date"
             name="endDate"
             margin="normal"
             onChange={(evt) => handleChange(evt)}
@@ -122,7 +125,7 @@ const AddEvent = () => {
           <TextField
             className={classes.textField}
             id="venue"
-            label="end-time"
+            label="End-time"
             name="endTime"
             margin="normal"
             onChange={(evt) => handleChange(evt)}
@@ -136,28 +139,21 @@ const AddEvent = () => {
             value={values.venue}
             onChange={handleVenueChange}
             label="Venue"
+            variant="outlined"
           >
             <MenuItem value="">
-              <em>None</em>
+              
             </MenuItem>
             <MenuItem value="LE_FOU_FOU">LE FOU FOU</MenuItem>
             <MenuItem value="JOKES_BLAGUES">JOKES BLAGUES</MenuItem>
             <MenuItem value="RIRE_NOW">RIRE NOW</MenuItem>
           </Select>
 
-          <TextField
-            className={classes.textField}
-            id="venue"
-            label="venue"
-            name="venue"
-            margin="normal"
-            onChange={(evt) => handleChange(evt)}
-            value={values.venue}
-          />
+         
 
           <TextField
             className={classes.textField}
-            id="facebook"
+            id="Facebook"
             label="facebook"
             name="facebook"
             margin="normal"
@@ -167,7 +163,7 @@ const AddEvent = () => {
 
           <TextField
             className={classes.textField}
-            id="instagram"
+            id="Instagram"
             label="instagram"
             name="instagram"
             margin="normal"
@@ -176,7 +172,7 @@ const AddEvent = () => {
           />
           <TextField
             className={classes.textField}
-            id="twitter"
+            id="Twitter"
             label="twitter"
             name="twitter"
             margin="normal"
