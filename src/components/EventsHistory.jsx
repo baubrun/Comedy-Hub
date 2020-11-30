@@ -18,6 +18,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from "@material-ui/core/Radio";
 import Grid from "@material-ui/core/Grid";
 
@@ -39,7 +40,6 @@ const useStyles = makeStyles({
     objectFit: "cover",
   },
 });
-
 
 const loadingSize = 200;
 
@@ -63,7 +63,7 @@ export const EventsHistory = (props) => {
         (props.userEvents.length > 0 ? (
           props.userEvents.map((event, idx) => (
             <FormControl key={idx}>
-              <Card className={classes.root} >
+              <Card className={classes.root}>
                 <CardHeader
                   className={classes.info}
                   title={event.title}
@@ -95,17 +95,19 @@ export const EventsHistory = (props) => {
                     {moment(`${event.startDate}`).format("DD-MM-YYYY")}
                   </Typography>
                 </CardContent>
+
                 <CardActions>
                   <Typography variant="h5" size="small" color="primary">
                     {event.startTime}
                   </Typography>
-                  <Radio
+                  <FormControlLabel
+                    value={event._id}
+                    control={<Radio />}
+                    label="Delete / Update"
                     checked={props.selectedOption === event._id}
-                    name={event._id}
                     onChange={(evt) => {
                       props.handleOptionChange(evt);
                     }}
-                    value={event._id}
                   />
                 </CardActions>
               </Card>
@@ -123,4 +125,3 @@ export const EventsHistory = (props) => {
 };
 
 export default EventsHistory;
-
