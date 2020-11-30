@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { removeEvent } from "../redux/eventsSlice";
 
 import moment from "moment";
 
@@ -105,12 +106,12 @@ export const EventsHistory = (props) => {
           {
             icon: () => <DeleteForeverIcon color="secondary" />,
             tooltip: "Remove",
-            onClick: (evt, rowData) => null
-              // dispatch(
-              //   removeItem({
-              //     _id: rowData._id,
-              //   })
-              // ),
+            onClick: (evt, rowData) => 
+              dispatch(
+                removeEvent({
+                  _id: rowData._id,
+                })
+              ),
           },
      
         ]}
