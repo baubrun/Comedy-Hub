@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Header from "./Header";
 import { Link, useHistory } from "react-router-dom";
-
+import {useSelector} from "react-redux"
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import CardActions from "@material-ui/core/CardActions";
@@ -17,11 +17,20 @@ import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
+import FileUpload from "@material-ui/icons/AddPhotoAlternate";
+import {authState} from "../redux/authSlice"
+
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 200,
+  },
+  fileUpload: {
+      margin: "16px 0"
+  },
+  input: {
+    display: "none",
   },
   paper: {
     margin: theme.spacing(1),
@@ -33,17 +42,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddEvent = () => {
+const initState = {
+  title: "",
+  startDate: "",
+  startTime: "",
+  endDate: "",
+  endTime: "",
+  venue: "",
+  performer: "",
+  image: "",
+  price: "",
+  noVenues: false,
+};
+
+
+
+const AddEvent = (props) => {
   const classes = useStyles();
+  const {hostId} = useSelector(authState)
+  const [image, setImage] = useState({})
+  const [currentId, setCurrentId] = useState("")
   const [values, setValues] = useState({
-    username: "",
-    password: "",
-    errors: [],
+   ...initState,
+   userEvents: props.userEvents,
   });
 
-  const handleVenueChange = (event) => {
-    setValues({ ...values, venue: event.target.value });
-  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -56,13 +79,17 @@ const AddEvent = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const form = new FormData();
-    form.append("username", values.username);
-    form.append("password", values.password);
-    setValues({
-      ...values,
-      username: "",
-      password: "",
-    });
+    form.append("title", values.title);
+    form.append("startDate", values.startDate);
+    form.append("startTime", values.startTime);
+    form.append("endDate", values.endDate);
+    form.append("endTime", values.endTime);
+    form.append("venue", values.venue);
+    form.append("performer", values.performer);
+    form.append("image", image);
+    form.append("price", values.price);
+    form.append("hostId", hostId);
+
 
     // const data = await api.login("/login", form);
     // if (data.success) {
@@ -149,18 +176,15 @@ const AddEvent = () => {
           <Grid container justify="center" spacing={2}>
             <Grid item>
               <FormControl className={classes.formControl}>
-                <InputLabel id="select">
-                  CHOOSE A VENUE
+                <InputLabel id="venue">
+                  VENUE
                 </InputLabel>
                 <Select
-                  labelId="select"
+                  labelId="venue"
+                  name="venue"
                   value={values.venue}
-                  onChange={handleVenueChange}
-                  placeholder="Venue"
+                  onChange={(evt) => handleChange(evt)}
                 >
-                  {/* <MenuItem value="">
-                    <em></em>
-                  </MenuItem> */}
                   <MenuItem value="LE_FOU_FOU">LE FOU FOU</MenuItem>
                   <MenuItem value="JOKES_BLAGUES">JOKES BLAGUES</MenuItem>
                   <MenuItem value="RIRE_NOW">RIRE NOW</MenuItem>
@@ -199,8 +223,27 @@ const AddEvent = () => {
                 onChange={(evt) => handleChange(evt)}
                 value={values.twitter}
               />
+            </Grid>  
+          </Grid>
+
+          <Grid  container justify="center">
+          <Grid item xs={3}>
+            <input
+            accept="image/*"
+            className={classes.input}
+            id="icon-button-file"
+            name="image"
+            onChange={(evt) => setImage(evt.target.files[0])}
+            type="file"
+            
+          />
+            <Button className={classes.fileUpload} color="secondary" component="span" variant="contained">
+              Image &nbsp; <FileUpload />
+            </Button>
+
             </Grid>
           </Grid>
+
         </Paper>
       </Grid>
     </Grid>
