@@ -14,10 +14,9 @@ import Box from "@material-ui/core/Box";
 import ListIcon from "@material-ui/icons/List";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 
-import { getEvents } from "../redux/eventsSlice";
+import { readEvents } from "../redux/eventsSlice";
 import { compareDates } from "../Utils";
 import Header from "./Header";
-import api from "../api";
 
 import CalendarView from "./CalendarView";
 import Event from "./Event";
@@ -38,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 const Events = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const {events} = useSelector((state) => state.events);
+  const { events } = useSelector((state) => state.events);
 
   const [values, setValues] = useState({
     calendarViewShow: false,
@@ -49,23 +48,14 @@ const Events = () => {
   });
 
   useEffect(() => {
-    fetchData();
-    eventsByVenue();
+    dispatch(readEvents());
   }, []);
 
   useEffect(() => {
-    eventsByVenue();
-  }, [values.venue]);
-
-  
-  const fetchData = async () => {
-    try {
-      const data = await api.read("/events");
-      dispatch(getEvents(data));
-    } catch (error) {
-      console.log(error);
+    if (events) {
+      eventsByVenue();
     }
-  };
+  }, [events]);
 
   const eventsByVenue = () => {
     const found = events.filter(

@@ -17,7 +17,7 @@ import FileUpload from "@material-ui/icons/AddPhotoAlternate";
 
 import {authState} from "../redux/authSlice"
 import {loading, loaded, loadingState,} from "../redux/loadingSlice"
-import {getEvents, updateEvent} from "../redux/eventsSlice"
+import {readEvents, updateEvent} from "../redux/eventsSlice"
 import api from "../api"
 
 const useStyles = makeStyles((theme) => ({
@@ -93,15 +93,12 @@ const AddEvent = (props) => {
     form.append("price", values.price);
     form.append("hostId", hostId);
 
-
-    const data = await api.patch(eventId, form);
-    if (data.success) {
-      dispatch(loading())
-      history.push("/profile");
-    } else {
-      setValues({ ...values, errors: data.errors });
+    if (!eventId) {
+      dispatch()
+    }
+    
   };
-  }
+  
 
   return (
     <Grid className={classes.root} container justify="center">

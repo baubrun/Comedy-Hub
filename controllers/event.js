@@ -2,6 +2,9 @@ const Events = require("../models/Events")
 const sharp = require("sharp")
 
 
+
+
+
 const read = async (req, res) => {
     try {
         const events = await Events.find({});
@@ -49,7 +52,7 @@ const update = async (req, res) => {
         venue,
         performer,
         price,
-        id,
+        _id,
         facebook,
         instagram,
         twitter,
@@ -68,7 +71,8 @@ const update = async (req, res) => {
     }
 
     await Events.updateOne({
-        _id: id
+        _id: _id,
+        
     }, {
         title: title,
         startDate: startDate,
@@ -82,7 +86,7 @@ const update = async (req, res) => {
         facebook: facebook,
         instagram: instagram,
         twitter: twitter,
-    }, (err) => {
+    }, {options: {upsert: true}}, (err) => {
         console.log(err)
         return res.json({
             success: false

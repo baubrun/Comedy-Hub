@@ -22,6 +22,22 @@ export const updateEvent = createAsyncThunk(
   })
 
 
+export const readEvents = createAsyncThunk(
+  "/events",
+  async () => {
+    try {
+      const res = await axios.get(
+        domain + /events/
+      )
+      return await res.data
+    } catch (error) {
+      return {
+        error: error.message
+      }
+    }
+  })
+
+
 
 
 
@@ -32,9 +48,7 @@ export const EventsSlice = createSlice({
     error: false
   },
   reducers: {
-    getEvents: (state, action) => {
-      state.events = [...action.payload]
-    },
+   
     clearEvents: (state) => {
       state.events = []
     },
@@ -52,11 +66,17 @@ export const EventsSlice = createSlice({
       state.error = true
     },
 
+    [readEvents.fulfilled]: (state, action) => {
+      state.events = [...action.payload]
+    },
+    [readEvents.rejected]: (state) => {
+      state.error = true
+    },
+
   }
 });
 
 export const {
-  getEvents,
   clearEvents,
   removeEvent
 } = EventsSlice.actions;

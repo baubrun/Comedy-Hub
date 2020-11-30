@@ -14,6 +14,7 @@ router.route("/deleteEvents")
 
 router.route("/events")
     .get(eventController.read)
+    .patch(eventController.update)
 
 
 router.route("/updateEvent:event")

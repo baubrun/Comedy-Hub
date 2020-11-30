@@ -7,7 +7,7 @@ import UpdateEvent from "./UpdateEvent";
 
 import { compareDates, toggleProfileButtons } from "../Utils";
 
-import { getEvents, eventsState } from "../redux/eventsSlice";
+import { readEvents, eventsState } from "../redux/eventsSlice";
 import { authState } from "../redux/authSlice";
 import { loading, loaded } from "../redux/loadingSlice";
 
@@ -59,11 +59,10 @@ const Profile = (props) => {
     });
   };
 
-  const loadEvents = async () => {
+  const loadEvents = () => {
     dispatch(loading());
     try {
-      const data = await api.read("/events");
-      dispatch(getEvents(data));
+      dispatch(readEvents());
       setTimeout(() => {
         dispatch(loaded());
       }, 2000);

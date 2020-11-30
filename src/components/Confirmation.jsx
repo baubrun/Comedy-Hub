@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 // import "./Confirmation.css"
 import Header from "./Header";
 import api from "../api";
+import {readEvents} from "../redux/eventsSlice"
 
 const Confirmation = () => {
   const [state, setState] = useState({
