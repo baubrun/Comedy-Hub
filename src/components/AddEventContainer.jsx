@@ -112,12 +112,12 @@ class AddEventContainer extends Component {
             handleVenueChange={this.handleVenueChange}
           />
         </div>
-        <div className="add-event-body">
+        {/* <div className="add-event-body">
           <CalendarView
             selectedVenue={this.state.venue}
             events={this.state.userEvents}
           />
-        </div>
+        </div> */}
       </>
     );
   }

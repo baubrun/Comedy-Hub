@@ -17,7 +17,6 @@ import Grid from "@material-ui/core/Grid";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
-
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -75,7 +74,7 @@ const AddEvent = () => {
       <Card className={classes.card}>
         <CardContent>
           <Typography className={classes.title} variant="h6">
-            Sign In
+            ADD EVENT
           </Typography>
 
           <TextField
@@ -109,7 +108,7 @@ const AddEvent = () => {
             value={values.startTime}
           />
 
-            <TextField
+          <TextField
             className={classes.textField}
             id="end-date"
             label="end-date"
@@ -120,9 +119,9 @@ const AddEvent = () => {
             value={values.endDate}
           />
 
-            <TextField
+          <TextField
             className={classes.textField}
-            id="end-time"
+            id="venue"
             label="end-time"
             name="endTime"
             margin="normal"
@@ -130,27 +129,68 @@ const AddEvent = () => {
             value={values.endTime}
           />
 
+          <InputLabel id="select">Venue</InputLabel>
+          <Select
+            labelId="select"
+            id="select"
+            value={values.venue}
+            onChange={handleVenueChange}
+            label="Venue"
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value="LE_FOU_FOU">LE FOU FOU</MenuItem>
+            <MenuItem value="JOKES_BLAGUES">JOKES BLAGUES</MenuItem>
+            <MenuItem value="RIRE_NOW">RIRE NOW</MenuItem>
+          </Select>
 
-<FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel id="select">Venue</InputLabel>
-            <Select
-              labelId="select"
-              id="select"
-              value={values.venue}
-              onChange={handleVenueChange}
-              label="Venue"
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value="LE_FOU_FOU">LE FOU FOU</MenuItem>
-              <MenuItem value="JOKES_BLAGUES">JOKES BLAGUES</MenuItem>
-              <MenuItem value="RIRE_NOW">RIRE NOW</MenuItem>
-            </Select>
-          </FormControl>
+          <TextField
+            className={classes.textField}
+            id="venue"
+            label="venue"
+            name="venue"
+            margin="normal"
+            onChange={(evt) => handleChange(evt)}
+            value={values.venue}
+          />
 
+          <TextField
+            className={classes.textField}
+            id="facebook"
+            label="facebook"
+            name="facebook"
+            margin="normal"
+            onChange={(evt) => handleChange(evt)}
+            value={values.facebook}
+          />
 
+          <TextField
+            className={classes.textField}
+            id="instagram"
+            label="instagram"
+            name="instagram"
+            margin="normal"
+            onChange={(evt) => handleChange(evt)}
+            value={values.instagram}
+          />
+          <TextField
+            className={classes.textField}
+            id="twitter"
+            label="twitter"
+            name="twitter"
+            margin="normal"
+            onChange={(evt) => handleChange(evt)}
+            value={values.twitter}
+          />
 
+          {/* <input
+            id="upload"
+            type="file"
+            name="image"
+            onChange={handleImage}
+          />
+           */}
         </CardContent>
         <CardActions>
           <Button
@@ -164,14 +204,6 @@ const AddEvent = () => {
         </CardActions>
         <br />
 
-        <Typography variant="body2" component="p">
-          Not registered? &nbsp;
-          <span>
-            <Link className={classes.signUp} to="//register">
-              Sign Up
-            </Link>
-          </span>
-        </Typography>
       </Card>
     </form>
   );
