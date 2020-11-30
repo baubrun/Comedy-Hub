@@ -54,7 +54,6 @@ const Profile = (props) => {
   // }, [state.showAddEvent, state.showUpdateEvent]);
 
   const getHostEvents = () => {
-    console.log('events :>> ', events);
     const ev = events.filter(
       (event) =>
         event.hostId.toLowerCase().indexOf(hostId.toLowerCase()) !== -1
@@ -63,7 +62,6 @@ const Profile = (props) => {
   };
 
   const showEvents = () => {
-    console.log("in show events");
     setState({
       ...state,
       userEvents: getHostEvents(),
@@ -78,7 +76,6 @@ const Profile = (props) => {
     dispatch(loading());
     try {
       const data = await api.read("/events");
-      console.log('data loadEvents :>> ', data);
         dispatch(getEvents(data));
         setTimeout(() => {
           dispatch(loaded());

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { loadingState } from "../redux/loadingSlice";
@@ -8,8 +8,6 @@ import Header from "./Header";
 
 export const EventsHistory = (props) => {
   const { loading } = useSelector(loadingState);
-  console.log("props.userEvents :>> ", props.userEvents);
-  console.log("props.loading :>> ", loading);
 
   const loadingSize = 200;
   return (
@@ -60,7 +58,7 @@ export const EventsHistory = (props) => {
                             style={{ display: "inline" }}
                           >
                             Date
-                          </h5>{" "}
+                          </h5>
                           {moment(event.startDate).format("DD-MM-YYYY")}
                         </div>
                         <div className="card-text">
@@ -69,7 +67,7 @@ export const EventsHistory = (props) => {
                             style={{ display: "inline" }}
                           >
                             Time
-                          </h5>{" "}
+                          </h5>
                           {event.startTime}
                         </div>
                         <div className="card-text">
@@ -78,7 +76,7 @@ export const EventsHistory = (props) => {
                             style={{ display: "inline" }}
                           >
                             Venue
-                          </h5>{" "}
+                          </h5>
                           {event.venue.split("_").join(" ")}
                         </div>
                         <div className="card-text">
@@ -87,7 +85,7 @@ export const EventsHistory = (props) => {
                             style={{ display: "inline" }}
                           >
                             Performer
-                          </h5>{" "}
+                          </h5>
                           {event.performer}
                         </div>
                         <div className="card-text">
@@ -96,7 +94,7 @@ export const EventsHistory = (props) => {
                             style={{ display: "inline" }}
                           >
                             Price
-                          </h5>{" "}
+                          </h5>
                           {event.price}
                         </div>
                         <div className="card-text">
@@ -104,8 +102,8 @@ export const EventsHistory = (props) => {
                             className="text-primary"
                             style={{ display: "inline" }}
                           >
-                            Facebook{" "}
-                          </h5>{" "}
+                            Facebook
+                          </h5>
                           {event.facebook}
                         </div>
 
@@ -114,8 +112,8 @@ export const EventsHistory = (props) => {
                             className="text-primary"
                             style={{ display: "inline" }}
                           >
-                            Instagram{" "}
-                          </h5>{" "}
+                            Instagram
+                          </h5>
                           {event.instagram}
                         </div>
 
@@ -124,8 +122,8 @@ export const EventsHistory = (props) => {
                             className="text-primary"
                             style={{ display: "inline" }}
                           >
-                            Twitter{" "}
-                          </h5>{" "}
+                            Twitter
+                          </h5>
                           {event.twitter}
                         </div>
                         <div className="form-check">
