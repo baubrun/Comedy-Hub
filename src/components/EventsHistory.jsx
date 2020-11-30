@@ -1,15 +1,45 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import moment from "moment";
+
 import { loadingState } from "../redux/loadingSlice";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+
 import Loader from "react-loader-spinner";
 import Header from "./Header";
 
+import MaterialTable, { MTableToolbar } from "material-table";
+import { makeStyles } from "@material-ui/core/styles";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+
+
+const loadingSize = 200;
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    borderColor: theme.palette.secondary,
+  },
+  icons: {
+    margin: "0 24px",
+    width: 60,
+    height: 60,
+  },
+  toolbar: {
+    margin: "8px",
+  },
+  table: {
+    margin: "0 8px",
+  },
+}));
+
 export const EventsHistory = (props) => {
   const { loading } = useSelector(loadingState);
+  const dispatch = useDispatch();
+  const classes = useStyles();
 
-  const loadingSize = 200;
   return (
     <div className="container-fluid">
       <Header text="EVENTS HISTORY" type="secondary" />
@@ -25,136 +55,81 @@ export const EventsHistory = (props) => {
           />
         </div>
 
-        <div>
+        <>
           {!loading &&
-            (props.userEvents ? (
-              props.userEvents.map((event, idx) => (
-                <div
-                  className="card mb-12 mx-auto my-2"
-                  key={idx}
-                  style={{ maxWidth: "840px" }}
-                >
-                  <div className="row">
-                    <div className="col-12">
-                      <h5 className="card-title text-white text-center">
-                        {event.title}
-                      </h5>
-                    </div>
-                  </div>
-
-                  <div className="row no-gutters">
-                    <div className="col-12 col-md-4">
-                      <img
-                        className="card-img mx-3 img-event"
-                        src={`../../${event.image}`}
-                        alt=""
-                      />
-                    </div>
-                    <div className="col-md-8">
-                      <div className="card-body text-center">
-                        <div className="card-text">
-                          <h5
-                            className="text-primary"
-                            style={{ display: "inline" }}
-                          >
-                            Date
-                          </h5>
-                          {moment(event.startDate).format("DD-MM-YYYY")}
-                        </div>
-                        <div className="card-text">
-                          <h5
-                            className="text-primary"
-                            style={{ display: "inline" }}
-                          >
-                            Time
-                          </h5>
-                          {event.startTime}
-                        </div>
-                        <div className="card-text">
-                          <h5
-                            className="text-primary"
-                            style={{ display: "inline" }}
-                          >
-                            Venue
-                          </h5>
-                          {event.venue.split("_").join(" ")}
-                        </div>
-                        <div className="card-text">
-                          <h5
-                            className="text-primary"
-                            style={{ display: "inline" }}
-                          >
-                            Performer
-                          </h5>
-                          {event.performer}
-                        </div>
-                        <div className="card-text">
-                          <h5
-                            className="text-primary"
-                            style={{ display: "inline" }}
-                          >
-                            Price
-                          </h5>
-                          {event.price}
-                        </div>
-                        <div className="card-text">
-                          <h5
-                            className="text-primary"
-                            style={{ display: "inline" }}
-                          >
-                            Facebook
-                          </h5>
-                          {event.facebook}
-                        </div>
-
-                        <div className="card-text">
-                          <h5
-                            className="text-primary"
-                            style={{ display: "inline" }}
-                          >
-                            Instagram
-                          </h5>
-                          {event.instagram}
-                        </div>
-
-                        <div className="card-text">
-                          <h5
-                            className="text-primary"
-                            style={{ display: "inline" }}
-                          >
-                            Twitter
-                          </h5>
-                          {event.twitter}
-                        </div>
-                        <div className="form-check">
-                          <label className="form-check-label text-white">
-                            <input
-                              className="check-form-input mr-2"
-                              id={`checkbox${event._id}`}
-                              checked={props.selectedOption === event._id}
-                              type="radio"
-                              onChange={props.handleOptionChange}
-                              value={event._id}
-                            />
-                            Delete / Update
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="row">
-                <div className="col text-center">
-                  <h3>NO EVENTS</h3>
-                </div>
-              </div>
-            ))}
-        </div>
+        <MaterialTable
+        title=""
+        components={{
+          Toolbar: (props) => (
+            <div>
+              <MTableToolbar {...props} />
+            </div>
+          ),
+        }}
+        options={{
+          search: false,
+          sorting: false,
+          draggable: false,
+          headerStyle: {
+            backgroundColor: "#E09721",
+            color: "#fff",
+            fontSize: "20px",
+            fontWeight: "bolder",
+            letterSpacing: "2px",
+          },
+          rowStyle: {
+            fontSize: "20px",
+          },
+        }}
+        columns={[
+          { title: "Event", field: "event" },
+          { title: "Performer", field: "performer" },
+          { title: "Price", field: "price", type: "numeric" },
+          { title: "Qty", field: "qty", type: "numeric" },
+          { title: "Venue", field: "venue" },
+          { title: "_id", field: "_id", hidden: true },
+        ]}
+        data={
+          props.userEvents.map((item) => {
+            return {
+              event: item.title,
+              performer: item.performer,
+              venue: item.venue,
+              price: item.price,
+              qty: item.amount,
+              _id: item._id,
+            };
+          })
+        }
+        actions={[
+          {
+            icon: () => <DeleteForeverIcon color="secondary" />,
+            tooltip: "Remove",
+            onClick: (evt, rowData) => null
+              // dispatch(
+              //   removeItem({
+              //     _id: rowData._id,
+              //   })
+              // ),
+          },
+     
+        ]}
+      />
+}
+        </>
       </div>
+    
     </div>
   );
 };
 
 export default EventsHistory;
+
+
+/*
+              <div className="row">
+                <div className="col text-center">
+                  <h3>NO EVENTS</h3>
+                </div>
+              </div>
+*/

@@ -49,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
 
 const TotalRow = ({ classes, total }) => {
   const dispatch = useDispatch();
-
   return (
     <Grid
       className={classes.toolbar}
@@ -198,11 +197,6 @@ const Cart = () => {
               },
             },
           ]}
-          // localization={{
-          //   header: {
-          //     actions: "",
-          //   },
-          // }}
         />
       </Box>
     </>
