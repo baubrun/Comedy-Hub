@@ -39,6 +39,10 @@ const useStyles = makeStyles({
     width: 350,
     objectFit: "cover",
   },
+  cardAction: {
+    backgroundColor: "white",
+
+  }
 });
 
 const loadingSize = 200;
