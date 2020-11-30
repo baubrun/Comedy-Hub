@@ -1,55 +1,47 @@
 const bcrypt = require("bcryptjs")
 const SALT_FACTOR = 10
-const validateLoginForm = require("../validators").validateLoginForm
-const validateRegisterForm = require("../validators").validateRegisterForm
 const User = require("../models/User")
 
 
 
+
 const read = async (req, res) => {
-    const givenPassword = req.body.password
-    const givenUsername = req.body.username
+    const {
+        username,
+        password
+    } = req.body
+    try {
+        let user = await User.findOne({
+            username: username,
+        });
 
-    const errors = validateLoginForm(givenUsername, givenPassword)
-    if (errors.length > 0) return res.json({success: false, errors})
-
-    await User.findOne({
-        username: givenUsername
-    }, async (err, user) => {
-        if (err) {
-            console.log("/user db:", err)
-            return res.json({
-                success: false
-            })
-        }
         if (!user) {
-            return res.json(
-                [{
-                    msg: "Invalid username or password."
-                }]
-            )
-        }
-        try {
-            if (await bcrypt.compare(givenPassword, user.password)) {
-                return res.json({
-                    success: true,
-                    hostId: user.hostId
-                })
-            } else {
-                return res.json(
-                    [{
-                        msg: "Invalid username or password."
-                    }]
-                )
-            }
-        } catch (err) {
-            console.log("/login:", err)
             return res.json({
-                success: false
-            })
+                success: false,
+                error: "User not found.",
+            });
         }
-    })
-}
+        const validPassword = await bcrypt.compare(password, user.password)
+        if (!validPassword) {
+            return res.json({
+                success: false,
+                error: "Invalid Email or password.",
+            });
+        } else {
+
+            return res.json({
+                success: true,
+                hostId: user.hostId,
+
+            });
+        }
+    } catch (error) {
+        return res.json({
+            success: false,
+            error: error.message
+        });
+    }
+};
 
 
 const create = async (req, res) => {
@@ -60,11 +52,6 @@ const create = async (req, res) => {
         hostId
     } = req.body
 
-    const errors = validateRegisterForm(username, password, email, hostId)
-    if (errors.length > 0) {
-        return res.json(errors)
-    }
-
     await User.findOne({
         username: username
     }, async (err, user) => {
@@ -74,17 +61,15 @@ const create = async (req, res) => {
             })
         }
         if (user) {
-            return res.json(
-                [{
-                    msg: "Username already exists."
-                }]
-            )
+            return res.json({
+                msg: "Username already exists."
+            })
         } else {
             const hashedPassword = await bcrypt.hash(password, SALT_FACTOR)
 
             try {
 
-               const newUser =  User({
+                const newUser = User({
                     username: username,
                     password: hashedPassword,
                     email: email,

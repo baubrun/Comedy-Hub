@@ -5,7 +5,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { connect } from "react-redux";
 import "moment/locale/en-gb";
 // import "./CalendarView.css";
-import { dataRequestPost } from "../api";
+import api from "../api";
 
 const allViews = Object.keys(Views).map((k) => Views[k]);
 const localizer = momentLocalizer(moment);
@@ -114,23 +114,24 @@ class CalendarView extends Component {
   };
 
   storeCalendarEvent = async () => {
-    const data = new FormData();
-    data.append("title", this.state.title);
-    data.append("startDate", this.state.startDate);
-    data.append("startTime", this.state.startTime);
-    data.append("endDate", this.state.endDate);
-    data.append("endTime", this.state.endTime);
-    data.append("venue", this.state.venue);
-    data.append("performer", this.state.performer);
-    data.append("image", this.state.image);
-    data.append("price", this.state.price);
-    data.append("hostId", this.props.hostId);
-    data.append("facebook", this.state.facebook);
-    data.append("instagram", this.state.instagram);
-    data.append("twitter", this.state.twitter);
+    const form = new FormData();
+    form.append("title", this.state.title);
+    form.append("startDate", this.state.startDate);
+    form.append("startTime", this.state.startTime);
+    form.append("endDate", this.state.endDate);
+    form.append("endTime", this.state.endTime);
+    form.append("venue", this.state.venue);
+    form.append("performer", this.state.performer);
+    form.append("image", this.state.image);
+    form.append("price", this.state.price);
+    form.append("hostId", this.props.hostId);
+    form.append("facebook", this.state.facebook);
+    form.append("instagram", this.state.instagram);
+    form.append("twitter", this.state.twitter);
 
     try {
-      await dataRequestPost(data);
+      await api.create("/updateEvent", form);
+      
     } catch (error) {
       console.log(error);
     }

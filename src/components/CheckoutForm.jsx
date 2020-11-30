@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-// import Loader from "react-loader-spinner";
-// import {
-//   loadingAction,
-//   loadedAction,
-//   clearCartAction,
-// } from "../actions/actions";
-import { connect } from "react-redux";
+
+import {useHistory} from "react-router-dom"
+
 import { orderNumber, formattedAmount } from "../Utils";
 import  FormInput  from "./FormInput";
 import  Button  from "./Button";
-// import "./CheckoutForm.css";
-import { dataRequestPost, fetchRequest } from "../api";
+
+import api from "../api";
+
+import { useDispatch, useSelector } from "react-redux";
+import {clearCart} from "../redux/cartSlice"
+import {loading, loaded} from "../redux/loadingSlice"
+
 
 const CARD_OPTIONS = {
   style: {
@@ -31,8 +32,11 @@ const CARD_OPTIONS = {
   },
 };
 
+
 const CheckoutForm = (props) => {
   const stripe = useStripe();
+  const dispatch = useDispatch()
+  const history = useHistory()
   const elements = useElements();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -73,12 +77,12 @@ const CheckoutForm = (props) => {
     data.append("itemsBought", JSON.stringify(items));
     data.append("order", order);
 
-    const ckout = await dataRequestPost("/checkout", data);
+    const ckout = await api.create("/checkout", data);
     console.log(ckout);
     
     if (ckout.success) {
-      dispatchEmptyCart();
-      fetchRequest("/confirmation", props);
+      dispatch(clearCart())
+      history.push("/confirmation");
     } else {
       console.log(ckout.msg);
     }
@@ -91,8 +95,8 @@ const CheckoutForm = (props) => {
     stripeData.append("order", orderNum);
     stripeData.append("customer", name);
 
-    const chr = await dataRequestPost("/charge", stripeData);
-    dispatchLoaded();
+    const chr = await api.create("/charge", stripeData);
+    dispatch(loaded());
     if (!chr.success) {
       setPmtErrors([chr.msg]);
     } else {
@@ -112,7 +116,7 @@ const CheckoutForm = (props) => {
     });
     if (!error) {
       const { id } = paymentMethod;
-      dispatchLoading();
+      dispatch(loading());
       pay(props.amount, id, order);
     } else {
       console.log(error);

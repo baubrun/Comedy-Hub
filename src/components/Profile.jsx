@@ -18,11 +18,11 @@ import {
 import  Button  from "./Button";
 import  Header  from "./Header";
 // import "./Profile.css";
-import { dataRequestGet, dataRequestPost } from "../api";
+import api from "../api";
 
 
 
-const Profile = () => {
+const Profile = (props) => {
   const dispatch = useDispatch()
   const [state, setState] = useState({
     showHistory: false,
@@ -39,25 +39,27 @@ const Profile = () => {
     toggleProfileButtons();
   }, [state.showAddEvent, state.showUpdateEvent])
 
-  const dispatchLoading = async () => {
+  const loadEvents = async () => {
     dispatch(loading())
 
     try {
-      const data = await dataRequestGet("/events");
-      dispatch(getEvents(data));
-      setTimeout(() => {
-        dispatch(loaded());
-        }, 2000);
-      ;
-      this.showEvents();
+      const data = await api.read("/events");
+      if (data.success){
+        dispatch(getEvents(data));
+        setTimeout(() => {
+          dispatch(loaded());
+          }, 2000);
+        ;
+        showEvents();
+      }
     } catch (error) {
       console.log(error);
     }
   
 
   const showEvents = () => {
-    this.setState({
-      userEvents: this.getHostEvents(),
+    setState({
+      userEvents: getHostEvents(),
       showHistory: true,
       showAddEvent: false,
       showUpdateEvent: false,
@@ -66,26 +68,23 @@ const Profile = () => {
   };
 
   const dispatchGetEvents = (events) => {
-    this.props.getEvents(events);
+    dispatch(getEvents(events))
   };
 
-  const dispatchGetSeatsAvail = (seats) => {
-    this.props.getSeatsAvail(seats);
-  };
-
+ 
   const deleteEvent = async () => {
-    if (this.state.selectedOption === "") {
+    if (state.selectedOption === "") {
       window.alert("Please select an event.");
       return;
     } else {
       const confirm = window.confirm("Delete event(s) ?");
       if (confirm) {
         let dataEvents = new FormData();
-        dataEvents.append("_id", this.state.selectedOption);
+        dataEvents.append("_id", state.selectedOption);
         
         try {
-          await dataRequestPost("/deleteEvents", dataEvents);
-          dispatch(loading());
+          await api.create("/deleteEvents", dataEvents);
+          loadEvents()
         } catch (error) {
           console.log(error);
         }
@@ -94,31 +93,31 @@ const Profile = () => {
   };
 
   const getHostEvents = () => {
-    const events = this.props.events.filter(
+    const events = props.events.filter(
       (event) =>
-        event.hostId.toLowerCase().indexOf(this.props.hostId.toLowerCase()) !==
+        event.hostId.toLowerCase().indexOf(props.hostId.toLowerCase()) !==
         -1
     );
     return events.sort(compareDates);
   };
 
   const getSelectedEvent = () => {
-    const event = this.state.userEvents.find(
-      (evt) => evt._id === this.state.selectedOption
+    const event = state.userEvents.find(
+      (evt) => evt._id === state.selectedOption
     );
     return event;
   };
 
   const handleOptionChange = (event) => {
-    this.setState({
+    setState({
       selectedOption: event.target.value,
     });
   };
 
   // toggleProfileButtons = () => {
   //   const doc = document.getElementById("profile-btns");
-  //   const addEventShown = this.state.showAddEvent;
-  //   const updateEventShown = this.state.showUpdateEvent;
+  //   const addEventShown = state.showAddEvent;
+  //   const updateEventShown = state.showUpdateEvent;
   //   if (addEventShown || updateEventShown) {
   //     doc.style.display = "none";
   //   } else {
@@ -127,21 +126,21 @@ const Profile = () => {
   // };
 
   const showAddEvent = () => {
-    this.setState({
+    setState({
       showHistory: false,
       showAddEvent: true,
       showUpdateEvent: false,
-      userEvents: this.getHostEvents(),
+      userEvents: getHostEvents(),
     });
   };
 
   const showUpdateEventForm = () => {
-    if (this.state.selectedOption === "") {
+    if (state.selectedOption === "") {
       window.alert("Please select an event.");
       return;
     } else {
-      this.setState({
-        selectedEvent: this.getSelectedEvent(),
+      setState({
+        selectedEvent: getSelectedEvent(),
         showHistory: false,
         showAddEvent: false,
         showUpdateEvent: true,
@@ -159,7 +158,7 @@ const Profile = () => {
             color="secondary"
             id="add-event-btn"
             text="ADD EVENTS"
-            onClick={this.showAddEvent}
+            onClick={showAddEvent}
           />
         </div>
         <div className="col-6 col-md-3 my-2">
@@ -167,7 +166,7 @@ const Profile = () => {
             color="danger"
             id="delete-event-btn"
             text="DELETE EVENT"
-            onClick={this.deleteEvent}
+            onClick={deleteEvent}
           />
         </div>
         <div className="col-6 col-md-3 my-2">
@@ -175,7 +174,7 @@ const Profile = () => {
             color="dark"
             id="events-history-btn"
             text="LOAD EVENTS"
-            onClick={this.dispatchLoading}
+            onClick={loadEvents}
           />
         </div>
         <div className="col-6 col-md-3 my-2">
@@ -183,7 +182,7 @@ const Profile = () => {
             color="primary text-white"
             id="update-event-btn"
             text="UPDATE EVENT"
-            onClick={this.showUpdateEventForm}
+            onClick={showUpdateEventForm}
           />
         </div>
       </div>
@@ -193,28 +192,28 @@ const Profile = () => {
     return (
       <div>
         <Header text="PROFILE" type="dark" />
-        {this.renderProfileButtons()}
+        {renderProfileButtons()}
 
         <div className="">
-          {this.state.showHistory && (
+          {state.showHistory && (
             <EventsHistory
-              userEvents={this.state.userEvents}
-              handleOptionChange={this.handleOptionChange}
-              selectedOption={this.state.selectedOption}
+              userEvents={state.userEvents}
+              handleOptionChange={handleOptionChange}
+              selectedOption={state.selectedOption}
             />
           )}
-          {this.state.showAddEvent && (
+          {state.showAddEvent && (
             <AddEventContainer
-              userEvents={this.state.userEvents}
-              dispatchLoading={this.dispatchLoading}
+              userEvents={state.userEvents}
+              loadEvents={loadEvents}
             />
             
           )}
-          {this.state.showUpdateEvent && (
+          {state.showUpdateEvent && (
             <UpdateEvent
-              event={this.state.selectedEvent}
-              id={this.state.selectedOption}
-              dispatchLoading={this.dispatchLoading}
+              event={state.selectedEvent}
+              id={state.selectedOption}
+              loadEvents={loadEvents}
             />
           )}
         </div>

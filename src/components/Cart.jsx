@@ -189,7 +189,6 @@ const Cart = () => {
               icon: () => <AddCircleOutlineIcon color="secondary" />,
               tooltip: "",
               onClick: (evt, rowData) => {
-                console.log("rowData Add :>> ", rowData);
                 dispatch(
                   toggleAmount({
                     toggle: "inc",

@@ -17,7 +17,7 @@ import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import { getEvents } from "../redux/eventsSlice";
 import { compareDates } from "../Utils";
 import Header from "./Header";
-import { dataRequestGet } from "../api";
+import api from "../api";
 
 import CalendarView from "./CalendarView";
 import Event from "./Event";
@@ -60,7 +60,7 @@ const Events = () => {
   
   const fetchData = async () => {
     try {
-      const data = await dataRequestGet("/events");
+      const data = await api.read("/events");
       dispatch(getEvents(data));
     } catch (error) {
       console.log(error);

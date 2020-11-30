@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 // import { confirmCheckoutAction, clearCartAction } from "../actions/actions";
 // import "./Confirmation.css"
 import Header from "./Header";
-import { dataRequestGet } from "../api";
+import api from "../api";
 
 const Confirmation = () => {
   const [state, setState] = useState({
@@ -11,22 +11,13 @@ const Confirmation = () => {
     total: "",
   });
 
-  //  const  seatsTaken = () => {
-  //     return this.props.checkout.map((i) => {
-  //       return {
-  //         venue: i.venue,
-  //         qty: i.qty,
-  //         startDate: i.startDate,
-  //       };
-  //     });
-  //   };
 
   useEffect(() => {
-    cf();
+    confirm();
   }, []);
 
-  const cf = async () => {
-    const data = await dataRequestGet("/orderNum");
+  const confirm = async () => {
+    const data = await api.read("/orderNum");
     if (data.success) {
       setState({
         orderNum: data.order,
@@ -84,17 +75,5 @@ const Confirmation = () => {
   );
 };
 
-// const mapStateToProps = (state) => {
-//   return {
-//     checkout: state.checkout,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     confirmCheckout: () => dispatch(confirmCheckoutAction()),
-//     emptyCart: () => dispatch(clearCartAction()),
-//   };
-// };
 
 export default Confirmation;

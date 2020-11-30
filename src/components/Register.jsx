@@ -5,7 +5,7 @@ import  Header  from "./Header";
 import  Button  from "./Button";
 import { Link, useHistory } from "react-router-dom";
 import FormInput  from "./FormInput";
-import { dataRequestPost, fetchRequest } from "../api";
+import api from "../api";
 
 
 const Register = (props) => { 
@@ -32,11 +32,11 @@ const Register = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData();
-    data.append("username", state.username);
-    data.append("password", state.password);
-    data.append("email", state.email);
-    data.append("hostId", state.hostId);
+    const form = new FormData();
+    form.append("username", state.username);
+    form.append("password", state.password);
+    form.append("email", state.email);
+    form.append("hostId", state.hostId);
     setState({
       username: "",
       password: "",
@@ -44,13 +44,15 @@ const Register = (props) => {
       hostId: "",
     });
 
-    const rg = dataRequestPost("/register", data)
-    if (rg.success) {
-      dispatch(logIn(rg.hostId));
-      fetchRequest("/profile", props);
+
+
+    const data = await api.create("/register", form)
+    if (data.success) {
+      dispatch(logIn(data.hostId));
+      history.push("/profile");
     }
     else {
-      setState({ errors: rg.errors });
+      setState({ errors: data.errors });
     }
   };
 

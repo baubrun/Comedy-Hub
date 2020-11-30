@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+
 import { logIn } from "../redux/authSlice";
+
+
 import Card from "@material-ui/core/Card";
+import Box from "@material-ui/core/Box";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
@@ -10,8 +14,9 @@ import Typography from "@material-ui/core/Typography";
 import Icon from "@material-ui/core/Icon";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { Link } from "react-router-dom";
-import { dataRequestPost, fetchRequest } from "../api";
+import { Link, useHistory } from "react-router-dom";
+import api from "../api";
+
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -47,10 +52,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const Login = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
   const [values, setValues] = useState({
     username: "",
     password: "",
@@ -65,9 +70,7 @@ const Login = (props) => {
     });
   };
 
-  const handleRegister = () => {
-    fetchRequest("/register", props);
-  };
+ 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -80,10 +83,10 @@ const Login = (props) => {
       password: "",
     });
 
-    const lg = await dataRequestPost("/login", data);
+    const lg = await api.read("/login", data);
     if (lg.success) {
       dispatch(logIn(lg.hostId));
-      fetchRequest("/profile", props);
+      history.push("/profile");
       return;
     } else {
       setValues({ ...values, errors: lg.errors });
@@ -102,6 +105,23 @@ const Login = (props) => {
           <Typography className={classes.title} variant="h6">
             Sign In
           </Typography>
+
+          <Box onClick={handleCloseErrors} 
+          style={{ cursor: "pointer" }}>
+        {values.errors.map((err, idx) => {
+          return (
+            <div
+              className="bg-danger text-light text-center py-2"
+              key={idx}
+              id="errors"
+            >
+              {err.msg}
+            </div>
+          );
+        })}
+      </Box>
+
+
           <TextField
             className={classes.textField}
             id="username"
