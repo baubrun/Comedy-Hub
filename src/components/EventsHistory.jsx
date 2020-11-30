@@ -67,7 +67,6 @@ export const EventsHistory = (props) => {
                 <CardHeader
                   className={classes.info}
                   title={event.title}
-                  subheader={moment(`${event.startDate}`).format("DD-MM-YYYY")}
                 />
 
                 <CardMedia
@@ -89,17 +88,65 @@ export const EventsHistory = (props) => {
                   <Typography
                     className={classes.info}
                     variant="body1"
-                    color="textSecondary"
+                    color="textPrimary"
                     component="p"
                   >
                     {moment(`${event.startDate}`).format("DD-MM-YYYY")}
                   </Typography>
+                  <Typography 
+                  className={classes.info}
+                  variant="body1"
+                  color="textPrimary"
+                  component="p"
+                >
+                    {event.startTime}
+                  </Typography>
+                  <Typography 
+                 className={classes.info}
+                 variant="body1"
+                 color="textPrimary"
+                 component="p"
+               >
+                  {event.venue.split("_").join(" ")}
+                  </Typography>
+
+                  <Typography 
+                 className={classes.info}
+                 variant="body1"
+                 color="textPrimary"
+                 component="p"
+               >
+                  {event.venue.split("_").join(" ")}
+                  </Typography>
+
+                  <Typography 
+                 className={classes.info}
+                 variant="body1"
+                 color="textPrimary"
+                 component="p"
+               >
+                 Facebook: {event.facebook}
+                  </Typography>
+                  <Typography 
+                 className={classes.info}
+                 variant="body1"
+                 color="textPrimary"
+                 component="p"
+               >
+                 Instagram: {event.instagram}
+                  </Typography>
+                  <Typography 
+                 className={classes.info}
+                 variant="body1"
+                 color="textPrimary"
+                 component="p"
+               >
+                 Twitter: {event.twitter}
+                  </Typography>
+
                 </CardContent>
 
                 <CardActions>
-                  <Typography variant="h5" size="small" color="primary">
-                    {event.startTime}
-                  </Typography>
                   <FormControlLabel
                     value={event._id}
                     control={<Radio />}
