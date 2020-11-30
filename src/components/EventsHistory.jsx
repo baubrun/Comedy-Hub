@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeEvent } from "../redux/eventsSlice";
 
@@ -10,127 +10,124 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import Header from "./Header";
 
-import MaterialTable, { MTableToolbar } from "material-table";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import FormControl from "@material-ui/core/FormControl";
+import Radio from "@material-ui/core/Radio";
+import Grid from "@material-ui/core/Grid";
+
+const useStyles = makeStyles({
+  root: {
+    minWidth: 350,
+    maxWidth: 350,
+    // backgroundColor: "#020202",
+    color: "secondary",
+    margin: "12px",
+  },
+  info: {
+    color: "secondary",
+    fontFamily: "Courier Prime ",
+  },
+  img: {
+    height: 250,
+    width: 350,
+    objectFit: "cover",
+  },
+});
 
 
 const loadingSize = 200;
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-    borderColor: theme.palette.secondary,
-  },
-  icons: {
-    margin: "0 24px",
-    width: 60,
-    height: 60,
-  },
-  toolbar: {
-    margin: "8px",
-  },
-  table: {
-    margin: "0 8px",
-  },
-}));
 
 export const EventsHistory = (props) => {
   const { loading } = useSelector(loadingState);
   const dispatch = useDispatch();
   const classes = useStyles();
+  // const { title, startDate, peevent.rformer, startTime, image, _id } = props.event;
+  const [selected, setSelected] = useState(null);
+
+  const handleChange = (evt) => {
+    const { value } = evt.target;
+    setSelected(value);
+  };
 
   return (
-    <div className="container-fluid">
-      <Header text="EVENTS HISTORY" type="secondary" />
-
-      <div>
-        <div className="d-flex justify-content-center">
-          <Loader
-            type="Rings"
-            color="rgba(224, 151, 33, 0.7)"
-            height={loadingSize}
-            width={loadingSize}
-            visible={loading}
-          />
-        </div>
-
-        <>
-          {!loading &&
-        <MaterialTable
-        title=""
-        components={{
-          Toolbar: (props) => (
-            <div>
-              <MTableToolbar {...props} />
-            </div>
-          ),
-        }}
-        options={{
-          search: false,
-          sorting: false,
-          draggable: false,
-          headerStyle: {
-            backgroundColor: "#663a2b",
-            color: "#fff",
-            fontSize: "20px",
-            fontWeight: "bolder",
-            letterSpacing: "2px",
-          },
-          rowStyle: {
-            fontSize: "20px",
-          },
-        }}
-        columns={[
-          { title: "Event", field: "event" },
-          { title: "Performer", field: "performer" },
-          { title: "Price", field: "price", type: "numeric" },
-          { title: "Qty", field: "qty", type: "numeric" },
-          { title: "Venue", field: "venue" },
-          { title: "_id", field: "_id", hidden: true },
-        ]}
-        data={
-          props.userEvents.map((item) => {
-            return {
-              event: item.title,
-              performer: item.performer,
-              venue: item.venue.split("_").join(" "),
-              price: item.price,
-              qty: item.amount,
-              _id: item._id,
-            };
-          })
-        }
-        actions={[
-          {
-            icon: () => <DeleteForeverIcon color="secondary" />,
-            tooltip: "Remove",
-            onClick: (evt, rowData) => 
-              dispatch(
-                removeEvent({
-                  _id: rowData._id,
-                })
-              ),
-          },
-     
-        ]}
-      />
-}
-        </>
+    <>
+      <div className="d-flex justify-content-center">
+        <Loader
+          type="Rings"
+          color="rgba(224, 151, 33, 0.7)"
+          height={loadingSize}
+          width={loadingSize}
+          visible={loading}
+        />
       </div>
-    
-    </div>
+      {!props.loading &&
+        (props.userEvents.length > 0 ? (
+          props.userEvents.map((event, idx) => (
+            <FormControl key={idx}>
+              <Card className={classes.root} >
+                <CardHeader
+                  className={classes.info}
+                  title={event.title}
+                  subheader={moment(`${event.startDate}`).format("DD-MM-YYYY")}
+                />
+
+                <CardMedia
+                  className={classes.img}
+                  image={event.image}
+                  component="img"
+                  title={event.title}
+                />
+
+                <CardContent>
+                  <Typography
+                    className={classes.info}
+                    gutterBottom
+                    variant="h5"
+                    component="h2"
+                  >
+                    {event.performer}
+                  </Typography>
+                  <Typography
+                    className={classes.info}
+                    variant="body1"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    {moment(`${event.startDate}`).format("DD-MM-YYYY")}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Typography variant="h5" size="small" color="primary">
+                    {event.startTime}
+                  </Typography>
+                  <Radio
+                    checked={selected === event._id}
+                    name={event._id}
+                    onChange={(evt) => {
+                      handleChange(evt);
+                    }}
+                    value={event._id}
+                  />
+                </CardActions>
+              </Card>
+            </FormControl>
+          ))
+        ) : (
+          <Grid container direction="row" justify="center" alignItems="center">
+            <Grid item>
+              <Typography variant="h4">NO EVENTS</Typography>
+            </Grid>
+          </Grid>
+        ))}
+    </>
   );
 };
 
 export default EventsHistory;
 
-
-/*
-              <div className="row">
-                <div className="col text-center">
-                  <h3>NO EVENTS</h3>
-                </div>
-              </div>
-*/

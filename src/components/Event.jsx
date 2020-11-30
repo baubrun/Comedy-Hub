@@ -76,6 +76,7 @@ const Event = (props) => {
       </CardActions>
     </Card>
   );
+  
 };
 
 export default Event;
