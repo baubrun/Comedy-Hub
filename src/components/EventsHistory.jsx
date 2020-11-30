@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import moment from "moment";
-import { loading } from "../redux/loadingSlice";
+import { loadingState } from "../redux/loadingSlice";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
-import  Header  from "./Header";
-
-
+import Header from "./Header";
 
 export const EventsHistory = (props) => {
+  const { loading } = useSelector(loadingState);
+  console.log("props.userEvents :>> ", props.userEvents);
+  console.log("props.loading :>> ", loading);
 
   const loadingSize = 200;
   return (
@@ -15,19 +17,19 @@ export const EventsHistory = (props) => {
       <Header text="EVENTS HISTORY" type="secondary" />
 
       <div>
-        {/* <div className="d-flex justify-content-center">
+        <div className="d-flex justify-content-center">
           <Loader
             type="Rings"
             color="rgba(224, 151, 33, 0.7)"
             height={loadingSize}
             width={loadingSize}
-            visible={loading.loading}
+            visible={loading}
           />
-        </div> */}
+        </div>
 
         <div>
           {!loading &&
-            (props.userEvents.length > 0 ? (
+            (props.userEvents ? (
               props.userEvents.map((event, idx) => (
                 <div
                   className="card mb-12 mx-auto my-2"
@@ -157,4 +159,4 @@ export const EventsHistory = (props) => {
   );
 };
 
-export default EventsHistory
+export default EventsHistory;
