@@ -101,15 +101,7 @@ export const EventsHistory = (props) => {
                 >
                     {event.startTime}
                   </Typography>
-                  <Typography 
-                 className={classes.info}
-                 variant="body1"
-                 color="textPrimary"
-                 component="p"
-               >
-                  {event.venue.split("_").join(" ")}
-                  </Typography>
-
+    
                   <Typography 
                  className={classes.info}
                  variant="body1"

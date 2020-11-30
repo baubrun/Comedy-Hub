@@ -34,9 +34,9 @@ class AddEventContainer extends Component {
     }
   }
 
-  // dispatchLoading = () => {
-  //   this.props.loadData();
-  // };
+  dispatchLoading = () => {
+    this.props.loadData();
+  };
 
   eventsByVenueHostId = () => {
     const filter = {
