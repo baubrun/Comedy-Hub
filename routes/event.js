@@ -16,7 +16,7 @@ router.route("/events")
     .get(eventController.read)
 
 
-router.route("/updateEvent")
+router.route("/updateEvent:event")
     .post(upload.single("image"),
         eventController.update
     )

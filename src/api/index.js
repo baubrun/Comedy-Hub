@@ -1,7 +1,7 @@
 import axios from "axios"
 
 // let domain = "https://b-cc-hub.herokuapp.com" 
-let domain = "http://localhost:5000"
+export let domain = "http://localhost:5000"
 
 
 const login = async (path, data) => {
@@ -72,9 +72,23 @@ const remove = async (path, data) => {
 }
 
 
+const update = async (id, path, data) => {
+    try {
+        const res = await axios.patch(domain + path, data)
+        return await res.data
+    } catch (error) {
+        return {
+            error: error.message
+        }
+    }
+}
+
+
+
 export default {
     create,
     login,
     read,
     remove,
+    update,
 }

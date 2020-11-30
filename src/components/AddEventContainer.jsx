@@ -1,129 +1,36 @@
-import React, { Component } from "react";
-import CalendarView from "./CalendarView";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import AddEvent from "./AddEvent";
+import { authState } from "../redux/authSlice";
 
-const DEFAULT_STATE = {
-  title: "",
-  startDate: "",
-  startTime: "",
-  endDate: "",
-  endTime: "",
-  venue: "",
-  performer: "",
-  image: "",
-  price: "",
-};
+const AddEventContainer = (props) => {
+  const [state, setState] = useState({
+    userEvents: props.userEvents,
+  });
 
-class AddEventContainer extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      ...DEFAULT_STATE,
-      hostId: this.props.hostId,
-      noVenues: false,
-      calendarViewShow: false,
-      listViewShow: true,
-      userEvents: this.props.userEvents,
-    };
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.venue !== this.state.venue) {
-      this.eventsByVenueHostId();
-    }
-  }
-
-  dispatchLoading = () => {
-    this.props.loadData();
-  };
-
-  eventsByVenueHostId = () => {
+  const eventsByVenueHostId = () => {
     const filter = {
-      hostId: this.props.hostId,
-      venue: this.state.venue,
+      venue: state.venue,
     };
-    const userEvents = this.props.userEvents.filter((item) => {
+    const userEvents = props.userEvents.filter((item) => {
       for (const key in filter) {
         if (item[key] !== filter[key] || !item[key]) return false;
       }
       return true;
     });
-    this.setState({ userEvents: userEvents });
+    setState({ ...state, userEvents });
   };
 
+  useEffect(() => {
+    eventsByVenueHostId();
+  }, [eventsByVenueHostId]);
 
-  handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData();
-    data.append("title", this.state.title);
-    data.append("startDate", this.state.startDate);
-    data.append("startTime", this.state.startTime);
-    data.append("endDate", this.state.endDate);
-    data.append("endTime", this.state.endTime);
-    data.append("venue", this.state.venue);
-    data.append("performer", this.state.performer);
-    data.append("image", this.state.image);
-    data.append("price", this.state.price);
-    data.append("hostId", this.state.hostId);
-    this.setState({
-      DEFAULT_STATE,
-    });
-  };
+  return (
+    <>
+      <AddEvent />
+    </>
+  );
+};
 
-  handleEndTime = (event) => {
-    this.setState({ endTime: event.target.value });
-  };
-
-  handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    this.setState({ [name]: value });
-  };
-
-  handleImage = (event) => {
-    this.setState({ image: event.target.files[0] });
-  };
-
-  handleVenueChange = (event) => {
-    this.setState({ venue: event.target.value });
-  };
-
-  resetOptionInputFields = () => {
-    const docFile = document.getElementById("upload");
-    docFile.value = "";
-    const docOption = document.getElementsByClassName("default-option");
-    docOption.selected = true;
-  };
-
-  toggleCalendarView = () => {
-    this.setState({
-      calendarViewShow: true,
-      listViewShow: false,
-    });
-  };
-
-  render() {
-    return (
-      <>
-        <div className="add-event-body">
-          <AddEvent
-            dispatchLoading={this.props.dispatchLoading}
-            handleVenueChange={this.handleVenueChange}
-          />
-        </div>
-        {/* <div className="add-event-body">
-          <CalendarView
-            selectedVenue={this.state.venue}
-            events={this.state.userEvents}
-          />
-        </div> */}
-      </>
-    );
-  }
-}
-
-
-
-
-export default AddEventContainer
+export default AddEventContainer;

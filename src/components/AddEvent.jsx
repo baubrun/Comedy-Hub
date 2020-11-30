@@ -1,25 +1,24 @@
 import React, { useState } from "react";
 import Header from "./Header";
 import { Link, useHistory } from "react-router-dom";
-import {useSelector} from "react-redux"
+import {useSelector, useDispatch} from "react-redux"
+
 import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
 import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import FileUpload from "@material-ui/icons/AddPhotoAlternate";
-import {authState} from "../redux/authSlice"
 
+import {authState} from "../redux/authSlice"
+import {loading, loaded, loadingState,} from "../redux/loadingSlice"
+import {getEvents, updateEvent} from "../redux/eventsSlice"
+import api from "../api"
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -60,8 +59,11 @@ const initState = {
 const AddEvent = (props) => {
   const classes = useStyles();
   const {hostId} = useSelector(authState)
+  const {loading} = useSelector(loadingState)
+  const dispatch = useDispatch()
+  const history = useHistory()
   const [image, setImage] = useState({})
-  const [currentId, setCurrentId] = useState("")
+  const [eventId, setEventId] = useState("")
   const [values, setValues] = useState({
    ...initState,
    userEvents: props.userEvents,
@@ -78,6 +80,7 @@ const AddEvent = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     const form = new FormData();
     form.append("title", values.title);
     form.append("startDate", values.startDate);
@@ -91,13 +94,14 @@ const AddEvent = (props) => {
     form.append("hostId", hostId);
 
 
-    // const data = await api.login("/login", form);
-    // if (data.success) {
-    //   dispatch(logIn(data.hostId));
-    //   history.push("/profile");
-    // } else {
-    //   setValues({ ...values, errors: data.errors });
+    const data = await api.patch(eventId, form);
+    if (data.success) {
+      dispatch(loading())
+      history.push("/profile");
+    } else {
+      setValues({ ...values, errors: data.errors });
   };
+  }
 
   return (
     <Grid className={classes.root} container justify="center">
