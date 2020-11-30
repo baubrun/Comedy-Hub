@@ -10,6 +10,7 @@ const read = async (req, res) => {
         username,
         password
     } = req.body
+    console.log('req.body', req.body)
     try {
         let user = await User.findOne({
             username: username,

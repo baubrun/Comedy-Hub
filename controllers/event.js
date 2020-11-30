@@ -5,10 +5,7 @@ const sharp = require("sharp")
 const read = async (req, res) => {
     try {
         const events = await Events.find({});
-        return res.json({
-            success: true,
-            events: events
-        })
+        return res.json(events)
 
     } catch (error) {
         return res.json({

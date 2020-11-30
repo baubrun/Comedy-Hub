@@ -83,7 +83,7 @@ const Login = (props) => {
       password: "",
     });
 
-    const data = await api.read("/login", form);
+    const data = await api.login("/login", form);
     if (data.success) {
       dispatch(logIn(data.hostId));
       history.push("/profile");
