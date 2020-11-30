@@ -45,19 +45,11 @@ const loadingSize = 200;
 
 export const EventsHistory = (props) => {
   const { loading } = useSelector(loadingState);
-  const dispatch = useDispatch();
   const classes = useStyles();
-  // const { title, startDate, peevent.rformer, startTime, image, _id } = props.event;
-  const [selected, setSelected] = useState(null);
-
-  const handleChange = (evt) => {
-    const { value } = evt.target;
-    setSelected(value);
-  };
 
   return (
     <>
-      <div className="d-flex justify-content-center">
+      {/* <div className="d-flex justify-content-center">
         <Loader
           type="Rings"
           color="rgba(224, 151, 33, 0.7)"
@@ -65,7 +57,8 @@ export const EventsHistory = (props) => {
           width={loadingSize}
           visible={loading}
         />
-      </div>
+      </div> */}
+
       {!props.loading &&
         (props.userEvents.length > 0 ? (
           props.userEvents.map((event, idx) => (
@@ -107,10 +100,10 @@ export const EventsHistory = (props) => {
                     {event.startTime}
                   </Typography>
                   <Radio
-                    checked={selected === event._id}
+                    checked={props.selectedOption === event._id}
                     name={event._id}
                     onChange={(evt) => {
-                      handleChange(evt);
+                      props.handleOptionChange(evt);
                     }}
                     value={event._id}
                   />

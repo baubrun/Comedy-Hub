@@ -115,6 +115,7 @@ const Profile = (props) => {
 
     const handleOptionChange = (event) => {
       setState({
+        ...state,
         selectedOption: event.target.value,
       });
     };
@@ -132,6 +133,7 @@ const Profile = (props) => {
 
     const showAddEvent = () => {
       setState({
+        ...state,
         showHistory: false,
         showAddEvent: true,
         showUpdateEvent: false,
@@ -145,6 +147,7 @@ const Profile = (props) => {
         return;
       } else {
         setState({
+          ...state,
           selectedEvent: getSelectedEvent(),
           showHistory: false,
           showAddEvent: false,
