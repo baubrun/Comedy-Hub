@@ -19,6 +19,10 @@ import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 200,
+  },
   paper: {
     margin: theme.spacing(1),
     minWidth: "50vw",
@@ -71,144 +75,133 @@ const AddEvent = () => {
   return (
     <Grid className={classes.root} container justify="center">
       <Grid item>
-        <FormControl>
-          <Paper className={classes.paper}>
-            <Grid
-              container
-              direction="row"
-              justify="center"
-              alignItems="center"
-            >
-              <Grid item>
-                <Typography className={classes.title} variant="h6">
-                  ADD EVENT
-                </Typography>
-              </Grid>
+        <Paper className={classes.paper}>
+          <Grid container direction="row" justify="center" alignItems="center">
+            <Grid item>
+              <Typography className={classes.title} variant="h6">
+                ADD EVENT
+              </Typography>
             </Grid>
-            <Grid
-              container
-              direction="row"
-              justify="center"
-              alignItems="center"
-            >
-              <Grid item>
-                <TextField
-                  className={classes.textField}
-                  label="Title"
-                  name="title"
-                  margin="normal"
-                  onChange={(evt) => handleChange(evt)}
-                  value={values.title}
-                />
-              </Grid>
-            </Grid>
-
-            <Grid container justify="space-around">
-              <Grid item xs={3}>
-                <TextField
-                  className={classes.textField}
-                  InputLabelProps={{ shrink: true }}
-                  label="Start-date"
-                  name="startDate"
-                  margin="normal"
-                  onChange={(evt) => handleChange(evt)}
-                  type="date"
-                  value={values.startDate}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <TextField
-                  className={classes.textField}
-                  InputLabelProps={{ shrink: true }}
-                  label="End-date"
-                  name="endDate"
-                  margin="normal"
-                  onChange={(evt) => handleChange(evt)}
-                  type="date"
-                  value={values.endDate}
-                />
-              </Grid>
-            </Grid>
-
-
-            <Grid container justify="space-around">
-              <Grid item xs={3}>
+          </Grid>
+          <Grid container direction="row" justify="center" alignItems="center">
+            <Grid item>
               <TextField
-                    className={classes.textField}
-                    label="Start-time"
-                    name="startTime"
-                    margin="normal"
-                    onChange={(evt) => handleChange(evt)}
-                    value={values.startTime}
-                  />
-              </Grid>
-              <Grid item xs={3}>
-              <TextField
-                    className={classes.textField}
-                    label="End-time"
-                    name="endTime"
-                    margin="normal"
-                    onChange={(evt) => handleChange(evt)}
-                    value={values.endTime}
-                  />
-              </Grid>
+                className={classes.textField}
+                label="Title"
+                name="title"
+                margin="normal"
+                onChange={(evt) => handleChange(evt)}
+                value={values.title}
+              />
             </Grid>
+          </Grid>
 
-            <Grid container justify="center">
-              <Grid item >
-              <Select
-                      labelId="select"
-                      value={values.venue}
-                      onChange={handleVenueChange}
-                      placeholder="Venue"
-                      variant="outlined"
-                    >
-                      <MenuItem value="" default>CHOOSE A VENUE</MenuItem>
-                      <MenuItem value="LE_FOU_FOU">LE FOU FOU</MenuItem>
-                      <MenuItem value="JOKES_BLAGUES">JOKES BLAGUES</MenuItem>
-                      <MenuItem value="RIRE_NOW">RIRE NOW</MenuItem>
-                    </Select>
-              </Grid>
+          <Grid container justify="space-around">
+            <Grid item xs={3}>
+              <TextField
+                className={classes.textField}
+                InputLabelProps={{ shrink: true }}
+                label="Start-date"
+                name="startDate"
+                margin="normal"
+                onChange={(evt) => handleChange(evt)}
+                type="date"
+                value={values.startDate}
+              />
             </Grid>
-
-            <Grid container justify="space-around">
-              <Grid item xs={3}>
+            <Grid item xs={3}>
               <TextField
-                  
-                    className={classes.textField}
-                    label="Facebook"
-                    name="facebook"
-                    margin="normal"
-                    onChange={(evt) => handleChange(evt)}
-                    value={values.facebook}
-                  />
-              </Grid>
-              <Grid item xs={3}>
-              <TextField
-                    className={classes.textField}
-                    label="Instagram"
-                    name="instagram"
-                    margin="normal"
-                    onChange={(evt) => handleChange(evt)}
-                    value={values.instagram}
-                  />
-              </Grid>
-              <Grid item xs={3}>
-              <TextField
-                    className={classes.textField}
-                    label="Twitter"
-                    name="twitter"
-                    margin="normal"
-                    onChange={(evt) => handleChange(evt)}
-                    value={values.twitter}
-                  />
-              </Grid>
+                className={classes.textField}
+                InputLabelProps={{ shrink: true }}
+                label="End-date"
+                name="endDate"
+                margin="normal"
+                onChange={(evt) => handleChange(evt)}
+                type="date"
+                value={values.endDate}
+              />
             </Grid>
+          </Grid>
 
+          <Grid container justify="space-around">
+            <Grid item xs={3}>
+              <TextField
+                className={classes.textField}
+                label="Start-time"
+                name="startTime"
+                margin="normal"
+                onChange={(evt) => handleChange(evt)}
+                value={values.startTime}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <TextField
+                className={classes.textField}
+                label="End-time"
+                name="endTime"
+                margin="normal"
+                onChange={(evt) => handleChange(evt)}
+                value={values.endTime}
+              />
+            </Grid>
+          </Grid>
 
+          <Grid container justify="center" spacing={2}>
+            <Grid item>
+              <FormControl className={classes.formControl}>
+                <InputLabel id="select">
+                  CHOOSE A VENUE
+                </InputLabel>
+                <Select
+                  labelId="select"
+                  value={values.venue}
+                  onChange={handleVenueChange}
+                  placeholder="Venue"
+                >
+                  {/* <MenuItem value="">
+                    <em></em>
+                  </MenuItem> */}
+                  <MenuItem value="LE_FOU_FOU">LE FOU FOU</MenuItem>
+                  <MenuItem value="JOKES_BLAGUES">JOKES BLAGUES</MenuItem>
+                  <MenuItem value="RIRE_NOW">RIRE NOW</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
 
-          </Paper>
-        </FormControl>
+          <Grid container justify="space-around">
+            <Grid item xs={3}>
+              <TextField
+                className={classes.textField}
+                label="Facebook"
+                name="facebook"
+                margin="normal"
+                onChange={(evt) => handleChange(evt)}
+                value={values.facebook}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <TextField
+                className={classes.textField}
+                label="Instagram"
+                name="instagram"
+                margin="normal"
+                onChange={(evt) => handleChange(evt)}
+                value={values.instagram}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <TextField
+                className={classes.textField}
+                label="Twitter"
+                name="twitter"
+                margin="normal"
+                onChange={(evt) => handleChange(evt)}
+                value={values.twitter}
+              />
+            </Grid>
+          </Grid>
+        </Paper>
       </Grid>
     </Grid>
   );
