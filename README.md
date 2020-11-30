@@ -5,11 +5,10 @@ Users can purchase tickets to events.
 Registered users can CRUD event information along with photos and social media links of performers.
 
 
-Technologies: Express.js, Mongo DB, Node.js, React, Redux, Stripe
+Technologies: Express.js, Material-UI, MongoDB, Node.js, React.js, Redux, Stripe
 
-Demo: https://b-cc-hub.herokuapp.com
+REBUILDING IN PROGRESS.... Please run locally until deployed.
 
 
-
-Enter "npm run dev" to start the project.
+Enter "yarn run dev" to start the project.
 
