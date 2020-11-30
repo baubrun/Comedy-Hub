@@ -33,7 +33,7 @@ const Confirmation = () => {
   return (
     <>
       <Header text="CONFIRMATION" type="dark" />
-      <div className="text-right m-1" id="print" onClick={this.handlePrint}>
+      <div className="text-right m-1" id="print" onClick={handlePrint}>
         <img src="print-40.png" alt="" />
       </div>
 

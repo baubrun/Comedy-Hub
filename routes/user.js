@@ -7,9 +7,8 @@ const upload = multer ({storage: mul.storage})
 
 
 
-
 router.route("/login")
-.post(
+.get(
     upload.none(),
     userController.read
 )

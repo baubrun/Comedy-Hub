@@ -74,23 +74,21 @@ const Login = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData();
-    data.append("username", values.username);
-    data.append("password", values.password);
+    const form = new FormData();
+    form.append("username", values.username);
+    form.append("password", values.password);
     setValues({
       ...values,
       username: "",
       password: "",
     });
 
-    const lg = await api.read("/login", data);
-    if (lg.success) {
-      dispatch(logIn(lg.hostId));
+    const data = await api.read("/login", form);
+    if (data.success) {
+      dispatch(logIn(data.hostId));
       history.push("/profile");
-      return;
     } else {
-      setValues({ ...values, errors: lg.errors });
-      return;
+      setValues({ ...values, errors: data.errors });
     }
   };
 
@@ -106,9 +104,9 @@ const Login = (props) => {
             Sign In
           </Typography>
 
-          <Box onClick={handleCloseErrors} 
+          {/* <Box onClick={handleCloseErrors} 
           style={{ cursor: "pointer" }}>
-        {values.errors.map((err, idx) => {
+        {values && values.errors.map((err, idx) => {
           return (
             <div
               className="bg-danger text-light text-center py-2"
@@ -119,7 +117,7 @@ const Login = (props) => {
             </div>
           );
         })}
-      </Box>
+      </Box> */}
 
 
           <TextField
