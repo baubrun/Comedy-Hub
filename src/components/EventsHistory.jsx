@@ -71,7 +71,7 @@ export const EventsHistory = (props) => {
           sorting: false,
           draggable: false,
           headerStyle: {
-            backgroundColor: "#E09721",
+            backgroundColor: "#663a2b",
             color: "#fff",
             fontSize: "20px",
             fontWeight: "bolder",
@@ -94,7 +94,7 @@ export const EventsHistory = (props) => {
             return {
               event: item.title,
               performer: item.performer,
-              venue: item.venue,
+              venue: item.venue.split("_").join(" "),
               price: item.price,
               qty: item.amount,
               _id: item._id,
