@@ -1,6 +1,6 @@
-import React, {Component} from "react";
+import React from "react";
 import HomePage from "./components/HomePage"
-import {BrowserRouter, Route, Redirect} from "react-router-dom"
+import {BrowserRouter, Route, Redirect, Switch} from "react-router-dom"
 import Register from "./components/Register";
 import Events from "./components/Events";
 import EventDetail from "./components/EventDetail"
@@ -11,6 +11,7 @@ import Checkout from "./components/Checkout"
 import Confirmation from "./components/Confirmation"
 import Cart from "./components/Cart"
 import  {connect, useSelector}  from "react-redux";
+import NotFound from "./components/NotFound";
 
   const App = () => {
   const events = useSelector(state => state.events)
@@ -25,6 +26,7 @@ import  {connect, useSelector}  from "react-redux";
       <div>
         <BrowserRouter>
         <NavBar />
+        <Switch>
         <Route exact={true} path="/" component={HomePage}/>
         <Route exact={true} path="/login" component={Login}/>
         <Route exact={true} path="/register" component={Register}/>
@@ -47,6 +49,8 @@ import  {connect, useSelector}  from "react-redux";
         {/* <Route exact={true} path="/profile" component={Profile}>
           {!loggedIn ? <Redirect to="/login" /> : <Profile/>}
         </Route >  */}
+        <NotFound/>
+        </Switch>
         </BrowserRouter>
 
       </div>

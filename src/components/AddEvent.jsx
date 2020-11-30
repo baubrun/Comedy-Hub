@@ -9,25 +9,23 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import Icon from "@material-ui/core/Icon";
+import MenuItem from "@material-ui/core/MenuItem";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
 import Grid from "@material-ui/core/Grid";
-import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
-    borderColor: theme.palette.secondary,
+    minWidth: "100vw",
   },
-  icons: {
-    margin: "0 24px",
-    width: 60,
-    height: 60,
-  },
+  root: {
+    flexGrow: 1,
+  }
 }));
 
 const AddEvent = () => {
@@ -70,129 +68,175 @@ const AddEvent = () => {
   };
 
   return (
-    <form>
-      <Card className={classes.card}>
-        <CardContent>
-          <Typography className={classes.title} variant="h6">
-            ADD EVENT
-          </Typography>
+    <Grid className={classes.root} container >
+      <Grid item>
+        <FormControl className={classes.formControl}>
+          <Card>
+            <CardContent>
+              <Grid
+                container
+                direction="row"
+                justify="center"
+                alignItems="center"
+              >
+                <Grid item>
+                  <Typography className={classes.title} variant="h6">
+                    ADD EVENT
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                direction="row"
+                justify="center"
+                alignItems="center"
+              >
+                <Grid item>
+                  <TextField
+                    className={classes.textField}
+                    label="Title"
+                    name="title"
+                    margin="normal"
+                    onChange={(evt) => handleChange(evt)}
+                    value={values.title}
+                  />
+                </Grid>
+              </Grid>
 
-          <TextField
-            className={classes.textField}
-            label="Title"
-            name="title"
-            margin="normal"
-            onChange={(evt) => handleChange(evt)}
-            
-            value={values.title}
-          ></TextField>
-          <br />
-          <TextField
-            className={classes.textField}
-            InputLabelProps={{shrink: true}}
-            label="Start-date"
-            name="startDate"
-            margin="normal"
-            onChange={(evt) => handleChange(evt)}
-            type="date"
-            value={values.startDate}
-          />
+              <Grid container spacing={3}>
+                <Grid item xs>
+                  <TextField
+                    className={classes.textField}
+                    InputLabelProps={{ shrink: true }}
+                    label="Start-date"
+                    name="startDate"
+                    margin="normal"
+                    onChange={(evt) => handleChange(evt)}
+                    type="date"
+                    value={values.startDate}
+                  />
+                  <Grid item xs>
+                    <TextField
+                      className={classes.textField}
+                      InputLabelProps={{ shrink: true }}
+                      label="End-date"
+                      name="endDate"
+                      margin="normal"
+                      onChange={(evt) => handleChange(evt)}
+                      type="date"
+                      value={values.endDate}
+                    />
+                  </Grid>
+                </Grid>
 
-          <TextField
-            className={classes.textField}
-            label="Start-time"
-            name="startTime"
-            margin="normal"
-            onChange={(evt) => handleChange(evt)}
-            value={values.startTime}
-          />
+              </Grid>
 
-          <TextField
-            className={classes.textField}
-            InputLabelProps={{shrink: true}}
-            label="End-date"
-            name="endDate"
-            margin="normal"
-            onChange={(evt) => handleChange(evt)}
-            type="date"
-            value={values.endDate}
-          />
+              {/* <Grid
+                container
+                direction="row"
+                justify="center"
+                alignItems="center"
+              >
+                <Grid item>
+                  <TextField
+                    className={classes.textField}
+                    label="Start-time"
+                    name="startTime"
+                    margin="normal"
+                    onChange={(evt) => handleChange(evt)}
+                    value={values.startTime}
+                  />
 
-          <TextField
-            className={classes.textField}
-            label="End-time"
-            name="endTime"
-            margin="normal"
-            onChange={(evt) => handleChange(evt)}
-            value={values.endTime}
-          />
+                  <TextField
+                    className={classes.textField}
+                    label="End-time"
+                    name="endTime"
+                    margin="normal"
+                    onChange={(evt) => handleChange(evt)}
+                    value={values.endTime}
+                  />
+                </Grid>
 
-          <InputLabel id="select">Venue</InputLabel>
-          <Select
-            labelId="select"
-            value={values.venue}
-            onChange={handleVenueChange}
-            label="Venue"
-            variant="outlined"
-          >
-            <MenuItem value="">
-              
-            </MenuItem>
-            <MenuItem value="LE_FOU_FOU">LE FOU FOU</MenuItem>
-            <MenuItem value="JOKES_BLAGUES">JOKES BLAGUES</MenuItem>
-            <MenuItem value="RIRE_NOW">RIRE NOW</MenuItem>
-          </Select>
+                <Grid
+                  container
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                >
+                  <Grid item>
+                    <Select
+                      labelId="select"
+                      value={values.venue}
+                      onChange={handleVenueChange}
+                      placeholder="Venue"
+                      variant="outlined"
+                    >
+                      <MenuItem value=""></MenuItem>
+                      <MenuItem value="LE_FOU_FOU">LE FOU FOU</MenuItem>
+                      <MenuItem value="JOKES_BLAGUES">JOKES BLAGUES</MenuItem>
+                      <MenuItem value="RIRE_NOW">RIRE NOW</MenuItem>
+                    </Select>
+                  </Grid>
+                </Grid>
+              </Grid> */}
+              {/* <Grid
+                container
+                direction="row"
+                justify="space-evenly"
+                alignItems="center"
+              >
+                <Grid item>
+                  <TextField
+                  
+                    className={classes.textField}
+                    label="Facebook"
+                    name="facebook"
+                    margin="normal"
+                    onChange={(evt) => handleChange(evt)}
+                    value={values.facebook}
+                  />
+                  <TextField
+                    className={classes.textField}
+                    label="Instagram"
+                    name="instagram"
+                    margin="normal"
+                    onChange={(evt) => handleChange(evt)}
+                    value={values.instagram}
+                  />
+                  <TextField
+                    className={classes.textField}
+                    label="Twitter"
+                    name="twitter"
+                    margin="normal"
+                    onChange={(evt) => handleChange(evt)}
+                    value={values.twitter}
+                  />
+                </Grid>
+              </Grid> */}
 
-         
-
-          <TextField
-            className={classes.textField}
-            label="Facebook"
-            name="facebook"
-            margin="normal"
-            onChange={(evt) => handleChange(evt)}
-            value={values.facebook}
-          />
-
-          <TextField
-            className={classes.textField}
-            label="Instagram"
-            name="instagram"
-            margin="normal"
-            onChange={(evt) => handleChange(evt)}
-            value={values.instagram}
-          />
-          <TextField
-            className={classes.textField}
-            label="Twitter"
-            name="twitter"
-            margin="normal"
-            onChange={(evt) => handleChange(evt)}
-            value={values.twitter}
-          />
-
-          {/* <input
+              {/* <input
             id="upload"
             type="file"
             name="image"
             onChange={handleImage}
           />
            */}
-        </CardContent>
-        <CardActions>
-          <Button
-            className={classes.submit}
-            color="primary"
-            onClick={(evt) => handleSubmit(evt)}
-            variant="contained"
-          >
-            submit
-          </Button>
-        </CardActions>
-        <br />
-
-      </Card>
-    </form>
+            </CardContent>
+            <CardActions>
+              <Button
+                className={classes.submit}
+                color="primary"
+                onClick={(evt) => handleSubmit(evt)}
+                variant="contained"
+              >
+                submit
+              </Button>
+            </CardActions>
+            <br />
+          </Card>
+        </FormControl>
+      </Grid>
+    </Grid>
   );
 };
 
