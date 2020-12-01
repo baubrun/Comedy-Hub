@@ -34,7 +34,7 @@ export const logIn = createAsyncThunk(
       return res.data
     } catch (error) {
       return {
-        error: error.data.message
+        error: error.message
       }
     }
   })
@@ -64,7 +64,8 @@ export const userSlice = createSlice({
     },
     [logIn.rejected]: (state, action) => {
       state.error = action.error.message
-      
+      state.loggedIn = false
+
     },
   }
 });

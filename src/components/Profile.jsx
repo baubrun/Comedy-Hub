@@ -40,6 +40,12 @@ const Profile = (props) => {
       showEvents();
     }
   }, [events]);
+  
+  useEffect(() => {
+    if (events.length > 0) {
+      showEvents();
+    }
+  }, [events]);
 
 
   const loadEvents = () => {
@@ -49,6 +55,7 @@ const Profile = (props) => {
       // setTimeout(() => {
       //   dispatch(loaded());
       // }, 2000);
+      dispatch(loaded())
       showEvents();
     } catch (error) {
       console.log(error);

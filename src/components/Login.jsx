@@ -112,7 +112,7 @@ const Login = () => {
       <Card className={classes.card}>
         <CardContent>
           <Typography className={classes.title} variant="h6">
-            Sign In
+            LogIn
           </Typography>
 
           {/* <Box onClick={handleCloseErrors} 

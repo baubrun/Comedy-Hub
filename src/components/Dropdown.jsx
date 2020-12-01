@@ -108,15 +108,6 @@ export const Dropdown = (props) => {
               </StyledMenuItem>
             </Link>
             
-          <Link to="/login">
-            <StyledMenuItem>
-              <ListItemIcon color="secondary">
-                <PersonIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="LOGIN" />
-            </StyledMenuItem>
-          </Link>
-
         <Link to="/events">
           <StyledMenuItem>
             <ListItemIcon>

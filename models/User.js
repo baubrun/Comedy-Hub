@@ -9,14 +9,8 @@ const UserSchema = new Schema({
     password: {
         type: String
     },
-    email: {
-        type: String
-    },
 
     hostId: {
-        type: String
-    },
-    events: {
         type: String
     },
     dateAdded: {type: Date, default: Date.now}

@@ -35,7 +35,6 @@ import {eventsState} from "./redux/eventsSlice"
         <Route exact={true} path="/login" component={Login}/>
         <Route exact={true} path="/register" component={Register}/>
         <Route exact={true} path="/events" component={Events}/>
-        {/* <Route exact={true} path="/event/:id" component={EventDetail}/> */}
 
         <Route exact={true} path="/event/:id">
           {events.length < 1 ? <Redirect to="/events" /> : <EventDetail />}
@@ -47,12 +46,12 @@ import {eventsState} from "./redux/eventsSlice"
         <Route exact={true} path="/confirmation">
           {items && items.length < 1 ? <Redirect to="/events" /> : <Confirmation />}
         </Route>
-        <Route exact={true} path="/profile" component={Profile} />
+        {/* <Route exact={true} path="/profile" component={Profile} /> */}
          
         
-        {/* <Route exact={true} path="/profile" component={Profile}>
+        <Route exact={true} path="/profile" component={Profile}>
           {!loggedIn ? <Redirect to="/login" /> : <Profile/>}
-        </Route >  */}
+        </Route > 
         <NotFound/>
         </Switch>
         </BrowserRouter>

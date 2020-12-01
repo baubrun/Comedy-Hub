@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 const PurchaseSchema = new Schema({
     amount: {type: String},
     itemsBought: {type: Array},
-    order: {type: String},
+    orderNumber: {type: String},
     dateAdded: {type: Date, default: Date.now}
 })
 
