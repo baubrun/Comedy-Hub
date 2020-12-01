@@ -58,8 +58,7 @@ const Profile = (props) => {
   // change req to delete
   const deleteEvent = async () => {
     if (state.selectedId === "") {
-      window.alert("Please select an event.");
-      return;
+      showAlert()
     } else {
       const confirm = window.confirm("Delete event(s) ?");
       if (confirm) {
