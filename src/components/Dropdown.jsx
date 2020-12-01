@@ -13,7 +13,7 @@ import Box from "@material-ui/core/Box";
 import StreetviewIcon from "@material-ui/icons/Streetview";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
-import { logOut } from "../redux/authSlice";
+import { logOut, userState } from "../redux/userSlice";
 import { clearCart } from "../redux/cartSlice";
 import { clearEvents } from "../redux/eventsSlice";
 
@@ -54,10 +54,10 @@ const StyledMenuItem = withStyles((theme) => ({
 export const Dropdown = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
-  const { loggedIn } = useSelector((state) => state.auth);
+  const { loggedIn } = useSelector(userState);
   const history = useHistory();
-  const location = useLocation();
-  const isNotLoginPage = location.pathname !== "/login";
+  // const location = useLocation();
+  // const isNotLoginPage = location.pathname !== "/login";
 
 
   const logout = () => {

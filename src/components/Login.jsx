@@ -1,11 +1,8 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-
-import { logIn } from "../redux/userSlice";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 
 import Card from "@material-ui/core/Card";
-import Box from "@material-ui/core/Box";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
@@ -15,7 +12,7 @@ import Icon from "@material-ui/core/Icon";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Link, useHistory } from "react-router-dom";
-import api from "../api";
+import { logIn, userState } from "../redux/userSlice";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -52,15 +49,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = (props) => {
+const Login = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const {loggedIn} = useSelector(userState);
   const history = useHistory();
   const [values, setValues] = useState({
     username: "",
     password: "",
     errors: [],
   });
+
+
+
+  useEffect(() => {
+    if (loggedIn){
+      history.push("/profile");
+    }
+  }, [loggedIn])
+
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -74,22 +82,25 @@ const Login = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     const form = new FormData();
     form.append("username", values.username);
     form.append("password", values.password);
-    setValues({
-      ...values,
-      username: "",
-      password: "",
-    });
-
-    const data = await api.login("/login", form);
-    if (data.success) {
-      dispatch(logIn(data.hostId));
-      history.push("/profile");
-    } else {
-      setValues({ ...values, errors: data.errors });
+    
+    const data = {
+      username: values.username,
+      password: values.password,
     }
+
+
+    console.log('data :>> ', data);
+    dispatch(logIn(data));
+    // setValues({
+    //   ...values,
+    //   username: "",
+    //   password: "",
+    // });
+
   };
 
   const handleCloseErrors = () => {
@@ -165,7 +176,7 @@ const Login = (props) => {
         <Typography variant="body2" component="p">
           Not registered? &nbsp;
           <span>
-            <Link className={classes.signUp} to="//register">
+            <Link className={classes.signUp} to="/register">
               Sign Up
             </Link>
           </span>

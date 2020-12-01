@@ -101,8 +101,8 @@ export const EventsSlice = createSlice({
     [readEvents.fulfilled]: (state, action) => {
       state.events = [...action.payload]
     },
-    [readEvents.rejected]: (state) => {
-      state.error = true
+    [readEvents.rejected]: (state, action) => {
+      state.error = action.error
     },
 
     

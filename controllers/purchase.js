@@ -44,7 +44,6 @@ const charge =  async (req,res) => {
 const checkout = async (req, res) => {
     console.log("in checkout server")
     const {amount, itemsBought, order } = req.body
-    console.log('req.body checkout server', req.body)
     try {
         const purchase = Purchases({
             amount: amount,

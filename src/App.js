@@ -43,7 +43,7 @@ import {eventsState} from "./redux/eventsSlice"
 
 
         <Route exact={true} path="/cart" component={Cart}/>
-        <Route exact={true} path="/checkout" component={Checkout}/>
+        {/* <Route exact={true} path="/checkout" component={Checkout}/> */}
         <Route exact={true} path="/confirmation">
           {items && items.length < 1 ? <Redirect to="/events" /> : <Confirmation />}
         </Route>

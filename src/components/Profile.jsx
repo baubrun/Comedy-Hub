@@ -46,9 +46,9 @@ const Profile = (props) => {
     dispatch(loading());
     try {
       dispatch(readEvents());
-      setTimeout(() => {
-        dispatch(loaded());
-      }, 2000);
+      // setTimeout(() => {
+      //   dispatch(loaded());
+      // }, 2000);
       showEvents();
     } catch (error) {
       console.log(error);

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
 export const cartSlice = createSlice({
   name: "cart",
   initialState: {
@@ -59,23 +60,7 @@ export const cartSlice = createSlice({
       }); 
       
       
-      //       state.items = state.items.map((item) => {
-      //   if (item.id === action.payload.id) {
-      //     if (action.payload.toggle === "inc") {
-      //       return {
-      //         ...item,
-      //         amount: item.amount + 1,
-      //       }
-      //     } else {
-      //       return {
-      //         ...item,
-      //         amount: item.amount - 1,
-      //       }
-      //     }
-      //   }
-      //   return item;
-      // });
-      
+
     },
   },
 });

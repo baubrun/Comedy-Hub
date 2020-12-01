@@ -1,16 +1,16 @@
 const bcrypt = require("bcryptjs")
-const SALT_FACTOR = 10
+const SALT = 10
 const User = require("../models/User")
 
 
 
 
 const read = async (req, res) => {
+    console.log('req.body', req.body)
     const {
         username,
         password
     } = req.body
-    console.log('req.body read user', req.body)
     try {
         let user = await User.findOne({
             username: username,
@@ -18,26 +18,21 @@ const read = async (req, res) => {
 
         if (!user) {
             return res.status(400).json({
-                success: false,
                 error: "User not found.",
             });
         }
         const validPassword = await bcrypt.compare(password, user.password)
         if (!validPassword) {
-            return res.json({
-                success: false,
+            return res.status(400).json({
                 error: "Invalid Email or password.",
             });
         } else {
-
-            return res.json({
-                success: true,
+            return res.status(200).json({
                 hostId: user.hostId
             });
         }
     } catch (error) {
-        return res.json({
-            success: false,
+        return res.status(400).json({
             error: error.message
         });
     }
@@ -47,53 +42,42 @@ const read = async (req, res) => {
 const create = async (req, res) => {
     const {
         username,
-        password,
-        email,
-        hostId
-    } = req.body
+        password
+    } = req.body;
 
-    await User.findOne({
+    const emailExists = await User.findOne({
         username: username
-    }, async (err, user) => {
-        if (err) {
-            return res.json({
-                success: false
-            })
-        }
-        if (user) {
-            return res.json({
-                msg: "Username already exists."
-            })
-        } else {
-            const hashedPassword = await bcrypt.hash(password, SALT_FACTOR)
-
-            try {
-
-                const newUser = User({
-                    username: username,
-                    password: hashedPassword,
-                    email: email,
-                    hostId: hostId,
-                    events: "",
-                    dateAdded: new Date()
-                })
-                await newUser.save()
-
-                return res.json({
-                    success: true,
-                    hostId: hostId
-                })
-            } catch (error) {
-                console.log(error)
-                return res.json({
-                    success: false
-                })
-            }
-        }
     })
+
+    if (emailExists) {
+        return res.status(401).json({
+            error: "User already registered."
+        })
+    }
+
+    const hashedPassword = await bcrypt.hash(password, SALT)
+
+    const user = new User({
+        username: username,
+        password: hashedPassword,
+    })
+    try {
+        await user.save()
+        return res.status(200).json({
+            // hostId: user.hostId
+           user
+        })
+        // return res.status(200).json(user)
+
+    } catch (error) {
+        return res.status(400).json({
+            error: error.message
+        })
+    }
 }
 
 module.exports = {
-    read,
     create,
+    read,
+   
 }

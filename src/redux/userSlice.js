@@ -11,44 +11,35 @@ import {
 
 export const createEvent = createAsyncThunk(
   "/createEvent",
-  async (data) => {
+  async (_, data) => {
     try {
       const res = await axios.post(
         domain + "/events", data
       )
-      return await res.data
+      return res.data
     } catch (error) {
       return {
-        error: error.message
+        error: error.data.message
       }
     }
   })
+
 
 
 export const logIn = createAsyncThunk(
-  async (path, data) => {
+  "/login",
+  async (data) => {
     try {
-      const res = await axios.post(domain + path, data)
-      return await res.data
+      const res = await axios.post(domain + "/login", data)
+      return res.data
     } catch (error) {
       return {
-        error: error.message
+        error: error.data.message
       }
     }
   })
 
 
-export const logOutUser = createAsyncThunk(
-  async (path, data) => {
-    try {
-      const res = await axios.post(domain + path, data)
-      return await res.data
-    } catch (error) {
-      return {
-        error: error.message
-      }
-    }
-  })
 
 
 export const userSlice = createSlice({
@@ -56,7 +47,7 @@ export const userSlice = createSlice({
   initialState: {
     loggedIn: false,
     hostId: "",
-    error: false
+    error: ""
   },
   reducers: {
     logOut: (state) => {
@@ -68,12 +59,13 @@ export const userSlice = createSlice({
 
     [logIn.fulfilled]: (state, action) => {
       state.loggedIn = true
-      state.hostId = action.payload
+      state.hostId = action.payload.hostId
+      state.error = ""
     },
-    [logIn.rejected]: (state) => {
-      state.error = true
+    [logIn.rejected]: (state, action) => {
+      state.error = action.error.message
+      
     },
-
   }
 });
 
