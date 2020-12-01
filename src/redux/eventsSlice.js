@@ -3,15 +3,16 @@ import {
   createSlice,
   createAsyncThunk,
 } from "@reduxjs/toolkit";
-import {domain} from "../api"
+import {domain} from "../Utils"
 
 
-export const updateEvent = createAsyncThunk(
-  "/updateEvent",
-  async (eventId, data) => {
+
+export const createEvent = createAsyncThunk(
+  "/createEvent",
+  async (data) => {
     try {
-      const res = await axios.patch(
-        domain + "/updateEvent/" + eventId, data
+      const res = await axios.post(
+        domain + "/events", data
       )
       return await res.data
     } catch (error) {
@@ -22,12 +23,12 @@ export const updateEvent = createAsyncThunk(
   })
 
 
-export const createEvent = createAsyncThunk(
-  "/createEvent",
-  async (data) => {
+export const deleteEvent = createAsyncThunk(
+  "/deleteEvent",
+  async (eventId) => {
     try {
-      const res = await axios.post(
-        domain + "/events", data
+      const res = await axios.delete(
+        domain + "/events/" + eventId, 
       )
       return await res.data
     } catch (error) {
@@ -54,6 +55,21 @@ export const readEvents = createAsyncThunk(
   })
 
 
+export const updateEvent = createAsyncThunk(
+  "/updateEvent",
+  async (eventId, data) => {
+    try {
+      const res = await axios.patch(
+        domain + "/updateEvent/" + eventId, data
+      )
+      return await res.data
+    } catch (error) {
+      return {
+        error: error.message
+      }
+    }
+  })
+
 
 
 
@@ -73,6 +89,23 @@ export const EventsSlice = createSlice({
     },
   },
   extraReducers: {
+
+    [createEvent.fulfilled]: (state, action) => {
+      state.events = [...action.payload]
+    },
+    [createEvent.rejected]: (state) => {
+      state.error = true
+    },
+
+    
+    [readEvents.fulfilled]: (state, action) => {
+      state.events = [...action.payload]
+    },
+    [readEvents.rejected]: (state) => {
+      state.error = true
+    },
+
+
     [updateEvent.fulfilled]: (state, action) => {
       const foundIdx = state.events.findIndex(i => i._id === action.payload._id)
       let newEvents = state.events.splice(foundIdx, 1, action.payload)
@@ -82,19 +115,6 @@ export const EventsSlice = createSlice({
       state.error = true
     },
 
-    [readEvents.fulfilled]: (state, action) => {
-      state.events = [...action.payload]
-    },
-    [readEvents.rejected]: (state) => {
-      state.error = true
-    },
-
-    [createEvent.fulfilled]: (state, action) => {
-      state.events = [...action.payload]
-    },
-    [createEvent.rejected]: (state) => {
-      state.error = true
-    },
 
   }
 });

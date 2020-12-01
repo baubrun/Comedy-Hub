@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { logIn } from "../redux/authSlice";
+import { logIn } from "../redux/userSlice";
 
 
 import Card from "@material-ui/core/Card";

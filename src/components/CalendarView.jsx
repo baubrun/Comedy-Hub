@@ -178,8 +178,8 @@ class CalendarView extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.auth.loggedIn,
-    hostId: state.auth.hostId,
+    loggedIn: state.user.loggedIn,
+    hostId: state.user.hostId,
   };
 };
 

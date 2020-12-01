@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logIn } from "../redux/authSlice";
+import { logIn } from "../redux/userSlice";
 import  Header  from "./Header";
 import  Button  from "./Button";
 import { Link, useHistory } from "react-router-dom";

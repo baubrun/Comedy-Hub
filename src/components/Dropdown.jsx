@@ -17,6 +17,7 @@ import { logOut } from "../redux/authSlice";
 import { clearCart } from "../redux/cartSlice";
 import { clearEvents } from "../redux/eventsSlice";
 
+
 const StyledMenu = withStyles({
   paper: {
     border: "1px solid #d3d4d5",
@@ -37,6 +38,7 @@ const StyledMenu = withStyles({
   />
 ));
 
+
 const StyledMenuItem = withStyles((theme) => ({
   root: {
     "&:focus": {
@@ -48,6 +50,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
+
 export const Dropdown = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
@@ -56,6 +59,7 @@ export const Dropdown = (props) => {
   const location = useLocation();
   const isNotLoginPage = location.pathname !== "/login";
 
+
   const logout = () => {
     dispatch(logOut());
     dispatch(clearCart());
@@ -63,14 +67,17 @@ export const Dropdown = (props) => {
     history.push("/");
   };
 
+
   const handleClick = (evt) => {
     setAnchorEl(evt.currentTarget);
   };
+
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
+  
   return (
     <>
       <Box>

@@ -61,7 +61,7 @@ import NotFound from "./components/NotFound";
 
 const mapStateToProps = state => {
   return {
-    loggedIn: state.auth.loggedIn,
+    loggedIn: state..loggedIn,
     checkout: state.checkout
   }
 }

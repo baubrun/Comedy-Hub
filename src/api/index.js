@@ -1,7 +1,5 @@
 import axios from "axios"
-
-// let domain = "https://b-cc-hub.herokuapp.com" 
-export let domain = "http://localhost:5000"
+import {domain} from "../Utils"
 
 
 const login = async (path, data) => {
@@ -26,12 +24,7 @@ const read = async (path) => {
             error: error.message
         };
     }
-
-
-
 }
-
-
 
 
 const create = async (path, data) => {
@@ -53,42 +46,8 @@ const create = async (path, data) => {
 }
 
 
-
-
-
-const remove = async (path, data) => {
-    try {
-        const req = await fetch(domain + path,
-            data, {
-                method: "DELETE",
-            });
-        const res = await req.text();
-        return JSON.parse(res);
-    } catch (error) {
-        return {
-            error: error.message,
-        };
-    }
-}
-
-
-const update = async (id, path, data) => {
-    try {
-        const res = await axios.patch(domain + path, data)
-        return await res.data
-    } catch (error) {
-        return {
-            error: error.message
-        }
-    }
-}
-
-
-
 export default {
     create,
     login,
     read,
-    remove,
-    update,
 }

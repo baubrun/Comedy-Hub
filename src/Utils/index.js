@@ -1,3 +1,9 @@
+
+// export let domain = "https://b-cc-hub.herokuapp.com" 
+export let domain = "http://localhost:5000"
+
+
+
 export const orderNumber = () => {
   return "CB3" + Math.floor(Math.random() * 1000);
 };

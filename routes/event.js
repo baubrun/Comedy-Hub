@@ -12,11 +12,17 @@ router.route("/deleteEvents")
         eventController.remove
     )
 
+    
 router.route("/events")
     .get(eventController.read)
 
+
 router.route("/events/:eventId")
     .post(eventController.create)
+
+
+router.route("/events/:eventId")
+    .delete(eventController.remove)
 
 
 router.route("/updateEvent/:eventId")

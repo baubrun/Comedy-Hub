@@ -7,7 +7,7 @@ import EventForm from "./EventForm";
 import { compareDates, toggleProfileButtons } from "../Utils";
 
 import { readEvents, eventsState } from "../redux/eventsSlice";
-import { authState } from "../redux/authSlice";
+import { userState } from "../redux/userSlice";
 import { loading, loaded } from "../redux/loadingSlice";
 
 import Button from "./Button";
@@ -22,7 +22,7 @@ import Grid from "@material-ui/core/Grid";
 const Profile = (props) => {
   const dispatch = useDispatch();
   const { events } = useSelector(eventsState);
-  const { hostId } = useSelector(authState);
+  const { hostId } = useSelector(userState);
   const [state, setState] = useState({
     addMode: false,
     DeleteMode: false,

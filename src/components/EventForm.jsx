@@ -15,7 +15,7 @@ import Grid from "@material-ui/core/Grid";
 import Select from "@material-ui/core/Select";
 import FileUpload from "@material-ui/icons/AddPhotoAlternate";
 
-import {authState} from "../redux/authSlice"
+import {userState} from "../redux/userSlice"
 import {loading, loaded, loadingState,} from "../redux/loadingSlice"
 import {readEvents, updateEvent, eventsState} from "../redux/eventsSlice"
 import api from "../api"
@@ -58,7 +58,7 @@ const initState = {
 
 const EventForm = (props) => {
   const classes = useStyles();
-  const {hostId} = useSelector(authState)
+  const {hostId} = useSelector(userState)
   const {loading} = useSelector(loadingState)
   const dispatch = useDispatch()
   const history = useHistory()
