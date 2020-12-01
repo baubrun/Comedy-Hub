@@ -10,13 +10,14 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import PersonIcon from "@material-ui/icons/Person";
 import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
 import StreetviewIcon from "@material-ui/icons/Streetview";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
 import { logOut, userState } from "../redux/userSlice";
 import { clearCart } from "../redux/cartSlice";
 import { clearEvents } from "../redux/eventsSlice";
-
+import { Typography } from "@material-ui/core";
 
 const StyledMenu = withStyles({
   paper: {
@@ -38,7 +39,6 @@ const StyledMenu = withStyles({
   />
 ));
 
-
 const StyledMenuItem = withStyles((theme) => ({
   root: {
     "&:focus": {
@@ -50,15 +50,13 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-
 export const Dropdown = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
-  const { loggedIn } = useSelector(userState);
+  const { loggedIn, hostId } = useSelector(userState);
   const history = useHistory();
   // const location = useLocation();
   // const isNotLoginPage = location.pathname !== "/login";
-
 
   const logout = () => {
     dispatch(logOut());
@@ -67,20 +65,22 @@ export const Dropdown = (props) => {
     history.push("/");
   };
 
-
   const handleClick = (evt) => {
     setAnchorEl(evt.currentTarget);
   };
-
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  
   return (
     <>
-      <Box>
+      <Grid
+        container
+        direction="row"
+        alignItems="center"
+        justify="space-between"
+      >
         <Button
           variant="contained"
           color="secondary"
@@ -90,7 +90,13 @@ export const Dropdown = (props) => {
         >
           MENU
         </Button>
-      </Box>
+
+        {loggedIn && (
+          <Box m={2}>
+            <Typography variant="h6" color="secondary">{`Hi ${hostId}!`}</Typography>
+          </Box>
+        )}
+      </Grid>
 
       <StyledMenu
         id="customized-menu"
@@ -99,15 +105,15 @@ export const Dropdown = (props) => {
         open={Boolean(anchorEl)}
         onClose={(evt) => handleClose(evt)}
       >
-            <Link to="/profile">
-              <StyledMenuItem>
-                <ListItemIcon color="secondary">
-                  <PersonIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="PROFILE" />
-              </StyledMenuItem>
-            </Link>
-            
+        <Link to="/profile">
+          <StyledMenuItem>
+            <ListItemIcon color="secondary">
+              <PersonIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="PROFILE" />
+          </StyledMenuItem>
+        </Link>
+
         <Link to="/events">
           <StyledMenuItem>
             <ListItemIcon>

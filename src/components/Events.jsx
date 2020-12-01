@@ -91,7 +91,7 @@ const Events = () => {
 
   const showEvents = () => {
     if ((!values.listViewShow && values.events.length < 1) || !values.venue) {
-      return <Typography variant="h3">NO EVENTS</Typography>;
+      return <Typography variant="h3">CHOOSE A VENUE</Typography>;
     }
     if (values.listViewShow && values.events.length > 0) {
       return values.events
@@ -102,7 +102,6 @@ const Events = () => {
           <Event
             event={event}
             key={idx}
-            // seatsAvail={seatsAvail}
             venue={values.venue}
           />
         ));

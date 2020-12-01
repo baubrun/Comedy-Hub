@@ -28,7 +28,7 @@ export const deleteEvent = createAsyncThunk(
   async (eventId) => {
     try {
       const res = await axios.delete(
-        domain + "/events/" + eventId, 
+        `${domain}/events/${eventId}` 
       )
       return await res.data
     } catch (error) {
@@ -44,7 +44,7 @@ export const readEvents = createAsyncThunk(
   async () => {
     try {
       const res = await axios.get(
-        domain + "/events"
+        `${domain}/events`
       )
       return await res.data
     } catch (error) {
@@ -60,7 +60,23 @@ export const updateEvent = createAsyncThunk(
   async (eventId, data) => {
     try {
       const res = await axios.patch(
-        domain + "/updateEvent/" + eventId, data
+        `${domain}/updateEvent/${eventId}`, data
+      )
+      return await res.data
+    } catch (error) {
+      return {
+        error: error.message
+      }
+    }
+  })
+
+
+export const removeEvent = createAsyncThunk(
+  "/delete",
+  async (eventId) => {
+    try {
+      const res = await axios.delete(
+        `${domain}/events/${eventId}`
       )
       return await res.data
     } catch (error) {
@@ -77,15 +93,13 @@ export const EventsSlice = createSlice({
   name: "events",
   initialState: {
     events: [],
-    error: false
+    error: false,
+    loading: false
   },
   reducers: {
    
     clearEvents: (state) => {
       state.events = []
-    },
-    removeEvent: (state, action) => {
-      state.events = state.events.filter((item) => item._id !== action.payload._id);
     },
   },
   extraReducers: {
@@ -98,11 +112,33 @@ export const EventsSlice = createSlice({
     },
 
 
+    [readEvents.pending]: (state) => {
+      state.loading = true
+    },
     [readEvents.fulfilled]: (state, action) => {
+      state.loading = false
       state.events = [...action.payload]
     },
     [readEvents.rejected]: (state, action) => {
       state.error = action.error
+    },
+
+
+    [removeEvent.pending]: (state, action) => {
+      state.loading = true
+    },
+    [removeEvent.fulfilled]: (state, action) => {
+      state.loading = false
+      if (!action.payload.error){
+        state.events = action.payload.events
+      }
+
+    },
+
+    [removeEvent.rejected]: (state, action) => {
+      state.error = action.error
+      state.loading = false
+
     },
 
     
@@ -121,7 +157,6 @@ export const EventsSlice = createSlice({
 
 export const {
   clearEvents,
-  removeEvent
 } = EventsSlice.actions;
 
 export const eventsState = (state) => state.events

@@ -12,7 +12,7 @@ const EventSchema = new Schema({
     performer: {type: String},
     image: {type: String},
     price: {type: Number},
-    amount: {type: Number},
+    amount: {type: Number, default: 1},
     hostId: {type: String},
     allDay: {type: String, default: false},
     facebook: {type: String},

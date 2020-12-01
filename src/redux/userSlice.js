@@ -1,82 +1,78 @@
-import axios from "axios"
-import {
-  createSlice,
-  createAsyncThunk,
-} from "@reduxjs/toolkit";
-import {
-  domain
-} from "../Utils"
+import axios from "axios";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { domain } from "../Utils";
 
+export const register = createAsyncThunk("/register", async (data) => {
+  try {
+    const res = await axios.post(domain + "/register", data);
+    return res.data;
+  } catch (error) {
+    return {
+      error: error.response.data.error,
+    };
+  }
+});
 
-
-export const createEvent = createAsyncThunk(
-  "/createEvent",
-  async (_, data) => {
-    try {
-      const res = await axios.post(
-        domain + "/events", data
-      )
-      return res.data
-    } catch (error) {
-      return {
-        error: error.data.message
-      }
-    }
-  })
-
-
-
-export const logIn = createAsyncThunk(
-  "/login",
-  async (data) => {
-    try {
-      const res = await axios.post(domain + "/login", data)
-      return res.data
-    } catch (error) {
-      return {
-        error: error.message
-      }
-    }
-  })
-
-
-
+export const logIn = createAsyncThunk("/login", async (data) => {
+  try {
+    const res = await axios.post(domain + "/login", data);
+    return res.data;
+  } catch (error) {
+    return {
+      error: error.response.data.error,
+    };
+  }
+});
 
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    loggedIn: false,
-    hostId: "",
-    error: ""
+    loggedIn: true,
+    hostId: "host b",
+    error: "",
+    
+    // loggedIn: false,
+    // hostId: "",
+    // error: "",
   },
   reducers: {
     logOut: (state) => {
-      state.loggedIn = false
-      state.hostId = ""
-    }
+      state.loggedIn = false;
+      state.hostId = "";
+    },
   },
   extraReducers: {
-
-    [logIn.fulfilled]: (state, action) => {
-      if (action.payload.error){
-        state.loggedIn = false
-        state.error = action.payload.error
+    [register.fulfilled]: (state, action) => {
+      const { error, hostId } = action.payload;
+      if (error) {
+        state.error = error;
       } else {
-        state.loggedIn = true
-        state.hostId = action.payload.hostId
-        state.error = ""
+        state.loggedIn = true;
+        state.hostId = hostId;
+        state.error = "";
       }
     },
-    [logIn.rejected]: (state, action) => {
-      state.error = action.error.message
-
+    [register.rejected]: (state, action) => {
+      state.error = action.payload.error;
     },
-  }
+
+    [logIn.rejected]: (state, action) => {
+      state.error = action.payload.error;
+    },
+    [logIn.fulfilled]: (state, action) => {
+      const { error, hostId } = action.payload;
+      if (error) {
+        state.error = error;
+      } else {
+        state.loggedIn = true;
+        state.hostId = hostId;
+        state.error = "";
+      }
+    },
+  },
 });
 
-export const {
-  logOut
-} = userSlice.actions;
+export const { logOut } = userSlice.actions;
 
-export const userState = (state) => state.user
+export const userState = (state) => state.user;
 export default userSlice.reducer;

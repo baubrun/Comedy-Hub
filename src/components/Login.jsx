@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-
 import Card from "@material-ui/core/Card";
+import Box from "@material-ui/core/Box";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
@@ -14,7 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { Link, useHistory } from "react-router-dom";
 import { logIn, userState } from "../redux/userSlice";
-
+import { readEvents } from "../redux/eventsSlice";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -53,23 +53,31 @@ const useStyles = makeStyles((theme) => ({
 const Login = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const {loggedIn} = useSelector(userState);
+  const { loggedIn, error } = useSelector(userState);
   const history = useHistory();
   const [values, setValues] = useState({
     username: "",
     password: "",
-    errors: [],
+    errorMsg: "",
   });
+
+  useEffect(() => {
+    dispatch(readEvents());
+  }, []);
 
 
 
   useEffect(() => {
-    if (loggedIn){
+    if (loggedIn) {
       history.push("/profile");
     }
-  }, [loggedIn])
+  }, [loggedIn]);
 
-
+  useEffect(() => {
+    if (error) {
+      setValues({...values, errorMsg: error})
+    }
+  }, [error]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -79,23 +87,15 @@ const Login = () => {
     });
   };
 
- 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const data = {
       username: values.username,
       password: values.password,
-    }
-
+    };
 
     dispatch(logIn(data));
-  
-  };
-
-  const handleCloseErrors = () => {
-    setValues({ ...values, errors: [] });
   };
 
   return (
@@ -106,21 +106,15 @@ const Login = () => {
             LogIn
           </Typography>
 
-          {/* <Box onClick={handleCloseErrors} 
-          style={{ cursor: "pointer" }}>
-        {values && values.errors.map((err, idx) => {
-          return (
-            <div
+          {values.errorMsg && (
+            <Box
+              style={{ cursor: "pointer" }}
               className="bg-danger text-light text-center py-2"
-              key={idx}
               id="errors"
             >
-              {err.msg}
-            </div>
-          );
-        })}
-      </Box> */}
-
+              {values.errorMsg}
+            </Box>
+          )}
 
           <TextField
             className={classes.textField}
@@ -168,7 +162,7 @@ const Login = () => {
           Not registered? &nbsp;
           <span>
             <Link className={classes.logIn} to="/register">
-              Sign Up
+              Register
             </Link>
           </span>
         </Typography>

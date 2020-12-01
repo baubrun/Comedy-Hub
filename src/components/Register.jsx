@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import CardActions from "@material-ui/core/CardActions";
@@ -13,9 +12,8 @@ import Typography from "@material-ui/core/Typography";
 import Icon from "@material-ui/core/Icon";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { Link, useHistory } from "react-router-dom";
-import { logIn, userState } from "../redux/userSlice";
-
+import { useHistory } from "react-router-dom";
+import { register, userState } from "../redux/userSlice";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -54,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 const Register = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const {loggedIn} = useSelector(userState);
+  const { loggedIn } = useSelector(userState);
   const history = useHistory();
   const [values, setValues] = useState({
     username: "",
@@ -63,15 +61,11 @@ const Register = () => {
     errors: [],
   });
 
-
-
   useEffect(() => {
-    if (loggedIn){
+    if (loggedIn) {
       history.push("/profile");
     }
-  }, [loggedIn])
-
-
+  }, [loggedIn]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -81,8 +75,6 @@ const Register = () => {
     });
   };
 
- 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -90,11 +82,9 @@ const Register = () => {
       username: values.username,
       password: values.password,
       hostId: values.hostId,
-    }
+    };
 
-
-    dispatch(logIn(data));
-  
+    dispatch(register(data));
   };
 
   const handleCloseErrors = () => {
@@ -106,7 +96,7 @@ const Register = () => {
       <Card className={classes.card}>
         <CardContent>
           <Typography className={classes.title} variant="h6">
-            LogIn
+            Register
           </Typography>
 
           {/* <Box onClick={handleCloseErrors} 
@@ -124,7 +114,6 @@ const Register = () => {
         })}
       </Box> */}
 
-
           <TextField
             className={classes.textField}
             id="username"
@@ -132,10 +121,9 @@ const Register = () => {
             name="username"
             margin="normal"
             onChange={(evt) => handleChange(evt)}
-            type="username"
             value={values.username}
-          ></TextField>
-          <br />
+          />
+
           <TextField
             className={classes.textField}
             id="password"
@@ -146,6 +134,17 @@ const Register = () => {
             type="password"
             value={values.password}
           />
+
+          <TextField
+            className={classes.textField}
+            id="hostId"
+            label="Enter a host name"
+            name="hostId"
+            margin="normal"
+            onChange={(evt) => handleChange(evt)}
+            value={values.hostId}
+          />
+
           {values.error && (
             <Typography color="error" component="p">
               <Icon className={classes.error} color="error">
@@ -156,41 +155,30 @@ const Register = () => {
           )}
         </CardContent>
         <CardActions>
-          <Grid
-          container
-          direction="row"
-          alignItems="center"
-          justify="center"
-          >
-          <Grid item xs={4}>
-          <Button
-            className={classes.submit}
-            color="primary"
-            onClick={(evt) => handleSubmit(evt)}
-            variant="contained"
-          >
-            SUBMIT
-          </Button>
-          </Grid>
+          <Grid container direction="row" alignItems="center" justify="center">
+            <Grid item xs={4}>
+              <Button
+                className={classes.submit}
+                color="primary"
+                onClick={(evt) => handleSubmit(evt)}
+                variant="contained"
+              >
+                SUBMIT
+              </Button>
+            </Grid>
 
-          <Grid item xs={4}>
-            
-          <Button
-            className={classes.submit}
-            color="secondary"
-            onClick={(evt) => handleSubmit(evt)}
-            variant="contained"
-          >
-            CANCEL
-          </Button>
+            <Grid item xs={4}>
+              <Button
+                className={classes.submit}
+                color="secondary"
+                onClick={() => history.push("/")}
+                variant="contained"
+              >
+                CANCEL
+              </Button>
+            </Grid>
           </Grid>
-          </Grid>
-          
-
-
         </CardActions>
-
-     
       </Card>
     </form>
   );

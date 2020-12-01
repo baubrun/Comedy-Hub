@@ -16,8 +16,8 @@ const read = async (req, res) => {
         });
 
         if (!user) {
-            return res.status(400).json({
-                error: "User not found."
+            return res.status(404).json({
+                error: "User not found.",
             });
         }
 
@@ -42,35 +42,36 @@ const read = async (req, res) => {
 const create = async (req, res) => {
     const {
         username,
-        password
+        password,
+        hostId,
     } = req.body;
 
-    const emailExists = await User.findOne({
+    const userExists = await User.findOne({
         username: username
     })
 
-    if (emailExists) {
-        return res.status(401).json({
+    if (userExists) {
+        return res.status(403).json({
             error: "User already registered."
         })
     }
+
+    try {
 
     const hashedPassword = await bcrypt.hash(password, SALT)
 
     const user = new User({
         username: username,
         password: hashedPassword,
+        hostId: hostId,
     })
-    try {
         await user.save()
-        return res.status(200).json({
-            // hostId: user.hostId
-           user
+        return res.status(201).json({
+            hostId: user.hostId
         })
-        // return res.status(200).json(user)
 
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             error: error.message
         })
     }

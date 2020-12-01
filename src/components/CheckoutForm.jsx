@@ -12,7 +12,6 @@ import api from "../api";
 
 import { useDispatch, useSelector } from "react-redux";
 import {clearCart} from "../redux/cartSlice"
-import {loading, loaded} from "../redux/loadingSlice"
 
 
 const CARD_OPTIONS = {
@@ -43,9 +42,9 @@ const CheckoutForm = (props) => {
   const [order, setOrder] = useState("");
   const [pmtErrors, setPmtErrors] = useState([]);
 
-  useEffect(() => {
-    setOrder(orderNumber());
-  }, []);
+  // useEffect(() => {
+  //   setOrder(orderNumber());
+  // }, []);
 
   const dispatchLoaded = () => {
     props.loadedData();
@@ -96,7 +95,7 @@ const CheckoutForm = (props) => {
     stripeData.append("customer", name);
 
     const chr = await api.create("/charge", stripeData);
-    dispatch(loaded());
+    // dispatch(loaded());
     if (!chr.success) {
       setPmtErrors([chr.msg]);
     } else {
@@ -116,7 +115,7 @@ const CheckoutForm = (props) => {
     });
     if (!error) {
       const { id } = paymentMethod;
-      dispatch(loading());
+      // dispatch(loading());
       pay(props.amount, id, order);
     } else {
       console.log(error);

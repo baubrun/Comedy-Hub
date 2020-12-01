@@ -1,5 +1,7 @@
 const Events = require("../models/Events")
 const sharp = require("sharp")
+const mongoose  = require("mongoose")
+
 
 
 const create = async (req, res) => {
@@ -20,36 +22,35 @@ const create = async (req, res) => {
 const read = async (req, res) => {
     try {
         const events = await Events.find({});
-        return res.json(events)
+        return res.status(200).json(events)
 
     } catch (error) {
-        return res.json({
-            success: false
+        return res.status(500).json({
+            error: error.message
         })
     }
 }
 
 
 const remove = async (req, res) => {
-    const {
-        _id
-    } = req.body
-    await Events.deleteOne({
-        _id
-    }, (err, evt) => {
-        if (err) {
-            return res.json({
-                success: false,
-                err: err
-            })
-        } else {
-            return res.json({
-                success: true,
-                dc: evt.deletedCount,
-                id: _id
-            })
+    const {eventId} = req.params
+    try {
+        if (!mongoose.Types.ObjectId.isValid(eventId)) {
+            return res.status(404).send(`No event with id: ${eventId}`);
         }
-    })
+        await Events.findByIdAndDelete(eventId)
+
+        const events = await Events.find({});
+        return res.status(200).json({events :events})
+
+      
+
+    } catch (error) {
+        return res.status(500).json({
+            error: error.message
+        })
+    }
+
 }
 
 
@@ -100,7 +101,7 @@ const update = async (req, res) => {
         twitter: twitter,
     }, {options: {upsert: true}}, (err) => {
         console.log(err)
-        return res.json({
+        return res.status(200).json({
             success: false
         })
     })
