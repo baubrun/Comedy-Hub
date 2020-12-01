@@ -58,7 +58,6 @@ export const userSlice = createSlice({
   extraReducers: {
 
     [logIn.fulfilled]: (state, action) => {
-      console.log('action', action)
       if (action.payload.error){
         state.loggedIn = false
         state.error = action.payload.error

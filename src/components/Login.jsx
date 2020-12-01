@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     width: 300,
   },
-  signUp: {
+  logIn: {
     color: theme.palette.primary.dark,
     fontWeight: "bold",
     textDecoration: "none",
@@ -62,11 +63,11 @@ const Login = () => {
 
 
 
-  // useEffect(() => {
-  //   if (loggedIn){
-  //     history.push("/profile");
-  //   }
-  // }, [loggedIn])
+  useEffect(() => {
+    if (loggedIn){
+      history.push("/profile");
+    }
+  }, [loggedIn])
 
 
 
@@ -83,10 +84,6 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const form = new FormData();
-    form.append("username", values.username);
-    form.append("password", values.password);
-    
     const data = {
       username: values.username,
       password: values.password,
@@ -94,12 +91,7 @@ const Login = () => {
 
 
     dispatch(logIn(data));
-    // setValues({
-    //   ...values,
-    //   username: "",
-    //   password: "",
-    // });
-
+  
   };
 
   const handleCloseErrors = () => {
@@ -175,7 +167,7 @@ const Login = () => {
         <Typography variant="body2" component="p">
           Not registered? &nbsp;
           <span>
-            <Link className={classes.signUp} to="/register">
+            <Link className={classes.logIn} to="/register">
               Sign Up
             </Link>
           </span>

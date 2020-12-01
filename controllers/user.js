@@ -20,7 +20,6 @@ const read = async (req, res) => {
                 error: "User not found."
             });
         }
-        console.log('user', user)
 
         const validPassword = await bcrypt.compare(password, user.password)
         if (!validPassword) {
