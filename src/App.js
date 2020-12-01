@@ -10,13 +10,17 @@ import NavBar from "./components/NavBar"
 import Checkout from "./components/Checkout"
 import Confirmation from "./components/Confirmation"
 import Cart from "./components/Cart"
-import  {connect, useSelector}  from "react-redux";
+import  {useSelector}  from "react-redux";
 import NotFound from "./components/NotFound";
+import {userState} from "./redux/userSlice"
+import {cartState} from "./redux/cartSlice"
+import {eventsState} from "./redux/eventsSlice"
+
 
   const App = () => {
-  const events = useSelector(state => state.events)
-  const {loggedIn} = useSelector(state => state.auth)
-  const {items} = useSelector(state => state.cart)
+  const events = useSelector(eventsState)
+  const {loggedIn} = useSelector(userState)
+  const {items} = useSelector(cartState)
 
 
 
@@ -59,14 +63,6 @@ import NotFound from "./components/NotFound";
 
 
 
-const mapStateToProps = state => {
-  return {
-    loggedIn: state..loggedIn,
-    checkout: state.checkout
-  }
-}
-
-
-export default connect(mapStateToProps,)(App);
+export default App
 
 

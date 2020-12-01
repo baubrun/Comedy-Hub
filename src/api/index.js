@@ -2,17 +2,6 @@ import axios from "axios"
 import {domain} from "../Utils"
 
 
-const login = async (path, data) => {
-    try {
-        const res = await axios.post(domain + path, data)
-        return await res.data
-    } catch (error) {
-        return {
-            error: error.message
-        }
-    }
-
-}
 
 
 const read = async (path) => {
@@ -48,6 +37,5 @@ const create = async (path, data) => {
 
 export default {
     create,
-    login,
     read,
 }

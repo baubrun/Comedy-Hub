@@ -1,7 +1,11 @@
 import axios from "axios"
-import { createSlice,   createAsyncThunk,
+import {
+  createSlice,
+  createAsyncThunk,
 } from "@reduxjs/toolkit";
-import {domain} from "../Utils"
+import {
+  domain
+} from "../Utils"
 
 
 
@@ -21,27 +25,61 @@ export const createEvent = createAsyncThunk(
   })
 
 
+export const logIn = createAsyncThunk(
+  async (path, data) => {
+    try {
+      const res = await axios.post(domain + path, data)
+      return await res.data
+    } catch (error) {
+      return {
+        error: error.message
+      }
+    }
+  })
+
+
+export const logOutUser = createAsyncThunk(
+  async (path, data) => {
+    try {
+      const res = await axios.post(domain + path, data)
+      return await res.data
+    } catch (error) {
+      return {
+        error: error.message
+      }
+    }
+  })
+
 
 export const userSlice = createSlice({
   name: "user",
   initialState: {
     loggedIn: false,
-    hostId: ""
-},
+    hostId: "",
+    error: false
+  },
   reducers: {
-    logIn: (state, action) => {
+    logOut: (state) => {
+      state.loggedIn = false
+      state.hostId = ""
+    }
+  },
+  extraReducers: {
+
+    [logIn.fulfilled]: (state, action) => {
       state.loggedIn = true
       state.hostId = action.payload
     },
-    logOut: (state) => {
-        state.loggedIn = false
-        state.hostId = ""
-      },
-  },
+    [logIn.rejected]: (state) => {
+      state.error = true
+    },
+
+  }
 });
 
-export const { logIn, logOut } = userSlice.actions;
+export const {
+  logOut
+} = userSlice.actions;
 
 export const userState = (state) => state.user
 export default userSlice.reducer;
-

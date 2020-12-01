@@ -97,7 +97,7 @@ export const EventsSlice = createSlice({
       state.error = true
     },
 
-    
+
     [readEvents.fulfilled]: (state, action) => {
       state.events = [...action.payload]
     },
@@ -105,7 +105,7 @@ export const EventsSlice = createSlice({
       state.error = true
     },
 
-
+    
     [updateEvent.fulfilled]: (state, action) => {
       const foundIdx = state.events.findIndex(i => i._id === action.payload._id)
       let newEvents = state.events.splice(foundIdx, 1, action.payload)
