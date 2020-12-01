@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EventsHistory from "./EventsHistory";
-import AddEventContainer from "./AddEventContainer";
+import AddUpdateEvent from "./AddUpdateEvent";
 import UpdateEvent from "./UpdateEvent";
 
 import { compareDates, toggleProfileButtons } from "../Utils";
@@ -16,20 +16,20 @@ import Header from "./Header";
 
 import api from "../api";
 
-
-
 const Profile = (props) => {
   const dispatch = useDispatch();
   const { events } = useSelector(eventsState);
   const { hostId } = useSelector(authState);
   const [state, setState] = useState({
+    addMode: false,
+    editMode: false,
     showHistory: false,
-    showAddEvent: false,
-    showUpdateEvent: false,
+    showEventForm: false,
     selectedEvent: [],
-    selectedOption: "",
+    selectedId: "",
     userEvents: [],
   });
+
 
   useEffect(() => {
     if (events.length > 0) {
@@ -37,9 +37,22 @@ const Profile = (props) => {
     }
   }, [events]);
 
-  useEffect(() => {
-    toggleProfileButtons();
-  }, [state.showAddEvent, state.showUpdateEvent]);
+  // useEffect(() => {
+  //   toggleProfileButtons();
+  // }, [state.showEventForm, state.showUpdateEvent]);
+
+  // const eventsByVenueHostId = () => {
+  //   const filter = {
+  //     venue: state.venue,
+  //   };
+  //   const userEvents = props.userEvents.filter((item) => {
+  //     for (const key in filter) {
+  //       if (item[key] !== filter[key] || !item[key]) return false;
+  //     }
+  //     return true;
+  //   });
+  //   setState({ ...state, userEvents });
+  // };
 
   const getHostEvents = () => {
     const ev = events.filter(
@@ -53,9 +66,8 @@ const Profile = (props) => {
       ...state,
       userEvents: getHostEvents(),
       showHistory: true,
-      showAddEvent: false,
-      showUpdateEvent: false,
-      selectedOption: "",
+      showEventForm: false,
+      selectedId: "",
     });
   };
 
@@ -73,14 +85,14 @@ const Profile = (props) => {
   };
 
   const deleteEvent = async () => {
-    if (state.selectedOption === "") {
+    if (state.selectedId === "") {
       window.alert("Please select an event.");
       return;
     } else {
       const confirm = window.confirm("Delete event(s) ?");
       if (confirm) {
         let dataEvents = new FormData();
-        dataEvents.append("_id", state.selectedOption);
+        dataEvents.append("_id", state.selectedId);
 
         try {
           await api.create("/deleteEvents", dataEvents);
@@ -93,32 +105,28 @@ const Profile = (props) => {
   };
 
   const getSelectedEvent = () => {
-    const event = state.userEvents.find(
-      (evt) => evt._id === state.selectedOption
-    );
+    const event = state.userEvents.find((evt) => evt._id === state.selectedId);
     return event;
   };
 
   const handleOptionChange = (event) => {
     setState({
       ...state,
-      selectedOption: event.target.value,
+      selectedId: event.target.value,
     });
   };
 
-
-  const showAddEvent = () => {
+  const showEventForm = () => {
     setState({
       ...state,
       showHistory: false,
-      showAddEvent: true,
-      showUpdateEvent: false,
+      showEventForm: true,
       userEvents: getHostEvents(),
     });
   };
 
-  const showUpdateEventForm = () => {
-    if (state.selectedOption === "") {
+  const toggleForm = () => {
+    if (state.selectedId === "") {
       window.alert("Please select an event.");
       return;
     } else {
@@ -126,8 +134,7 @@ const Profile = (props) => {
         ...state,
         selectedEvent: getSelectedEvent(),
         showHistory: false,
-        showAddEvent: false,
-        showUpdateEvent: true,
+        showEventForm: false,
       });
     }
   };
@@ -139,12 +146,21 @@ const Profile = (props) => {
         className="row sticky-top text-center"
         style={{ backgroundColor: "white" }}
       >
+        <div className="col-6 col-md-3 my-2">
+          <Button
+            color="secondary"
+            id="events-history-btn"
+            text="LOAD EVENTS"
+            onClick={() => loadEvents()}
+          />
+        </div>
+
         <div className="col-6 col-md-3 my-2 justify-content-center">
           <Button
             color="secondary"
             id="add-event-btn"
             text="ADD EVENTS"
-            onClick={() => showAddEvent()}
+            onClick={() => toggleForm()}
           />
         </div>
         <div className="col-6 col-md-3 my-2">
@@ -157,18 +173,10 @@ const Profile = (props) => {
         </div>
         <div className="col-6 col-md-3 my-2">
           <Button
-            color="secondary"
-            id="events-history-btn"
-            text="LOAD EVENTS"
-            onClick={() => loadEvents()}
-          />
-        </div>
-        <div className="col-6 col-md-3 my-2">
-          <Button
             color="primary"
             id="update-event-btn"
-            text="UPDATE EVENT"
-            onClick={() => showUpdateEventForm()}
+            text="EDIT EVENT"
+            onClick={() => setState({...state, editMode: true})}
           />
         </div>
       </div>
@@ -185,22 +193,11 @@ const Profile = (props) => {
           <EventsHistory
             userEvents={state.userEvents}
             handleOptionChange={handleOptionChange}
-            selectedOption={state.selectedOption}
+            selectedId={state.selectedId}
           />
         )}
-        {state.showAddEvent && (
-          <AddEventContainer
-            userEvents={state.userEvents}
-            loadEvents={loadEvents}
-          />
-        )}
-        {state.showUpdateEvent && (
-          <UpdateEvent
-            event={state.selectedEvent}
-            id={state.selectedOption}
-            loadEvents={loadEvents}
-          />
-        )}
+        {state.showEventForm 
+        && <AddUpdateEvent selectedId={state.selectedId} />}
       </div>
     </>
   );

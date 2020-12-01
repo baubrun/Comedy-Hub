@@ -2,6 +2,18 @@ const Events = require("../models/Events")
 const sharp = require("sharp")
 
 
+const create = async (req, res) => {
+    const event = req.body
+    const newEvent = new Events(event)
+    try {
+        await newEvent.save()
+        return res.status(200).json(newEvent)
+    } catch (error) {
+        return res.status(400).json({
+            error: error.message
+        })
+    }
+}
 
 
 
@@ -97,6 +109,7 @@ const update = async (req, res) => {
 
 
 module.exports = {
+    create,
     read,
     remove,
     update,

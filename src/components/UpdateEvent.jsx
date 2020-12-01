@@ -136,7 +136,7 @@ class UpdateEvent extends Component {
     return (
       <>
         <div className="update-event-header">
-          <h2>UPDATE EVENT</h2>
+          <h2>EDIT EVENT</h2>
         </div>
         <div className="update-body">
           <form

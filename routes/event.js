@@ -14,11 +14,13 @@ router.route("/deleteEvents")
 
 router.route("/events")
     .get(eventController.read)
-    .patch(eventController.update)
+
+router.route("/events/:eventId")
+    .post(eventController.create)
 
 
-router.route("/updateEvent:event")
-    .post(upload.single("image"),
+router.route("/updateEvent/:eventId")
+    .patch(upload.single("image"),
         eventController.update
     )
 

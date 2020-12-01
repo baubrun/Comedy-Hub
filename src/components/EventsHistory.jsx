@@ -144,7 +144,7 @@ export const EventsHistory = (props) => {
                     value={event._id}
                     control={<Radio />}
                     label="Delete / Update"
-                    checked={props.selectedOption === event._id}
+                    checked={props.selectedId === event._id}
                     onChange={(evt) => {
                       props.handleOptionChange(evt);
                     }}

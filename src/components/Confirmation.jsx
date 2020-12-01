@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from "react";
-// import { useDispatch } from "react-redux";
+import { useDispatch , useSelector} from "react-redux";
 // import { confirmCheckoutAction, clearCartAction } from "../actions/actions";
 // import "./Confirmation.css"
 import Header from "./Header";
 import api from "../api";
 import {readEvents} from "../redux/eventsSlice"
+// import orderId from "order-id"
+// import env from "../../config"
+
+
+
+// const orderNum = orderId(env.orderId).generate()
 
 const Confirmation = () => {
+  const {events} = useSelector
   const [state, setState] = useState({
     orderNum: "",
     total: "",
   });
 
 
-  useEffect(() => {
-    confirm();
-  }, []);
+  // useEffect(() => {
+  //   confirm();
+  // }, []);
 
   const confirm = async () => {
     const data = await api.read("/orderNum");

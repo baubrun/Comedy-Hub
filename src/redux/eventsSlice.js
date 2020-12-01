@@ -7,11 +7,27 @@ import {domain} from "../api"
 
 
 export const updateEvent = createAsyncThunk(
-  "/updateEvent/:eventId",
+  "/updateEvent",
   async (eventId, data) => {
     try {
       const res = await axios.patch(
-        domain + /updateEvent/ + eventId, data
+        domain + "/updateEvent/" + eventId, data
+      )
+      return await res.data
+    } catch (error) {
+      return {
+        error: error.message
+      }
+    }
+  })
+
+
+export const createEvent = createAsyncThunk(
+  "/createEvent",
+  async (data) => {
+    try {
+      const res = await axios.post(
+        domain + "/events", data
       )
       return await res.data
     } catch (error) {
@@ -27,7 +43,7 @@ export const readEvents = createAsyncThunk(
   async () => {
     try {
       const res = await axios.get(
-        domain + /events/
+        domain + "/events"
       )
       return await res.data
     } catch (error) {
@@ -70,6 +86,13 @@ export const EventsSlice = createSlice({
       state.events = [...action.payload]
     },
     [readEvents.rejected]: (state) => {
+      state.error = true
+    },
+
+    [createEvent.fulfilled]: (state, action) => {
+      state.events = [...action.payload]
+    },
+    [createEvent.rejected]: (state) => {
       state.error = true
     },
 

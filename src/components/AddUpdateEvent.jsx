@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import { Link, useHistory } from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux"
@@ -17,7 +17,7 @@ import FileUpload from "@material-ui/icons/AddPhotoAlternate";
 
 import {authState} from "../redux/authSlice"
 import {loading, loaded, loadingState,} from "../redux/loadingSlice"
-import {readEvents, updateEvent} from "../redux/eventsSlice"
+import {readEvents, updateEvent, eventsState} from "../redux/eventsSlice"
 import api from "../api"
 
 const useStyles = makeStyles((theme) => ({
@@ -51,23 +51,29 @@ const initState = {
   performer: "",
   image: "",
   price: "",
-  noVenues: false,
+  // noVenues: false,
 };
 
 
 
-const AddEvent = (props) => {
+const AddUpdateEvent = (props) => {
   const classes = useStyles();
   const {hostId} = useSelector(authState)
   const {loading} = useSelector(loadingState)
   const dispatch = useDispatch()
   const history = useHistory()
   const [image, setImage] = useState({})
-  const [eventId, setEventId] = useState("")
   const [values, setValues] = useState({
    ...initState,
-   userEvents: props.userEvents,
   });
+  const {events} = useSelector(eventsState)
+
+  useEffect(() => {
+    if (props.selectedId){
+      const found = events.find(i => i._id === events._id)
+      setValues(...found)
+    }
+  },[props.selectedId, events])
 
 
   const handleChange = (event) => {
@@ -93,9 +99,9 @@ const AddEvent = (props) => {
     form.append("price", values.price);
     form.append("hostId", hostId);
 
-    if (!eventId) {
-      dispatch()
-    }
+    // if (!eventId) {
+    //   dispatch()
+    // }
     
   };
   
@@ -104,13 +110,39 @@ const AddEvent = (props) => {
     <Grid className={classes.root} container justify="center">
       <Grid item>
         <Paper className={classes.paper}>
-          <Grid container direction="row" justify="center" alignItems="center">
+          
+        <Grid container direction="row" justify="center" alignItems="center">
             <Grid item>
               <Typography className={classes.title} variant="h6">
-                ADD EVENT
+                EVENT
               </Typography>
             </Grid>
           </Grid>
+
+
+        <Grid container justify="center" spacing={2}>
+            <Grid item>
+              <FormControl className={classes.formControl}>
+                <InputLabel id="venue">
+                  VENUE
+                </InputLabel>
+                <Select
+                  labelId="venue"
+                  name="venue"
+                  value={values.venue}
+                  onChange={(evt) => handleChange(evt)}
+                >
+                  <MenuItem value="LE_FOU_FOU">LE FOU FOU</MenuItem>
+                  <MenuItem value="JOKES_BLAGUES">JOKES BLAGUES</MenuItem>
+                  <MenuItem value="RIRE_NOW">RIRE NOW</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+
+      
+
+
           <Grid container direction="row" justify="center" alignItems="center">
             <Grid item>
               <TextField
@@ -174,26 +206,6 @@ const AddEvent = (props) => {
             </Grid>
           </Grid>
 
-          <Grid container justify="center" spacing={2}>
-            <Grid item>
-              <FormControl className={classes.formControl}>
-                <InputLabel id="venue">
-                  VENUE
-                </InputLabel>
-                <Select
-                  labelId="venue"
-                  name="venue"
-                  value={values.venue}
-                  onChange={(evt) => handleChange(evt)}
-                >
-                  <MenuItem value="LE_FOU_FOU">LE FOU FOU</MenuItem>
-                  <MenuItem value="JOKES_BLAGUES">JOKES BLAGUES</MenuItem>
-                  <MenuItem value="RIRE_NOW">RIRE NOW</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-
           <Grid container justify="space-around">
             <Grid item xs={3}>
               <TextField
@@ -251,4 +263,4 @@ const AddEvent = (props) => {
   );
 };
 
-export default AddEvent;
+export default AddUpdateEvent;
