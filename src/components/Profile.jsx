@@ -126,8 +126,12 @@ const Profile = (props) => {
   };
 
 
-  const toggleForm = () => {
+  const toggleForm = (action="") => {
+    if (action === "edit"){
+      setState({...state, selectedEvent: getSelectedEvent()})
+    } 
     setState({
+      ...state,
       showHistory: false,
       showEventForm: true,
     });
@@ -149,7 +153,7 @@ const Profile = (props) => {
             color="secondary"
             disabled={state.selectedId ? true : false}
             id="events-history-btn"
-            text="LOAD EVENTS"
+            text="LOAD"
             onClick={() => loadEvents()}
           />
         </Grid>
@@ -159,7 +163,7 @@ const Profile = (props) => {
             color="secondary"
             disabled={state.selectedId ? true : false}
             id="add-event-btn"
-            text="ADD EVENT"
+            text="ADD "
             onClick={() => toggleForm()}
           />
         </Grid>
@@ -167,9 +171,9 @@ const Profile = (props) => {
           <Button
             color="primary"
             id="update-event-btn"
-            text="EDIT EVENT"
+            text="EDIT"
             onClick={() => {
-              !state.selectedId ? showAlert() : toggleForm();
+              !state.selectedId ? showAlert() : toggleForm("edit");
             }}
           />
         </Grid>
@@ -177,7 +181,7 @@ const Profile = (props) => {
           <Button
             color="secondary"
             id="delete-event-btn"
-            text="DELETE EVENT"
+            text="DELETE"
             onClick={() => deleteEvent()}
           />
         </Grid>
