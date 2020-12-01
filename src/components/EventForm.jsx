@@ -56,7 +56,7 @@ const initState = {
 
 
 
-const AddUpdateEvent = (props) => {
+const EventForm = (props) => {
   const classes = useStyles();
   const {hostId} = useSelector(authState)
   const {loading} = useSelector(loadingState)
@@ -67,11 +67,12 @@ const AddUpdateEvent = (props) => {
    ...initState,
   });
   const {events} = useSelector(eventsState)
-
+  console.log('events :>> ', events);
   useEffect(() => {
     if (props.selectedId){
-      const found = events.find(i => i._id === events._id)
-      setValues(...found)
+      const found = events.find(i => i._id === props.selectedId)
+      console.log('found :>> ', found);
+      setValues(found)
     }
   },[props.selectedId, events])
 
@@ -129,7 +130,7 @@ const AddUpdateEvent = (props) => {
                 <Select
                   labelId="venue"
                   name="venue"
-                  value={values.venue}
+                  value={values.venue || ""}
                   onChange={(evt) => handleChange(evt)}
                 >
                   <MenuItem value="LE_FOU_FOU">LE FOU FOU</MenuItem>
@@ -151,7 +152,7 @@ const AddUpdateEvent = (props) => {
                 name="title"
                 margin="normal"
                 onChange={(evt) => handleChange(evt)}
-                value={values.title}
+                value={values.title || ""}
               />
             </Grid>
           </Grid>
@@ -166,7 +167,7 @@ const AddUpdateEvent = (props) => {
                 margin="normal"
                 onChange={(evt) => handleChange(evt)}
                 type="date"
-                value={values.startDate}
+                value={values.startDate || ""}
               />
             </Grid>
             <Grid item xs={3}>
@@ -178,7 +179,7 @@ const AddUpdateEvent = (props) => {
                 margin="normal"
                 onChange={(evt) => handleChange(evt)}
                 type="date"
-                value={values.endDate}
+                value={values.endDate || ""}
               />
             </Grid>
           </Grid>
@@ -191,7 +192,7 @@ const AddUpdateEvent = (props) => {
                 name="startTime"
                 margin="normal"
                 onChange={(evt) => handleChange(evt)}
-                value={values.startTime}
+                value={values.startTime || ""}
               />
             </Grid>
             <Grid item xs={3}>
@@ -201,7 +202,7 @@ const AddUpdateEvent = (props) => {
                 name="endTime"
                 margin="normal"
                 onChange={(evt) => handleChange(evt)}
-                value={values.endTime}
+                value={values.endTime || ""}
               />
             </Grid>
           </Grid>
@@ -214,17 +215,17 @@ const AddUpdateEvent = (props) => {
                 name="facebook"
                 margin="normal"
                 onChange={(evt) => handleChange(evt)}
-                value={values.facebook}
+                value={values.facebook || ""}
               />
             </Grid>
             <Grid item xs={3}>
               <TextField
-                className={classes.textField}
+                className={classes.textField || ""}
                 label="Instagram"
                 name="instagram"
                 margin="normal"
                 onChange={(evt) => handleChange(evt)}
-                value={values.instagram}
+                value={values.instagram || ""}
               />
             </Grid>
             <Grid item xs={3}>
@@ -234,7 +235,7 @@ const AddUpdateEvent = (props) => {
                 name="twitter"
                 margin="normal"
                 onChange={(evt) => handleChange(evt)}
-                value={values.twitter}
+                value={values.twitter || ""}
               />
             </Grid>  
           </Grid>
@@ -263,4 +264,4 @@ const AddUpdateEvent = (props) => {
   );
 };
 
-export default AddUpdateEvent;
+export default EventForm;

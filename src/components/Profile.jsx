@@ -2,8 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EventsHistory from "./EventsHistory";
-import AddUpdateEvent from "./AddUpdateEvent";
-import UpdateEvent from "./UpdateEvent";
+import EventForm from "./EventForm";
 
 import { compareDates, toggleProfileButtons } from "../Utils";
 
@@ -22,6 +21,7 @@ const Profile = (props) => {
   const { hostId } = useSelector(authState);
   const [state, setState] = useState({
     addMode: false,
+    DeleteMode: false,
     editMode: false,
     showHistory: false,
     showEventForm: false,
@@ -29,7 +29,6 @@ const Profile = (props) => {
     selectedId: "",
     userEvents: [],
   });
-
 
   useEffect(() => {
     if (events.length > 0) {
@@ -116,28 +115,42 @@ const Profile = (props) => {
     });
   };
 
-  const showEventForm = () => {
-    setState({
-      ...state,
-      showHistory: false,
-      showEventForm: true,
-      userEvents: getHostEvents(),
-    });
-  };
-
   const toggleForm = () => {
-    if (state.selectedId === "") {
-      window.alert("Please select an event.");
-      return;
+    if (!state.selectedId) {
+      if (state.deleteMode || state.editMode){
+        window.alert("Please select an event.");
+        return;
+      }
+      setState({
+        ...state,
+        showHistory: false,
+        showEventForm: true,
+      });
     } else {
       setState({
         ...state,
         selectedEvent: getSelectedEvent(),
         showHistory: false,
-        showEventForm: false,
+        showEventForm: true,
       });
     }
   };
+
+
+  // const toggleForm = () => {
+  //   if (state.selectedId === "" && (state.deleteMode || state.editMode)) {
+  //     window.alert("Please select an event.");
+  //     return;
+  //   } else {
+      
+  //     setState({
+  //       ...state,
+  //       selectedEvent: getSelectedEvent(),
+  //       showHistory: false,
+  //       showEventForm: true,
+  //     });
+  //   }
+  // };
 
   const renderProfileButtons = () => {
     return (
@@ -149,6 +162,7 @@ const Profile = (props) => {
         <div className="col-6 col-md-3 my-2">
           <Button
             color="secondary"
+            disabled={state.selectedId ? true : false}
             id="events-history-btn"
             text="LOAD EVENTS"
             onClick={() => loadEvents()}
@@ -158,9 +172,12 @@ const Profile = (props) => {
         <div className="col-6 col-md-3 my-2 justify-content-center">
           <Button
             color="secondary"
+            disabled={state.selectedId ? true : false}
             id="add-event-btn"
-            text="ADD EVENTS"
-            onClick={() => toggleForm()}
+            text="ADD EVENT"
+            onClick={() =>
+              toggleForm()
+            }
           />
         </div>
         <div className="col-6 col-md-3 my-2">
@@ -176,7 +193,9 @@ const Profile = (props) => {
             color="primary"
             id="update-event-btn"
             text="EDIT EVENT"
-            onClick={() => setState({...state, editMode: true})}
+            onClick={() =>
+             toggleForm()
+            }
           />
         </div>
       </div>
@@ -196,8 +215,7 @@ const Profile = (props) => {
             selectedId={state.selectedId}
           />
         )}
-        {state.showEventForm 
-        && <AddUpdateEvent selectedId={state.selectedId} />}
+        {state.showEventForm && <EventForm selectedId={state.selectedId} />}
       </div>
     </>
   );
