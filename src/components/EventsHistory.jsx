@@ -49,7 +49,7 @@ export const EventsHistory = (props) => {
 
   return (
     <>
-      {/* <div className="d-flex justify-content-center">
+      <div className="d-flex justify-content-center">
         <Loader
           type="Rings"
           color="rgba(224, 151, 33, 0.7)"
@@ -57,9 +57,9 @@ export const EventsHistory = (props) => {
           width={loadingSize}
           visible={loading}
         />
-      </div> */}
+      </div>
 
-      {!props.loading &&
+      {!loading &&
         (props.userEvents.length > 0 ? (
           props.userEvents.map((event, idx) => (
             <FormControl key={idx}>
@@ -143,7 +143,7 @@ export const EventsHistory = (props) => {
                   <FormControlLabel
                     value={event._id}
                     control={<Radio />}
-                    label="Delete / Update"
+                    label="Edit / Delete"
                     checked={props.selectedId === event._id}
                     onChange={(evt) => {
                       props.handleOptionChange(evt);

@@ -14,7 +14,7 @@ const MyButton = (
   return (
     <Button
     id={id} 
-    color={`${color}`} 
+    color={color} 
     name={name} 
     onClick={onClick}
     disabled={disabled}

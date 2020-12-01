@@ -10,10 +10,16 @@ import { readEvents, eventsState } from "../redux/eventsSlice";
 import { authState } from "../redux/authSlice";
 import { loading, loaded } from "../redux/loadingSlice";
 
+
 import Button from "./Button";
 import Header from "./Header";
 
 import api from "../api";
+
+import Grid from "@material-ui/core/Grid";
+// import Button from "@material-ui/core/Button";
+
+
 
 const Profile = (props) => {
   const dispatch = useDispatch();
@@ -30,28 +36,24 @@ const Profile = (props) => {
     userEvents: [],
   });
 
+
   useEffect(() => {
     if (events.length > 0) {
       showEvents();
     }
   }, [events]);
 
-  // useEffect(() => {
-  //   toggleProfileButtons();
-  // }, [state.showEventForm, state.showUpdateEvent]);
 
-  // const eventsByVenueHostId = () => {
-  //   const filter = {
-  //     venue: state.venue,
-  //   };
-  //   const userEvents = props.userEvents.filter((item) => {
-  //     for (const key in filter) {
-  //       if (item[key] !== filter[key] || !item[key]) return false;
-  //     }
-  //     return true;
-  //   });
-  //   setState({ ...state, userEvents });
-  // };
+    const handleCancel = () => {
+      setState({
+        selectedId: "",
+        addMode: false,
+        DeleteMode: false,
+        editMode: false,    
+      })
+      showEvents()
+    }
+
 
   const getHostEvents = () => {
     const ev = events.filter(
@@ -59,6 +61,7 @@ const Profile = (props) => {
     );
     return ev.sort(compareDates);
   };
+
 
   const showEvents = () => {
     setState({
@@ -69,6 +72,7 @@ const Profile = (props) => {
       selectedId: "",
     });
   };
+
 
   const loadEvents = () => {
     dispatch(loading());
@@ -82,6 +86,7 @@ const Profile = (props) => {
       console.log(error);
     }
   };
+
 
   const deleteEvent = async () => {
     if (state.selectedId === "") {
@@ -103,10 +108,12 @@ const Profile = (props) => {
     }
   };
 
+
   const getSelectedEvent = () => {
     const event = state.userEvents.find((evt) => evt._id === state.selectedId);
     return event;
   };
+
 
   const handleOptionChange = (event) => {
     setState({
@@ -114,6 +121,7 @@ const Profile = (props) => {
       selectedId: event.target.value,
     });
   };
+
 
   const toggleForm = () => {
     if (!state.selectedId) {
@@ -137,29 +145,16 @@ const Profile = (props) => {
   };
 
 
-  // const toggleForm = () => {
-  //   if (state.selectedId === "" && (state.deleteMode || state.editMode)) {
-  //     window.alert("Please select an event.");
-  //     return;
-  //   } else {
-      
-  //     setState({
-  //       ...state,
-  //       selectedEvent: getSelectedEvent(),
-  //       showHistory: false,
-  //       showEventForm: true,
-  //     });
-  //   }
-  // };
-
   const renderProfileButtons = () => {
     return (
-      <div
-        id="profile-btns"
-        className="row sticky-top text-center"
-        style={{ backgroundColor: "white" }}
+      <Grid
+      container
+      direction="row"
+      justify="space-around"
+      alignItems="center"
+        style={{ backgroundColor: "white", position: "sticky" }}
       >
-        <div className="col-6 col-md-3 my-2">
+        <Grid item xs={2} >
           <Button
             color="secondary"
             disabled={state.selectedId ? true : false}
@@ -167,9 +162,9 @@ const Profile = (props) => {
             text="LOAD EVENTS"
             onClick={() => loadEvents()}
           />
-        </div>
+        </Grid>
 
-        <div className="col-6 col-md-3 my-2 justify-content-center">
+        <Grid item xs={2}>
           <Button
             color="secondary"
             disabled={state.selectedId ? true : false}
@@ -179,16 +174,8 @@ const Profile = (props) => {
               toggleForm()
             }
           />
-        </div>
-        <div className="col-6 col-md-3 my-2">
-          <Button
-            color="primary"
-            id="delete-event-btn"
-            text="DELETE EVENT"
-            onClick={() => deleteEvent()}
-          />
-        </div>
-        <div className="col-6 col-md-3 my-2">
+        </Grid>
+        <Grid item xs={2}>
           <Button
             color="primary"
             id="update-event-btn"
@@ -197,8 +184,24 @@ const Profile = (props) => {
              toggleForm()
             }
           />
-        </div>
-      </div>
+        </Grid>
+        <Grid item xs={2}>
+          <Button
+            color="secondary"
+            id="delete-event-btn"
+            text="DELETE EVENT"
+            onClick={() => deleteEvent()}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <Button
+            color="secondary"
+            text="CANCEL"
+            onClick={() => handleCancel()}
+          />
+        </Grid>
+       
+      </Grid>
     );
   };
 
