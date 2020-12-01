@@ -10,7 +10,6 @@ import { readEvents, eventsState } from "../redux/eventsSlice";
 import { authState } from "../redux/authSlice";
 import { loading, loaded } from "../redux/loadingSlice";
 
-
 import Button from "./Button";
 import Header from "./Header";
 
@@ -18,7 +17,6 @@ import api from "../api";
 
 import Grid from "@material-ui/core/Grid";
 // import Button from "@material-ui/core/Button";
-
 
 
 const Profile = (props) => {
@@ -44,36 +42,6 @@ const Profile = (props) => {
   }, [events]);
 
 
-    const handleCancel = () => {
-      setState({
-        selectedId: "",
-        addMode: false,
-        DeleteMode: false,
-        editMode: false,    
-      })
-      showEvents()
-    }
-
-
-  const getHostEvents = () => {
-    const ev = events.filter(
-      (event) => event.hostId.toLowerCase().indexOf(hostId.toLowerCase()) !== -1
-    );
-    return ev.sort(compareDates);
-  };
-
-
-  const showEvents = () => {
-    setState({
-      ...state,
-      userEvents: getHostEvents(),
-      showHistory: true,
-      showEventForm: false,
-      selectedId: "",
-    });
-  };
-
-
   const loadEvents = () => {
     dispatch(loading());
     try {
@@ -87,7 +55,7 @@ const Profile = (props) => {
     }
   };
 
-
+  // change req to delete
   const deleteEvent = async () => {
     if (state.selectedId === "") {
       window.alert("Please select an event.");
@@ -109,9 +77,28 @@ const Profile = (props) => {
   };
 
 
+  const getHostEvents = () => {
+    const ev = events.filter(
+      (event) => event.hostId.toLowerCase().indexOf(hostId.toLowerCase()) !== -1
+    );
+    return ev.sort(compareDates);
+  };
+
+
   const getSelectedEvent = () => {
     const event = state.userEvents.find((evt) => evt._id === state.selectedId);
     return event;
+  };
+
+
+  const handleCancel = () => {
+    setState({
+      selectedId: "",
+      addMode: false,
+      DeleteMode: false,
+      editMode: false,
+    });
+    showEvents();
   };
 
 
@@ -123,38 +110,42 @@ const Profile = (props) => {
   };
 
 
-  const toggleForm = () => {
-    if (!state.selectedId) {
-      if (state.deleteMode || state.editMode){
-        window.alert("Please select an event.");
-        return;
-      }
-      setState({
-        ...state,
-        showHistory: false,
-        showEventForm: true,
-      });
-    } else {
-      setState({
-        ...state,
-        selectedEvent: getSelectedEvent(),
-        showHistory: false,
-        showEventForm: true,
-      });
-    }
+  const showAlert = () => {
+    window.alert("Please select an event.");
+    return;
   };
 
 
-  const renderProfileButtons = () => {
-    return (
+  const showEvents = () => {
+    setState({
+      ...state,
+      userEvents: getHostEvents(),
+      showHistory: true,
+      showEventForm: false,
+      selectedId: "",
+    });
+  };
+
+
+  const toggleForm = () => {
+    setState({
+      showHistory: false,
+      showEventForm: true,
+    });
+  };
+
+
+  return (
+    <>
+      <Header text="PROFILE" type="dark" />
       <Grid
-      container
-      direction="row"
-      justify="space-around"
-      alignItems="center"
+        container
+        direction="row"
+        justify="space-around"
+        alignItems="center"
         style={{ backgroundColor: "white", position: "sticky" }}
       >
-        <Grid item xs={2} >
+        <Grid item xs={2}>
           <Button
             color="secondary"
             disabled={state.selectedId ? true : false}
@@ -170,9 +161,7 @@ const Profile = (props) => {
             disabled={state.selectedId ? true : false}
             id="add-event-btn"
             text="ADD EVENT"
-            onClick={() =>
-              toggleForm()
-            }
+            onClick={() => toggleForm()}
           />
         </Grid>
         <Grid item xs={2}>
@@ -180,9 +169,9 @@ const Profile = (props) => {
             color="primary"
             id="update-event-btn"
             text="EDIT EVENT"
-            onClick={() =>
-             toggleForm()
-            }
+            onClick={() => {
+              !state.selectedId ? showAlert() : toggleForm();
+            }}
           />
         </Grid>
         <Grid item xs={2}>
@@ -200,15 +189,8 @@ const Profile = (props) => {
             onClick={() => handleCancel()}
           />
         </Grid>
-       
       </Grid>
-    );
-  };
 
-  return (
-    <>
-      <Header text="PROFILE" type="dark" />
-      {renderProfileButtons()}
 
       <div className="">
         {state.showHistory && (
@@ -223,4 +205,7 @@ const Profile = (props) => {
     </>
   );
 };
+
+
+
 export default Profile;
