@@ -58,13 +58,18 @@ export const userSlice = createSlice({
   extraReducers: {
 
     [logIn.fulfilled]: (state, action) => {
-      state.loggedIn = true
-      state.hostId = action.payload.hostId
-      state.error = ""
+      console.log('action', action)
+      if (action.payload.error){
+        state.loggedIn = false
+        state.error = action.payload.error
+      } else {
+        state.loggedIn = true
+        state.hostId = action.payload.hostId
+        state.error = ""
+      }
     },
     [logIn.rejected]: (state, action) => {
       state.error = action.error.message
-      state.loggedIn = false
 
     },
   }

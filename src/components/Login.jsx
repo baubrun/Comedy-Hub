@@ -62,11 +62,11 @@ const Login = () => {
 
 
 
-  useEffect(() => {
-    if (loggedIn){
-      history.push("/profile");
-    }
-  }, [loggedIn])
+  // useEffect(() => {
+  //   if (loggedIn){
+  //     history.push("/profile");
+  //   }
+  // }, [loggedIn])
 
 
 
@@ -93,7 +93,6 @@ const Login = () => {
     }
 
 
-    console.log('data :>> ', data);
     dispatch(logIn(data));
     // setValues({
     //   ...values,

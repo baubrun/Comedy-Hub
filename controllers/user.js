@@ -6,7 +6,6 @@ const User = require("../models/User")
 
 
 const read = async (req, res) => {
-    console.log('req.body', req.body)
     const {
         username,
         password
@@ -18,9 +17,11 @@ const read = async (req, res) => {
 
         if (!user) {
             return res.status(400).json({
-                error: "User not found.",
+                error: "User not found."
             });
         }
+        console.log('user', user)
+
         const validPassword = await bcrypt.compare(password, user.password)
         if (!validPassword) {
             return res.status(400).json({
@@ -32,7 +33,7 @@ const read = async (req, res) => {
             });
         }
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             error: error.message
         });
     }
