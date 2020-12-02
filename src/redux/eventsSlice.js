@@ -1,7 +1,6 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { domain } from "../Utils";
-import _ from "lodash"
 
 export const createEvent = createAsyncThunk(
   "/events/create", 
