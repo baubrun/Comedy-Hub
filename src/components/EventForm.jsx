@@ -81,7 +81,7 @@ const EventForm = (props) => {
     if (error) {
       setValues({...values, errorMsg: error})
     }
-  }, [error]);
+  }, [error, values]);
 
 
 

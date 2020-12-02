@@ -36,7 +36,7 @@ const App = () => {
           <Route exact={true} path="/events" component={Events} />
 
           <Route exact={true} path="/event/:id">
-            {events.length < 1 ? <Redirect to="/events" /> : <EventDetail />}
+            {events && events.length < 1 ? <Redirect to="/events" /> : <EventDetail />}
           </Route>
 
           <Route exact={true} path="/cart" component={Cart} />

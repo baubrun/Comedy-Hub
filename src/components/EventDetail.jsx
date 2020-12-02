@@ -124,14 +124,14 @@ const ED = (props) => {
               {facebook && (
                 <Link to={`facebook.com/${facebook}`}>
                   <img 
-                  src={require("../images/fb.png")} 
+                  src={require("../images/icons/fb.png")} 
                   alt="facebook" />
                 </Link>
               )}
               {instagram && (
                 <Link to={`instagram.com/${instagram}`}>
                   <img
-                    src={require("../images/ig-color.png")}
+                    src={require("../images/icons/ig-color.png")}
                     alt="instagram"
                   />
                 </Link>
@@ -139,7 +139,7 @@ const ED = (props) => {
               {twitter && (
                 <Link to={`instagram.com/${twitter}`}>
                   <img 
-                  src={require("../images/tt.png")} 
+                  src={require("../images/icons/tt.png")} 
                   alt="twitter" />
                 </Link>
               )}

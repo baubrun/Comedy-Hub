@@ -34,12 +34,6 @@ const create = async (req, res) => {
                 error: "Image required.",
             });
         } else {
-            // const ext = path.extname(file.originalname);
-            // if (![".jpeg", ".jpg", ".png"].some((x) => x === ext)) {
-            //     return res.json({
-            //         message: "Invalid image type.",
-            //     });
-            // }
             const regexList = [/\.jpe?g/i, /\.png/i]
             const ext = path.extname(file.originalname);
             if (regexList.some((x) => x === ext)) {
@@ -47,7 +41,6 @@ const create = async (req, res) => {
                     error: "Invalid image type.",
                 });
             }
-
         }
 
         const newEvent = new Events({
@@ -129,13 +122,8 @@ const remove = async (req, res) => {
 
 
 const update = async (req, res) => {
-    console.log("---- update\n")
-
     const _id = req.params.eventId
-    // console.log('_id update :>> \n', _id);
-    // console.log('body :>> \n', req.body);
-    // console.log('req.files :>> \n', req.files);
-    
+
     const {
         files,
         body: {
@@ -172,7 +160,7 @@ const update = async (req, res) => {
         }
 
         
-        const found = await Events.findByIdAndUpdate(_id,{
+        await Events.findByIdAndUpdate(_id,{
             title: title,
             startDate: startDate,
             startTime: startTime,
@@ -188,7 +176,6 @@ const update = async (req, res) => {
             twitter: twitter
         })
 
-        console.log('found update :>> \n', found);
         
         const events = await Events.find({});
         res.status(200).json(events)
