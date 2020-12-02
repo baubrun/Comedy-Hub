@@ -17,7 +17,7 @@ import FileUpload from "@material-ui/icons/AddPhotoAlternate";
 
 import clsx from "clsx";
 import { userState } from "../redux/userSlice";
-import { createEvent, eventsState } from "../redux/eventsSlice";
+import { createEvent, updateEvent, eventsState } from "../redux/eventsSlice";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -56,18 +56,19 @@ const initState = {
   facebook: "",
   instagram: "",
   twitter: "",
-
+  errorMsg: "",
 };
 
 const EventForm = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { hostId } = useSelector(userState);
-  const { events } = useSelector(eventsState);
+  const { events, error } = useSelector(eventsState);
   const [file, setFile] = useState({});
   const [values, setValues] = useState({
     ...initState,
   });
+
 
   useEffect(() => {
     if (props.selectedId) {
@@ -76,6 +77,15 @@ const EventForm = (props) => {
     }
   }, [props.selectedId, events]);
 
+  useEffect(() => {
+    if (error) {
+      setValues({...values, errorMsg: error})
+    }
+  }, [error]);
+
+
+
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setValues({
@@ -83,6 +93,7 @@ const EventForm = (props) => {
       [name]: value,
     });
   };
+
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -101,7 +112,17 @@ const EventForm = (props) => {
     data.append("twitter", values.twitter);
     data.append("image", file);
 
-    dispatch(createEvent(data));
+
+
+    if (props.editMode){
+      data.append("_id", props.selectedId)
+      const form = [ props.selectedId, data]
+       
+      
+      dispatch(updateEvent(form));
+    } else {
+      dispatch(createEvent(data));
+    }
   };
 
   return (
@@ -124,6 +145,20 @@ const EventForm = (props) => {
               </Grid>
             </Grid>
    
+          <Grid item xs={12}>
+          {values.errorMsg && (
+            <Box
+              style={{ cursor: "pointer" }}
+              className="bg-danger text-light text-center py-2"
+              id="errors"
+            >
+              {values.errorMsg}
+            </Box>
+          )}
+
+          </Grid>
+
+
             <Grid direction="row" container justify="center" spacing={2}>
               <Grid item>
                 <FormControl className={classes.formControl}>
@@ -320,11 +355,7 @@ const EventForm = (props) => {
                   </Button>
                 </label>
               </Grid>
-              <Grid item xs={6}>
-              <Box className={classes.filename}>
-                  {values.image ? values.image : ""}
-                </Box>
-              </Grid>
+             
             </Grid>
 
             <Grid container justify="center">

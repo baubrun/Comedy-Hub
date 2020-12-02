@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { domain } from "../Utils";
+import _ from "lodash"
 
 export const createEvent = createAsyncThunk(
   "/events/create", 
@@ -16,6 +17,7 @@ export const createEvent = createAsyncThunk(
   }
 });
 
+
 export const deleteEvent = createAsyncThunk(
   "/events/delete",
   async (eventId) => {
@@ -30,6 +32,7 @@ export const deleteEvent = createAsyncThunk(
   }
 );
 
+
 export const readEvents = createAsyncThunk("/events", async () => {
   try {
     const res = await axios.get(`${domain}/events`);
@@ -41,11 +44,14 @@ export const readEvents = createAsyncThunk("/events", async () => {
   }
 });
 
+
 export const updateEvent = createAsyncThunk(
   "/events/update",
-  async (eventId, data) => {
+  async (data) => {
     try {
-      const res = await axios.patch(`${domain}/updateEvent/${eventId}`, data);
+      const res = await axios.patch(
+        `${domain}/events/${data[0]}`, data[1]
+        );
       return res.data;
     } catch (error) {
       return {
@@ -55,11 +61,12 @@ export const updateEvent = createAsyncThunk(
   }
 );
 
+
 export const EventsSlice = createSlice({
   name: "events",
   initialState: {
     events: [],
-    error: false,
+    error: "",
     loading: false,
   },
   reducers: {
@@ -120,23 +127,23 @@ export const EventsSlice = createSlice({
       state.loading = false;
       state.error = action.error;
     },
-
+    
+    [updateEvent.pending]: (state, action) => {
+      state.loading = true;
+    },
     [updateEvent.fulfilled]: (state, action) => {
+      console.log('action.payload :>> ', action.payload);
       state.loading = false;
       const { error } = action.payload;
       if (error) {
         state.error = error;
       } else {
-      const foundIdx = state.events.findIndex(
-        (i) => i._id === action.payload._id
-      );
-      let newEvents = state.events.splice(foundIdx, 1, action.payload);
-      state.events = newEvents;
+        state.events = action.payload.events;
       }
     },
-    [updateEvent.rejected]: (state) => {
+    [updateEvent.rejected]: (state, action) => {
       state.loading = false;
-      state.error = true;
+      state.error = action.error;
     },
   },
 });

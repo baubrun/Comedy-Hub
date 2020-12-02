@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import UserEvents from "./UserEvents";
@@ -33,16 +32,11 @@ const UserEventsContainer = () => {
     dispatch(readEvents());
   }, [dispatch]);
 
-
-
   useEffect(() => {
-    if (events){
-      showEvents()
+    if (events) {
+      showEvents();
     }
   }, [events]);
-
-
-
 
   const handleDelete = async () => {
     if (state.selectedId === "") {
@@ -100,14 +94,21 @@ const UserEventsContainer = () => {
 
   const toggleForm = (action = "") => {
     if (action === "edit") {
-      setState({ ...state, selectedEvent: getSelectedEvent() });
+      setState(
+        { 
+          ...state, 
+          editMode: true, 
+          selectedEvent: getSelectedEvent(),
+          showEventForm: true,
+        });
+    } else {
+      setState({
+        ...state,
+        showEventForm: true,
+      });
     }
-    setState({
-      ...state,
-      showEventForm: true,
-    });
+  
   };
-
 
   if (loading) {
     return (
@@ -121,8 +122,6 @@ const UserEventsContainer = () => {
     );
   }
 
-
-
   return (
     <>
       <Header text="MY EVENTS" type="dark" />
@@ -133,7 +132,6 @@ const UserEventsContainer = () => {
         alignItems="center"
         style={{ backgroundColor: "white", position: "sticky" }}
       >
-
         <Grid item xs={2}>
           <Button
             color="secondary"
@@ -149,7 +147,9 @@ const UserEventsContainer = () => {
             id="update-event-btn"
             text="EDIT"
             onClick={() => {
-              !state.selectedId ? showAlert() : toggleForm("edit");
+              !state.selectedId 
+              ? showAlert() 
+              : toggleForm("edit") 
             }}
           />
         </Grid>
@@ -178,7 +178,9 @@ const UserEventsContainer = () => {
             selectedId={state.selectedId}
           />
         )}
-        {state.showEventForm && <EventForm selectedId={state.selectedId} />}
+        {state.showEventForm && (
+          <EventForm selectedId={state.selectedId} editMode={state.editMode} />
+        )}
       </>
     </>
   );

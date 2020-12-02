@@ -1,5 +1,4 @@
 const Events = require("../models/Events")
-const sharp = require("sharp")
 const mongoose = require("mongoose")
 const path = require("path")
 const {
@@ -31,16 +30,24 @@ const create = async (req, res) => {
 
         let file = files[0];
         if (files.length < 1) {
-            return res.status(400).json({
-                message: "Image required.",
+            return res.json({
+                error: "Image required.",
             });
         } else {
+            // const ext = path.extname(file.originalname);
+            // if (![".jpeg", ".jpg", ".png"].some((x) => x === ext)) {
+            //     return res.json({
+            //         message: "Invalid image type.",
+            //     });
+            // }
+            const regexList = [/\.jpe?g/i, /\.png/i]
             const ext = path.extname(file.originalname);
-            if (![".jpeg", ".jpg", ".png"].some((x) => x === ext)) {
+            if (regexList.some((x) => x === ext)) {
                 return res.json({
-                    message: "Invalid image type.",
+                    error: "Invalid image type.",
                 });
             }
+
         }
 
         const newEvent = new Events({
@@ -122,7 +129,13 @@ const remove = async (req, res) => {
 
 
 const update = async (req, res) => {
+    console.log("---- update\n")
+
     const _id = req.params.eventId
+    // console.log('_id update :>> \n', _id);
+    // console.log('body :>> \n', req.body);
+    // console.log('req.files :>> \n', req.files);
+    
     const {
         files,
         body: {
@@ -145,22 +158,21 @@ const update = async (req, res) => {
 
         let file = files[0];
         if (files.length < 1) {
-            return res.status(400).json({
-                message: "Image required.",
+            return res.json({
+                error: "Image required.",
             });
         } else {
+            const regexList = [/\.jpe?g/i, /\.png/i]
             const ext = path.extname(file.originalname);
-            if (![".jpeg", ".jpg", ".png"].some((x) => x === ext)) {
+            if (regexList.some((x) => x === ext)) {
                 return res.json({
-                    message: "Invalid image type.",
+                    error: "Invalid image type.",
                 });
             }
         }
 
-
-        await Events.updateOne({
-            _id: _id,
-        }, {
+        
+        const found = await Events.findByIdAndUpdate(_id,{
             title: title,
             startDate: startDate,
             startTime: startTime,
@@ -173,11 +185,11 @@ const update = async (req, res) => {
             image: file.filename,
             facebook: facebook,
             instagram: instagram,
-            twitter: twitter,
-            options: {
-                upsert: true
-            }
+            twitter: twitter
         })
+
+        console.log('found update :>> \n', found);
+        
         const events = await Events.find({});
         res.status(200).json(events)
 
