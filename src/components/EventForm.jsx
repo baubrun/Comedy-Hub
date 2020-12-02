@@ -95,7 +95,7 @@ const EventForm = (props) => {
     data.append("performer", values.performer);
     data.append("price", values.price);
     data.append("hostId", hostId);
-    data.append("image", values.image);
+    data.append("image", file);
 
     dispatch(createEvent(data));
   };
@@ -127,7 +127,7 @@ const EventForm = (props) => {
                     name="venue"
                     value={values.venue || ""}
                     onChange={(evt) => handleChange(evt)}
-                    required
+                    // required
                   >
                     <MenuItem value="LE_FOU_FOU">LE FOU FOU</MenuItem>
                     <MenuItem value="JOKES_BLAGUES">JOKES BLAGUES</MenuItem>
@@ -151,7 +151,7 @@ const EventForm = (props) => {
                   margin="normal"
                   onChange={(evt) => handleChange(evt)}
                   value={values.title || ""}
-                  required
+                  // required
                 />
               </Grid>
 
@@ -164,7 +164,7 @@ const EventForm = (props) => {
                   type="number"
                   onChange={(evt) => handleChange(evt)}
                   value={values.price || ""}
-                  required
+                  // required
                 />
               </Grid>
             </Grid>
@@ -183,7 +183,7 @@ const EventForm = (props) => {
                   margin="normal"
                   onChange={(evt) => handleChange(evt)}
                   value={values.performer || ""}
-                  required
+                  // required
                 />
               </Grid>
             </Grid>
@@ -199,7 +199,7 @@ const EventForm = (props) => {
                   onChange={(evt) => handleChange(evt)}
                   type="date"
                   value={values.startDate || ""}
-                  required
+                  // required
                 />
               </Grid>
               <Grid item xs={3}>
@@ -212,7 +212,7 @@ const EventForm = (props) => {
                   onChange={(evt) => handleChange(evt)}
                   type="date"
                   value={values.endDate || ""}
-                  required
+                  // required
                 />
               </Grid>
             </Grid>
@@ -227,7 +227,7 @@ const EventForm = (props) => {
                   type="time"
                   onChange={(evt) => handleChange(evt)}
                   value={values.startTime || ""}
-                  required
+                  // required
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -246,7 +246,7 @@ const EventForm = (props) => {
                   type="time"
                   onChange={(evt) => handleChange(evt)}
                   value={values.endTime || ""}
-                  required
+                  // required
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">End Time</InputAdornment>

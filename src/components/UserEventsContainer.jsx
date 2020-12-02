@@ -4,11 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import UserEvents from "./UserEvents";
 import EventForm from "./EventForm";
 
-import { compareDates, toggleProfileButtons } from "../Utils";
+import { compareDates } from "../Utils";
 
 import { readEvents, eventsState, deleteEvent } from "../redux/eventsSlice";
 import { userState } from "../redux/userSlice";
-import { loading } from "../redux/eventsSlice";
 
 import Button from "./Button";
 import Header from "./Header";
@@ -134,15 +133,6 @@ const UserEventsContainer = () => {
         alignItems="center"
         style={{ backgroundColor: "white", position: "sticky" }}
       >
-        {/* <Grid item xs={2}>
-          <Button
-            color="secondary"
-            disabled={state.selectedId ? true : false}
-            id="events-history-btn"
-            text="LOAD"
-            onClick={() => dispatch(readEvents())}
-          />
-        </Grid> */}
 
         <Grid item xs={2}>
           <Button

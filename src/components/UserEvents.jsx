@@ -1,10 +1,7 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { removeEvent } from "../redux/eventsSlice";
-
+import React from "react";
+import { useSelector } from "react-redux";
 import moment from "moment";
 
-import Header from "./Header";
 
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";

@@ -1,60 +1,94 @@
 const Events = require("../models/Events")
 const sharp = require("sharp")
-const mongoose  = require("mongoose")
+const mongoose = require("mongoose")
+const path = require("path")
+const {
+    moveFilesToApp
+} = require("../lib/multer")
+const onFinished = require("on-finished")
 
-/* finish create*/
 
 const create = async (req, res) => {
-    let img;
+    console.log('req.files :>> ', req.files);
+    console.log('req.body :>> ', req.body);
     const {
-        title,
-        startDate,
-        startTime,
-        endDate,
-        endTime,
-        venue,
-        performer,
-        price,
-        facebook,
-        instagram,
-        twitter,
-        hostId,
-    } = req.body
+        files,
+        body: {
+            title,
+            startDate,
+            startTime,
+            endDate,
+            endTime,
+            venue,
+            performer,
+            price,
+            facebook,
+            instagram,
+            twitter,
+            hostId,
+        }
+    } = req
 
-    const newEvent = new Events({
-       
-        title: title,
-        startDate: startDate,
-        startTime: startTime,
-        endDate: endDate,
-        endTime: endTime,
-        venue: venue,
-        performer: performer,
-        price: price,
-        hostId: hostId,
-        image: !req.file ? "" : img,
-        facebook: facebook,
-        instagram: instagram,
-        twitter: twitter,
-    
-    })
     try {
 
-    // if (req.file) {
-    //     img = req.file.originalname
+        // if (req.file) {
+        //     img = req.file.originalname
 
-    //     sharp(req.file.path)
-    //         .resize(450, 450)
-    //         .toFile(`./uploads/${img}`, (err) => {
-    //             if (err) {
-    //                 console.log("sharp:", err)
-    //             }
-    //         })
-    // }
+        //     sharp(req.file.path)
+        //         .resize(450, 450)
+        //         .toFile(`./uploads/${img}`, (err) => {
+        //             if (err) {
+        //                 console.log("sharp:", err)
+        //             }
+        //         })
+        // }
+
+        let file = files[0];
+        if (files.length < 1) {
+            return res.status(400).json({
+                message: "Image required.",
+            });
+        } else {
+            const ext = path.extname(file.originalname);
+            if (![".jpeg", ".jpg", ".png"].some((x) => x === ext)) {
+                return res.json({
+                    message: "Invalid image type.",
+                });
+            }
+        }
+
+        const newEvent = new Events({
+            title: title,
+            startDate: startDate,
+            startTime: startTime,
+            endDate: endDate,
+            endTime: endTime,
+            venue: venue,
+            performer: performer,
+            price: price,
+            hostId: hostId,
+            image: file.filename,
+            facebook: facebook,
+            instagram: instagram,
+            twitter: twitter,
+        })
+
 
         await newEvent.save()
         const events = await Events.find({});
-        return res.status(200).json(events)
+        res.status(200).json(events)
+        onFinished(res, (error) => {
+            if (error) {
+                return res.status(400).json({
+                    message: error.message,
+                });
+            } else {
+                moveFilesToApp();
+                console.log(" in moveFilesToApp")
+            }
+            return;
+        });
+
     } catch (error) {
         return res.status(500).json({
             error: error.message
@@ -78,7 +112,9 @@ const read = async (req, res) => {
 
 
 const remove = async (req, res) => {
-    const {eventId} = req.params
+    const {
+        eventId
+    } = req.params
     try {
         if (!mongoose.Types.ObjectId.isValid(eventId)) {
             return res.status(404).send(`No event with id: ${eventId}`);
@@ -86,9 +122,9 @@ const remove = async (req, res) => {
         await Events.findByIdAndDelete(eventId)
 
         const events = await Events.find({});
-        return res.status(200).json({events :events})
-
-      
+        return res.status(200).json({
+            events: events
+        })
 
     } catch (error) {
         return res.status(500).json({
@@ -130,7 +166,7 @@ const update = async (req, res) => {
 
     await Events.updateOne({
         _id: _id,
-        
+
     }, {
         title: title,
         startDate: startDate,
@@ -144,7 +180,11 @@ const update = async (req, res) => {
         facebook: facebook,
         instagram: instagram,
         twitter: twitter,
-    }, {options: {upsert: true}}, (err) => {
+    }, {
+        options: {
+            upsert: true
+        }
+    }, (err) => {
         console.log(err)
         return res.status(200).json({
             success: false

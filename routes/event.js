@@ -18,7 +18,7 @@ router.route("/deleteEvents")
 router.route("/events")
     .get(eventController.read)
     .post(
-        upload.single("image"),
+        upload.any(),
         eventController.create
     )
 
