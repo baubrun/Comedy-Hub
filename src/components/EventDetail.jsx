@@ -47,7 +47,6 @@ const ED = (props) => {
     instagram,
     twitter,
   } = props.event;
-  console.log('image :>> ', image);
   return (
     <Grid
       className={classes.grid}

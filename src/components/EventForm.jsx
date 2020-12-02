@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 200,
   },
   fileUpload: {
-    margin: "16px",
+    margin: "16px"
   },
   input: {
     display: "none",
@@ -294,8 +295,8 @@ const EventForm = (props) => {
               </Grid>
             </Grid>
 
-            <Grid container justify="center">
-              <Grid item xs={3}>
+            <Grid container justify="center" alignItems="center">
+              
                 <input
                   accept="image/*"
                   className={classes.input}
@@ -305,19 +306,24 @@ const EventForm = (props) => {
                   type="file"
                   alt={values.performer}
                 />
-                <label htmlFor="icon-button-file">
+
+               <Grid className={classes.fileUpload} item xs={3}>
+                <label 
+                htmlFor="icon-button-file"  >
                   <Button
-                    className={classes.fileUpload}
+                 
                     color="secondary"
                     component="span"
                     variant="contained"
                   >
-                    Image &nbsp; <FileUpload />
+                    UPLOAD IMAGE &nbsp; <FileUpload />
                   </Button>
                 </label>
-                <span className={classes.filename}>
+              </Grid>
+              <Grid item xs={6}>
+              <Box className={classes.filename}>
                   {values.image ? values.image : ""}
-                </span>
+                </Box>
               </Grid>
             </Grid>
 
@@ -331,8 +337,6 @@ const EventForm = (props) => {
                 >
                   SUBMIT
                 </Button>
-               
-
               </Grid>
             </Grid>
             </form>
