@@ -9,8 +9,6 @@ const onFinished = require("on-finished")
 
 
 const create = async (req, res) => {
-    console.log('req.files :>> ', req.files);
-    console.log('req.body :>> ', req.body);
     const {
         files,
         body: {

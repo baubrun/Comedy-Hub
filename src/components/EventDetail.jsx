@@ -47,7 +47,7 @@ const ED = (props) => {
     instagram,
     twitter,
   } = props.event;
-
+  console.log('image :>> ', image);
   return (
     <Grid
       className={classes.grid}
@@ -61,7 +61,7 @@ const ED = (props) => {
           className={classes.large}
           alt={title}
           id="performer-img-detail"
-          src={`../../${image}`}
+          src={`../images/${image}`}
         />
       </Grid>
       <Grid item>
@@ -125,16 +125,14 @@ const ED = (props) => {
               {facebook && (
                 <Link to={`facebook.com/${facebook}`}>
                   <img 
-                  src="fb.png" 
-                  // src={require("../images/fb.png")} 
+                  src={require("../images/fb.png")} 
                   alt="facebook" />
                 </Link>
               )}
               {instagram && (
                 <Link to={`instagram.com/${instagram}`}>
                   <img
-                    // src={require("../images/ig-color.png")}
-                    src="ig-color.png"
+                    src={require("../images/ig-color.png")}
                     alt="instagram"
                   />
                 </Link>
@@ -142,8 +140,7 @@ const ED = (props) => {
               {twitter && (
                 <Link to={`instagram.com/${twitter}`}>
                   <img 
-                  src="tt.png"
-                  // src={require("../images/tt.png")} 
+                  src={require("../images/tt.png")} 
                   alt="twitter" />
                 </Link>
               )}

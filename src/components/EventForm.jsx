@@ -83,9 +83,8 @@ const EventForm = (props) => {
     });
   };
 
-  const handleSubmit = async (evt) => {
+  const handleSubmit = (evt) => {
     evt.preventDefault();
-
     const data = new FormData();
     data.append("title", values.title);
     data.append("startDate", values.startDate);
@@ -108,7 +107,9 @@ const EventForm = (props) => {
     <Grid className={classes.root} container justify="center">
       <Grid item>
         <Paper className={classes.paper}>
-          
+        <form 
+            onSubmit={(evt) => handleSubmit(evt)}
+            >
             <Grid
               container
               direction="row"
@@ -121,7 +122,7 @@ const EventForm = (props) => {
                 </Typography>
               </Grid>
             </Grid>
-            <form onSubmit={(evt) => handleSubmit(evt)}>
+   
             <Grid direction="row" container justify="center" spacing={2}>
               <Grid item>
                 <FormControl className={classes.formControl}>
@@ -131,7 +132,7 @@ const EventForm = (props) => {
                     name="venue"
                     value={values.venue || ""}
                     onChange={(evt) => handleChange(evt)}
-                    // required
+                    required
                   >
                     <MenuItem value="LE_FOU_FOU">LE FOU FOU</MenuItem>
                     <MenuItem value="JOKES_BLAGUES">JOKES BLAGUES</MenuItem>
@@ -155,7 +156,7 @@ const EventForm = (props) => {
                   margin="normal"
                   onChange={(evt) => handleChange(evt)}
                   value={values.title || ""}
-                  // required
+                  required
                 />
               </Grid>
 
@@ -168,7 +169,7 @@ const EventForm = (props) => {
                   type="number"
                   onChange={(evt) => handleChange(evt)}
                   value={values.price || ""}
-                  // required
+                  required
                 />
               </Grid>
             </Grid>
@@ -187,7 +188,7 @@ const EventForm = (props) => {
                   margin="normal"
                   onChange={(evt) => handleChange(evt)}
                   value={values.performer || ""}
-                  // required
+                  required
                 />
               </Grid>
             </Grid>
@@ -203,7 +204,7 @@ const EventForm = (props) => {
                   onChange={(evt) => handleChange(evt)}
                   type="date"
                   value={values.startDate || ""}
-                  // required
+                  required
                 />
               </Grid>
               <Grid item xs={3}>
@@ -216,7 +217,7 @@ const EventForm = (props) => {
                   onChange={(evt) => handleChange(evt)}
                   type="date"
                   value={values.endDate || ""}
-                  // required
+                  required
                 />
               </Grid>
             </Grid>
@@ -225,13 +226,12 @@ const EventForm = (props) => {
               <Grid item xs={3}>
                 <TextField
                   className={clsx([classes.textField, classes.time])}
-                  // label="Start-time"
                   name="startTime"
                   margin="normal"
                   type="time"
                   onChange={(evt) => handleChange(evt)}
                   value={values.startTime || ""}
-                  // required
+                  required
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -250,7 +250,7 @@ const EventForm = (props) => {
                   type="time"
                   onChange={(evt) => handleChange(evt)}
                   value={values.endTime || ""}
-                  // required
+                  required
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">End Time</InputAdornment>
@@ -303,7 +303,7 @@ const EventForm = (props) => {
                   name="image"
                   onChange={(evt) => setFile(evt.target.files[0])}
                   type="file"
-                  alt={values.performe}
+                  alt={values.performer}
                 />
                 <label htmlFor="icon-button-file">
                   <Button
@@ -327,13 +327,15 @@ const EventForm = (props) => {
                   color="primary"
                   variant="contained"
                   fullWidth
-                  type="submit"
+                 type="submit"
                 >
                   SUBMIT
                 </Button>
+               
+
               </Grid>
             </Grid>
-          </form>
+            </form>
         </Paper>
       </Grid>
     </Grid>

@@ -72,6 +72,7 @@ export const EventsSlice = createSlice({
       state.loading = true;
     },
     [createEvent.fulfilled]: (state, action) => {
+      console.log('action.payload :>> ', action.payload);
       state.loading = false;
       const { error } = action.payload;
       if (error) {

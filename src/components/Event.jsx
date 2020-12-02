@@ -45,7 +45,7 @@ const Event = (props) => {
       <Link to={`/event/${_id}`}>
         <CardMedia
           className={classes.img}
-          image={image}
+          image={require(`../images/${image}`)}
           component="img"
           title={title}
         />
