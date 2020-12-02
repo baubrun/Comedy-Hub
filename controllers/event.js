@@ -63,9 +63,9 @@ const create = async (req, res) => {
 
 
         await newEvent.save()
-        // const events = await Events.find({});
-        // res.status(200).json(events)
-        res.status(200)
+        const events = await Events.find({});
+        res.status(200).json(events)
+       
         onFinished(res, (error) => {
             if (error) {
                 return res.status(400).json({

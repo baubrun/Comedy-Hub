@@ -33,3 +33,4 @@ src/images/
 .env*
 
 server/
+uploads/
