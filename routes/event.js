@@ -3,7 +3,9 @@ const router = express.Router()
 const eventController = require("../controllers/event")
 const multer = require("multer")
 const mul = require("../lib/multer")
-const upload = multer ({storage: mul.storage})
+const upload = multer({
+    storage: mul.storage
+})
 
 
 router.route("/deleteEvents")
@@ -12,9 +14,13 @@ router.route("/deleteEvents")
         eventController.remove
     )
 
-    
+
 router.route("/events")
     .get(eventController.read)
+    .post(
+        upload.single("image"),
+        eventController.create
+    )
 
 
 router.route("/events/:eventId")

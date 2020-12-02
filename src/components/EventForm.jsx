@@ -54,7 +54,6 @@ const initState = {
   performer: "",
   image: "",
   price: "",
-  // noVenues: false,
 };
 
 const EventForm = (props) => {
@@ -95,7 +94,7 @@ const EventForm = (props) => {
     data.append("venue", values.venue);
     data.append("performer", values.performer);
     data.append("price", values.price);
-    data.append("hostId", values.hostId);
+    data.append("hostId", hostId);
     data.append("image", values.image);
 
     dispatch(createEvent(data));
@@ -128,6 +127,7 @@ const EventForm = (props) => {
                     name="venue"
                     value={values.venue || ""}
                     onChange={(evt) => handleChange(evt)}
+                    required
                   >
                     <MenuItem value="LE_FOU_FOU">LE FOU FOU</MenuItem>
                     <MenuItem value="JOKES_BLAGUES">JOKES BLAGUES</MenuItem>
@@ -151,6 +151,7 @@ const EventForm = (props) => {
                   margin="normal"
                   onChange={(evt) => handleChange(evt)}
                   value={values.title || ""}
+                  required
                 />
               </Grid>
 
@@ -163,6 +164,7 @@ const EventForm = (props) => {
                   type="number"
                   onChange={(evt) => handleChange(evt)}
                   value={values.price || ""}
+                  required
                 />
               </Grid>
             </Grid>
@@ -181,6 +183,7 @@ const EventForm = (props) => {
                   margin="normal"
                   onChange={(evt) => handleChange(evt)}
                   value={values.performer || ""}
+                  required
                 />
               </Grid>
             </Grid>
@@ -196,6 +199,7 @@ const EventForm = (props) => {
                   onChange={(evt) => handleChange(evt)}
                   type="date"
                   value={values.startDate || ""}
+                  required
                 />
               </Grid>
               <Grid item xs={3}>
@@ -208,6 +212,7 @@ const EventForm = (props) => {
                   onChange={(evt) => handleChange(evt)}
                   type="date"
                   value={values.endDate || ""}
+                  required
                 />
               </Grid>
             </Grid>
@@ -222,6 +227,7 @@ const EventForm = (props) => {
                   type="time"
                   onChange={(evt) => handleChange(evt)}
                   value={values.startTime || ""}
+                  required
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -240,6 +246,7 @@ const EventForm = (props) => {
                   type="time"
                   onChange={(evt) => handleChange(evt)}
                   value={values.endTime || ""}
+                  required
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">End Time</InputAdornment>
@@ -292,6 +299,7 @@ const EventForm = (props) => {
                   name="image"
                   onChange={(evt) => setFile(evt.target.files[0])}
                   type="file"
+                  alt={values.performe}
                 />
                 <label htmlFor="icon-button-file">
                   <Button

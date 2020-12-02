@@ -18,6 +18,7 @@ const create = async (req, res) => {
         facebook,
         instagram,
         twitter,
+        hostId,
     } = req.body
 
     const newEvent = new Events({
@@ -30,30 +31,32 @@ const create = async (req, res) => {
         venue: venue,
         performer: performer,
         price: price,
+        hostId: hostId,
         image: !req.file ? "" : img,
         facebook: facebook,
         instagram: instagram,
         twitter: twitter,
     
     })
-
-    if (req.file) {
-        img = req.file.originalname
-
-        sharp(req.file.path)
-            .resize(450, 450)
-            .toFile(`./uploads/${img}`, (err) => {
-                if (err) {
-                    console.log("sharp:", err)
-                }
-            })
-    }
-
     try {
+
+    // if (req.file) {
+    //     img = req.file.originalname
+
+    //     sharp(req.file.path)
+    //         .resize(450, 450)
+    //         .toFile(`./uploads/${img}`, (err) => {
+    //             if (err) {
+    //                 console.log("sharp:", err)
+    //             }
+    //         })
+    // }
+
         await newEvent.save()
-        return res.status(200).json(newEvent)
+        const events = await Events.find({});
+        return res.status(200).json(events)
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             error: error.message
         })
     }

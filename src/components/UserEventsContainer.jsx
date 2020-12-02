@@ -16,7 +16,7 @@ import Header from "./Header";
 import Grid from "@material-ui/core/Grid";
 import Spinner from "./Spinner";
 
-const UserEventsContainer = (props) => {
+const UserEventsContainer = () => {
   const dispatch = useDispatch();
   const { hostId, loading } = useSelector(userState);
   const { events } = useSelector(eventsState);
@@ -32,7 +32,7 @@ const UserEventsContainer = (props) => {
 
   useEffect(() => {
     dispatch(readEvents());
-  }, []);
+  }, [dispatch]);
 
 
 
