@@ -104,11 +104,21 @@ export const EventsSlice = createSlice({
   },
   extraReducers: {
 
-    [createEvent.fulfilled]: (state, action) => {
-      state.events = [...action.payload]
+    [createEvent.pending]: (state) => {
+      state.loading = true
     },
-    [createEvent.rejected]: (state) => {
-      state.error = true
+    [createEvent.fulfilled]: (state, action) => {
+      const { error } = action.payload;
+      if (error) {
+        state.error = error
+      } else {
+        state.loading = false
+        state.events = [...action.payload]
+      }
+    },
+    [createEvent.rejected]: (state, action) => {
+      state.loading = false
+      state.error = action.payload.error
     },
 
 

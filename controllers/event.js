@@ -2,11 +2,53 @@ const Events = require("../models/Events")
 const sharp = require("sharp")
 const mongoose  = require("mongoose")
 
-
+/* finish create*/
 
 const create = async (req, res) => {
-    const event = req.body
-    const newEvent = new Events(event)
+    let img;
+    const {
+        title,
+        startDate,
+        startTime,
+        endDate,
+        endTime,
+        venue,
+        performer,
+        price,
+        facebook,
+        instagram,
+        twitter,
+    } = req.body
+
+    const newEvent = new Events({
+       
+        title: title,
+        startDate: startDate,
+        startTime: startTime,
+        endDate: endDate,
+        endTime: endTime,
+        venue: venue,
+        performer: performer,
+        price: price,
+        image: !req.file ? "" : img,
+        facebook: facebook,
+        instagram: instagram,
+        twitter: twitter,
+    
+    })
+
+    if (req.file) {
+        img = req.file.originalname
+
+        sharp(req.file.path)
+            .resize(450, 450)
+            .toFile(`./uploads/${img}`, (err) => {
+                if (err) {
+                    console.log("sharp:", err)
+                }
+            })
+    }
+
     try {
         await newEvent.save()
         return res.status(200).json(newEvent)
