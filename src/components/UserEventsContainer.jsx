@@ -6,7 +6,7 @@ import EventForm from "./EventForm";
 
 import { compareDates, toggleProfileButtons } from "../Utils";
 
-import { readEvents, eventsState, removeEvent } from "../redux/eventsSlice";
+import { readEvents, eventsState, deleteEvent } from "../redux/eventsSlice";
 import { userState } from "../redux/userSlice";
 import { loading } from "../redux/eventsSlice";
 
@@ -45,13 +45,13 @@ const UserEventsContainer = (props) => {
 
 
 
-  const deleteEvent = async () => {
+  const handleDelete = async () => {
     if (state.selectedId === "") {
       showAlert();
     } else {
       const confirm = window.confirm("Delete event(s) ?");
       if (confirm) {
-        dispatch(removeEvent(state.selectedId));
+        dispatch(deleteEvent(state.selectedId));
       }
     }
   };
@@ -168,7 +168,7 @@ const UserEventsContainer = (props) => {
             color="secondary"
             id="delete-event-btn"
             text="DELETE"
-            onClick={() => deleteEvent()}
+            onClick={() => handleDelete()}
           />
         </Grid>
         <Grid item xs={2}>

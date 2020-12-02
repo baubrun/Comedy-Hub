@@ -28,7 +28,7 @@ export const userSlice = createSlice({
   name: "user",
   initialState: {
     loggedIn: true,
-    hostId: "host b",
+    hostId: "host a",
     error: "",
     
     // loggedIn: false,
