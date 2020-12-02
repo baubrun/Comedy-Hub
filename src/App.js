@@ -10,7 +10,7 @@ import EventDetail from "./components/EventDetail";
 import UserEventsContainer from "./components/UserEventsContainer";
 import Login from "./components/Login";
 import NavBar from "./components/NavBar";
-// import Checkout from "./components/Checkout"
+import Checkout from "./components/Checkout"
 import Confirmation from "./components/Confirmation";
 import Cart from "./components/Cart";
 import { useSelector } from "react-redux";
@@ -40,7 +40,14 @@ const App = () => {
           </Route>
 
           <Route exact={true} path="/cart" component={Cart} />
-          {/* <Route exact={true} path="/checkout" component={Checkout}/> */}
+          <Route exact={true} path="/checkout">
+          {items && items.length < 1 ? (
+              <Redirect to="/events" />
+            ) : (
+              <Checkout />
+            )}
+            </Route>
+
           <Route exact={true} path="/confirmation">
             {items && items.length < 1 ? (
               <Redirect to="/events" />

@@ -29,7 +29,7 @@ export const cartSlice = createSlice({
 
           cartTotal.amount += amount;
           cartTotal.total += itemsTotal;
-
+          console.log('cartTotal :>>', cartTotal)
           return cartTotal;
         },
         {
@@ -37,7 +37,7 @@ export const cartSlice = createSlice({
           amount: 0,
         }
       );
-      total = parseFloat(total.toFixed(2));
+      // total = parseFloat(total.toFixed(2));
       state.total = total;
       state.amount = amount;
     },

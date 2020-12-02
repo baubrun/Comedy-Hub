@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory} from "react-router-dom";
 
 import MaterialTable, { MTableToolbar } from "material-table";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
@@ -19,6 +20,7 @@ import {
   removeItem,
   clearCart,
   toggleAmount,
+  cartState
 } from "../redux/cartSlice";
 
 export const currencyFormat = (amount) => {
@@ -47,48 +49,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TotalRow = ({ classes, total }) => {
-  const dispatch = useDispatch();
-  return (
-    <Grid
-      className={classes.toolbar}
-      container
-      justify="space-evenly"
-      direction="row"
-      alignItems="center"
-    >
-      <Grid
-        container
-        justify="space-evenly"
-        direction="row"
-        alignItems="center"
-        item
-      >
-        <Grid item>
-          <Button
-            style={{
-              backgroundColor: "red",
-              color: "white",
-              fontWeight: "bolder",
-            }}
-            variant="contained"
-            onClick={() => dispatch(clearCart())}
-          >
-            CLEAR CART
-          </Button>
-        </Grid>
 
-        <Grid item>
-          <Typography variant="h4">Total : $ {total}</Typography>
-        </Grid>
-      </Grid>
-    </Grid>
-  );
-};
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const { items, total } = useSelector((state) => state.cart);
+  const { items, total } = useSelector(cartState);
   const classes = useStyles();
 
   useEffect(() => {
@@ -202,5 +167,64 @@ const Cart = () => {
     </>
   );
 };
+
+const TotalRow = ({total }) => {
+  const classes = useStyles();
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  return (
+    <Grid
+      className={classes.toolbar}
+      container
+      justify="space-evenly"
+      direction="row"
+      alignItems="center"
+    >
+      <Grid
+        container
+        justify="space-evenly"
+        direction="row"
+        alignItems="center"
+        item
+      >
+        <Grid item>
+          <Button
+            style={{
+              backgroundColor: "red",
+              color: "white",
+              fontWeight: "bolder",
+            }}
+            variant="contained"
+            onClick={() => dispatch(clearCart())}
+          >
+            CLEAR CART
+          </Button>
+        </Grid>
+
+        <Grid item>
+          <Typography variant="h4">Total : $ {total}</Typography>
+        </Grid>
+      </Grid>
+
+
+      <Grid item>
+          <Button
+            style={{
+              backgroundColor: "primary",
+              color: "white",
+              fontWeight: "bolder",
+            }}
+            variant="contained"
+            onClick={() => history.push("/checkout")}
+          >
+            CHECKOUT
+          </Button>
+        </Grid>
+
+    </Grid>
+  );
+};
+
 
 export default Cart;
