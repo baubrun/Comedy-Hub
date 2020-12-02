@@ -79,7 +79,6 @@ export const EventsSlice = createSlice({
       state.loading = true;
     },
     [createEvent.fulfilled]: (state, action) => {
-      console.log('action.payload :>> ', action.payload);
       state.loading = false;
       const { error } = action.payload;
       if (error) {
@@ -120,7 +119,8 @@ export const EventsSlice = createSlice({
         state.error = error;
       } 
       else {
-        state.events = [...action.payload];
+        state.events = action.payload.events;
+
       }
     },
     [readEvents.rejected]: (state, action) => {
@@ -132,7 +132,6 @@ export const EventsSlice = createSlice({
       state.loading = true;
     },
     [updateEvent.fulfilled]: (state, action) => {
-      console.log('action.payload :>> ', action.payload);
       state.loading = false;
       const { error } = action.payload;
       if (error) {

@@ -62,7 +62,7 @@ const create = async (req, res) => {
 
         await newEvent.save()
         const events = await Events.find({});
-        res.status(200).json(events)
+        res.status(200).json({events: events})
 
         onFinished(res, (error) => {
             if (error) {
@@ -87,7 +87,7 @@ const create = async (req, res) => {
 const read = async (req, res) => {
     try {
         const events = await Events.find({});
-        return res.status(200).json(events)
+        return res.status(200).json({events: events})
 
     } catch (error) {
         return res.status(500).json({
@@ -178,7 +178,7 @@ const update = async (req, res) => {
 
         
         const events = await Events.find({});
-        res.status(200).json(events)
+        res.status(200).json({events: events})
 
         onFinished(res, (error) => {
             if (error) {

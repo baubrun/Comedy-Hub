@@ -60,7 +60,7 @@ const ED = (props) => {
           className={classes.large}
           alt={title}
           id="performer-img-detail"
-          src={`../images/${image}`}
+          src={require(`../images/${image}`)}
         />
       </Grid>
       <Grid item>
