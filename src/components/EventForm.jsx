@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Header from "./Header";
-import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -18,7 +16,7 @@ import FileUpload from "@material-ui/icons/AddPhotoAlternate";
 
 import clsx from "clsx";
 import { userState } from "../redux/userSlice";
-import { createEvent, eventsState, loading } from "../redux/eventsSlice";
+import { createEvent, eventsState } from "../redux/eventsSlice";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -54,6 +52,10 @@ const initState = {
   performer: "",
   image: "",
   price: "",
+  facebook: "",
+  instagram: "",
+  twitter: "",
+
 };
 
 const EventForm = (props) => {
@@ -62,7 +64,6 @@ const EventForm = (props) => {
   const { hostId } = useSelector(userState);
   const { events } = useSelector(eventsState);
   const [file, setFile] = useState({});
-  const history = useHistory();
   const [values, setValues] = useState({
     ...initState,
   });
@@ -95,6 +96,9 @@ const EventForm = (props) => {
     data.append("performer", values.performer);
     data.append("price", values.price);
     data.append("hostId", hostId);
+    data.append("facebook", values.facebook);
+    data.append("instagram", values.instagram);
+    data.append("twitter", values.twitter);
     data.append("image", file);
 
     dispatch(createEvent(data));
@@ -323,7 +327,6 @@ const EventForm = (props) => {
                   color="primary"
                   variant="contained"
                   fullWidth
-                  
                   type="submit"
                 >
                   SUBMIT

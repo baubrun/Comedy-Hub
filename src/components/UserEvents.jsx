@@ -72,7 +72,8 @@ export const UserEvents = (props) => {
 
               <CardMedia
                 className={classes.img}
-                image={event.image}
+                // image={event.image}
+                image={require(`../images/${event.image}`)}
                 component="img"
                 title={event.title}
               />

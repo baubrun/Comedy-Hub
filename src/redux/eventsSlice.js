@@ -2,9 +2,14 @@ import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { domain } from "../Utils";
 
-export const createEvent = createAsyncThunk("/events/create", async (data) => {
+export const createEvent = createAsyncThunk(
+  "/events/create", 
+  async (data, {dispatch}) => {
   try {
     const res = await axios.post(domain + "/events", data);
+    // if(res.data){
+    //   dispatch(readEvents())
+    // }
     return res.data;
   } catch (error) {
     return {
@@ -107,13 +112,13 @@ export const EventsSlice = createSlice({
       const { error } = action.payload;
       if (error) {
         state.error = error;
-      } else {
-        state.events = [...action.payload];
-      }
+      } 
+      // else {
+      //   state.events = [...action.payload];
+      // }
     },
     [readEvents.rejected]: (state, action) => {
       state.loading = false;
-
       state.error = action.error;
     },
 

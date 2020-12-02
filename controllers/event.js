@@ -31,18 +31,6 @@ const create = async (req, res) => {
 
     try {
 
-        // if (req.file) {
-        //     img = req.file.originalname
-
-        //     sharp(req.file.path)
-        //         .resize(450, 450)
-        //         .toFile(`./uploads/${img}`, (err) => {
-        //             if (err) {
-        //                 console.log("sharp:", err)
-        //             }
-        //         })
-        // }
-
         let file = files[0];
         if (files.length < 1) {
             return res.status(400).json({
@@ -75,8 +63,9 @@ const create = async (req, res) => {
 
 
         await newEvent.save()
-        const events = await Events.find({});
-        res.status(200).json(events)
+        // const events = await Events.find({});
+        // res.status(200).json(events)
+        res.status(200)
         onFinished(res, (error) => {
             if (error) {
                 return res.status(400).json({
@@ -84,7 +73,6 @@ const create = async (req, res) => {
                 });
             } else {
                 moveFilesToApp();
-                console.log(" in moveFilesToApp")
             }
             return;
         });

@@ -2,6 +2,7 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
 
+
 const EventSchema = new Schema({
     title: {type: String},
     startDate: {type: String},
@@ -12,11 +13,12 @@ const EventSchema = new Schema({
     performer: {type: String},
     image: {type: String},
     price: {type: Number},
-    amount: {type: Number, default: 1},
+    amount: {type: Number, },
     hostId: {type: String},
     allDay: {type: String, default: false},
-    facebook: {type: String},
-    instagram: {type: String},
+    facebook: {type: String, default: ""},
+    instagram: {type: String, default: ""},
+    twitter: {type: String, default: ""},
     dateAdded: {type: Date, default: Date.now},
 })
 
