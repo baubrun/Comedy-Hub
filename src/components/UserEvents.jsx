@@ -109,7 +109,7 @@ export const UserEvents = (props) => {
                   color="textPrimary"
                   component="p"
                 >
-                  {event.venue.split("_").join(" ")}
+                  {event.venue}
                 </Typography>
 
                 <Typography

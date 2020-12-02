@@ -170,9 +170,9 @@ const EventForm = (props) => {
                     onChange={(evt) => handleChange(evt)}
                     required
                   >
-                    <MenuItem value="LE_FOU_FOU">LE FOU FOU</MenuItem>
-                    <MenuItem value="JOKES_BLAGUES">JOKES BLAGUES</MenuItem>
-                    <MenuItem value="RIRE_NOW">RIRE NOW</MenuItem>
+              <MenuItem value="LE FOU FOU">LE FOU FOU</MenuItem>
+              <MenuItem value="JOKES BLAGUES">JOKES BLAGUES</MenuItem>
+              <MenuItem value="RIRE NOW">RIRE NOW</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>

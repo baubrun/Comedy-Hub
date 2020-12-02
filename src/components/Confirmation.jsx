@@ -63,7 +63,7 @@ const Confirmation = () => {
                 <tr key={idx}>
                   <td>{item.title}</td>
                   <td>{item.performer}</td>
-                  <td>{item.venue.split("_").join(" ")}</td>
+                  <td>{item.venue}</td>
                   <td>{item.startDate}</td>
                   <td>{item.startTime}</td>
                   <td>{item.qty}</td>

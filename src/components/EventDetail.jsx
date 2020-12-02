@@ -101,7 +101,7 @@ const ED = (props) => {
           <ListItem>
             <ListItemText>
               <Typography variant="h5" className={classes.listItem}>
-                Venue: {venue.split("_").join(" ")}
+                Venue: {venue}
               </Typography>
             </ListItemText>
           </ListItem>
