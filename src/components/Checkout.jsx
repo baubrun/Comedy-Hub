@@ -9,7 +9,7 @@ import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
+import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -17,7 +17,7 @@ import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 
 import _ from "lodash";
-
+import clsx from "clsx";
 import { cartState } from "../redux/cartSlice";
 import Header from "./Header";
 
@@ -25,22 +25,28 @@ export const PK_STRIPE = "pk_test_1jcRkbFeUYqVsCGYpNX51Ggv00oyStF042";
 const stripePromise = loadStripe(PK_STRIPE);
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  cards: { height: "100vh" },
+  purchaseCard: {
     backgroundColor: theme.palette.primary.main,
     color: "white",
     margin: "0 16px",
+    height: "100vh",
   },
   info: {
     color: "white",
     fontFamily: "Courier Prime",
   },
+  summaryCard: {
+    backgroundColor: theme.palette.secondary.main,
+    color: "white",
+    padding: "16px",
+   textAlign: "center",
+  },
 }));
-
 
 const Checkout = () => {
   const classes = useStyles();
   const { items, total } = useSelector(cartState);
-
 
   const numTickets = () => {
     return items.map((t) => t.amount).reduce((acc, curr) => acc + curr, 0);
@@ -51,7 +57,7 @@ const Checkout = () => {
       <Header text="CHECKOUT" type="secondary" />
       <Grid container direction="row" alignItems="center" justify="center">
         <Grid item xs={6}>
-          <Card className={classes.root}>
+          <Card className={clsx([classes.purchaseCard, classes.cards])}>
             <CardHeader className={classes.info}>
               <Typography className={classes.info} variant="h4">
                 CARD DETAIL
@@ -68,26 +74,41 @@ const Checkout = () => {
         </Grid>
 
         <Grid item xs={6}>
-          <Card>
-            <CardHeader title="SUMMARY"></CardHeader>
-            <CardContent>
-              <Typography variant="h4">
-                {`${numTickets()} ticket${numTickets() > 1 ? "s" : ""} for:`}
-                {items.map((item, idx) => (
-                  <List key={idx}>
-                    <ListItemText>{item.title}</ListItemText>
-                  </List>
-                ))}
+          <Card className={clsx([classes.cards])}>
+            <CardContent style={{textAlign:"center"}}>
+              <Box>
+              <Typography className={classes.summaryCard} color="secondary" variant="h4">
+                SUMMARY
               </Typography>
+              <Typography variant="h5">
+                {`${numTickets()} ticket${numTickets() > 1 ? "s" : ""} for:`}
+              </Typography>
+              {items.map((item, idx) => (
+                <>
+                  <List key={idx}>
+                    <ListItemText>
+                      <Typography color="primary" variant="h5">
+                        {item.title}
+                      </Typography>
+                    </ListItemText>
+                  </List>
+                </>
+              ))}
+              <br />
+
+                  <Box className={classes.summaryCard}>
+              <Typography style={{color: "white"}} variant="h4">
+                TOTAL
+              </Typography>
+              <Typography  variant="h5">$ {total}</Typography>
+              </Box>
+              </Box>
             </CardContent>
-            <Typography variant="h4">TOTAL</Typography>
-            <Typography variant="h4">$ {total}</Typography>
           </Card>
         </Grid>
       </Grid>
     </>
   );
 };
-
 
 export default Checkout;
