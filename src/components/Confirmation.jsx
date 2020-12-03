@@ -11,11 +11,11 @@ import PrintIcon from '@material-ui/icons/Print';
 
 const Confirmation = () => {
   const dispatch = useDispatch()
-  const {items, total} = useSelector(cartState)
+  const {items, total, orderNumber} = useSelector(cartState)
 
 
  useEffect(() => {
-  dispatch(clearCart())
+    // set
  }, [])
 
 
@@ -51,14 +51,14 @@ const Confirmation = () => {
                   <td>{item.venue}</td>
                   <td>{item.startDate}</td>
                   <td>{item.startTime}</td>
-                  <td>{item.qty}</td>
+                  <td>{item.amount}</td>
                 </tr>
               );
             })}
           </tbody>
         </table>
         <div className="text-center my-3">
-          <h4>Confirmation #: </h4> {this.state.orderNum}
+          <h4>Confirmation #: </h4> {orderNumber}
         </div>
         <div className="text-center my-3">
           <h4>Total Paid: </h4> ${total}

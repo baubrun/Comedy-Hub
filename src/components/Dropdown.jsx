@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
@@ -12,12 +12,12 @@ import PersonIcon from "@material-ui/icons/Person";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import StreetviewIcon from "@material-ui/icons/Streetview";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import Typography  from "@material-ui/core/Typography";
 
 import { logOut, userState } from "../redux/userSlice";
 import { clearCart } from "../redux/cartSlice";
 import { clearEvents } from "../redux/eventsSlice";
-import { Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 const StyledMenu = withStyles({
   paper: {
@@ -50,13 +50,23 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
+
+const useStyles = makeStyles((theme) => ({
+  link: {
+    color: theme.palette.primary.main
+  }
+}));
+
+
 export const Dropdown = (props) => {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const classes = useStyles()
   const dispatch = useDispatch();
-  const { loggedIn, hostId } = useSelector(userState);
   const history = useHistory();
-  // const location = useLocation();
-  // const isNotLoginPage = location.pathname !== "/login";
+  const { loggedIn, hostId } = useSelector(userState);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+
+
 
   const logout = () => {
     dispatch(logOut());
@@ -72,6 +82,7 @@ export const Dropdown = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
 
   return (
     <>
@@ -105,39 +116,31 @@ export const Dropdown = (props) => {
         open={Boolean(anchorEl)}
         onClose={(evt) => handleClose(evt)}
       >
-        <Link to="/profile">
-          <StyledMenuItem>
-            <ListItemIcon color="secondary">
-              <PersonIcon fontSize="small" />
-            </ListItemIcon>
+        <Link className={classes.link}  to="/profile">
+          <StyledMenuItem >
+            <ListItemIcon  >
+              <PersonIcon color="secondary" fontSize="small" />
+            </ListItemIcon >
             <ListItemText primary="PROFILE" />
           </StyledMenuItem>
         </Link>
 
-        <Link to="/events">
+        <Link className={classes.link} to="/events">
           <StyledMenuItem>
             <ListItemIcon>
-              <StreetviewIcon fontSize="small" />
+              <StreetviewIcon  color="secondary" fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="EVENTS" />
           </StyledMenuItem>
         </Link>
 
-        <Link to="/events">
-          <StyledMenuItem>
-            <ListItemIcon>
-              <ShoppingCartIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText primary="TICKETS" />
-          </StyledMenuItem>
-        </Link>
-
+    
         {loggedIn && (
-          <Link to="/">
+          <Link className={classes.link} to="/">
             <StyledMenuItem>
               <ListItemIcon>
-                <InboxIcon fontSize="small" />
-              </ListItemIcon>
+                <InboxIcon color="secondary" fontSize="small" />
+              </ListItemIcon >
               <ListItemText primary="LOGOUT" onClick={() => logout()} />
             </StyledMenuItem>
           </Link>

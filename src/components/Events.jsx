@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
-    borderColor: theme.palette.secondary,
+    borderColor: theme.palette.secondary.main,
   },
   icons: {
     margin: "0 24px",
@@ -140,9 +140,7 @@ const Events = () => {
               onChange={handleVenueChange}
               label="Venue"
             >
-              {/* <MenuItem value="">
-                <em>None</em>
-              </MenuItem> */}
+           
               <MenuItem value="LE FOU FOU">LE FOU FOU</MenuItem>
               <MenuItem value="JOKES BLAGUES">JOKES BLAGUES</MenuItem>
               <MenuItem value="RIRE NOW">RIRE NOW</MenuItem>

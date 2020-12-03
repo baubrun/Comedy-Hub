@@ -169,7 +169,7 @@ const Cart = () => {
   );
 };
 
-const TotalRow = ({total }) => {
+const TotalRow = ({ total }) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -211,11 +211,7 @@ const TotalRow = ({total }) => {
 
       <Grid item>
           <Button
-            style={{
-              backgroundColor: "primary",
-              color: "white",
-              fontWeight: "bolder",
-            }}
+            color="primary"
             variant="contained"
             onClick={() => {
               dispatch(setOrderNumber());
@@ -226,7 +222,6 @@ const TotalRow = ({total }) => {
             CHECKOUT
           </Button>
         </Grid>
-
     </Grid>
   );
 };

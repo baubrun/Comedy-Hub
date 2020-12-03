@@ -12,12 +12,10 @@ export const theme = createMuiTheme({
         secondary: {
             main: "#391300",
             light: "#663a2b",
-            dark: "#ff604f",
+            dark: "#2BA84A",
         },
         error: {
             main: "#ff0000",
-            // contrastText: "#fff",
-
         }
     },
 });

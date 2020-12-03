@@ -57,7 +57,6 @@ const CheckoutForm = (props) => {
   const [values, setValues] = useState({
     name: "",
     email: "",
-    orderNum: "",
   });
 
   useEffect(() => {
@@ -109,7 +108,7 @@ const CheckoutForm = (props) => {
     const data = {
       id,
       amount: total * 100,
-      order: values.orderNum,
+      order: orderNumber,
       customer: values.name,
     };
     dispatch(processPayment(data));

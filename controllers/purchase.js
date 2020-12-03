@@ -6,9 +6,7 @@ const mongoose = require("mongoose")
 
 
 const create = async (req, res) => {
-    console.log("in checkout server :>>\n")
     const {amount, items, orderNumber, customer, } = req.body
-    console.log('req.body :>> \n', req.body);
     const foundItems = JSON.parse(items)
     const oids = foundItems.map(i => mongoose.Types.ObjectId(i._id))
     

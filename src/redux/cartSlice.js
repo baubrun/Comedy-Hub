@@ -14,7 +14,6 @@ export const processPayment = createAsyncThunk(
   async (data) => {
     try {
       const res = await axios.post(domain + "/processPmt", data);
-
       return res.data;
     } catch (error) {
       return {
@@ -30,7 +29,6 @@ export const createPurchase = createAsyncThunk(
   async (data) => {
     try {
       const res = await axios.post(domain + "/purchase", data);
-
       return res.data;
     } catch (error) {
       return {
@@ -45,9 +43,29 @@ export const createPurchase = createAsyncThunk(
 export const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    items: [],
-    amount: 0,
-    total: 0,
+    items: [
+      {
+        allDay: "false",
+        facebook: "Blue",
+        instagram: "",
+        twitter: "",
+        _id: "5e9500f414179e43481c6d86",
+        title: "Blue Balls",
+        startDate: "2020-11-11",
+        startTime: "14:00",
+        endDate: "2020-11-11",
+        endTime: "15:15",
+        venue: "RIRE NOW",
+        performer: "Blue Ivy",
+        image: "BlueIvy.jpg",
+        price: 21,
+        amount: 1,
+        hostId: "host b",
+        dateAdded: "2020-04-14T00:16:52.580Z",
+    }
+    ],
+    amount: 1,
+    total: 21,
     loading: false,
     payErrorMsg: "",
     paySuccess: false,
@@ -159,9 +177,6 @@ export const cartSlice = createSlice({
       state.loading = false;
       state.payErrorMsg = action.error;
     },
-
-
-  
   }
 });
 

@@ -24,8 +24,6 @@ const Nav = ({ text, loc }) => {
         </Link>
       </Grid>
 
-      {/* <Typography variant="h4" style={{ color: "white" }}>
-          </Typography> */}
     </Grid>
   );
 };

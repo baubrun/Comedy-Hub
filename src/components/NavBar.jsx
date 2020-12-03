@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
@@ -7,13 +7,15 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-
 import Box from "@material-ui/core/Box";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { makeStyles } from "@material-ui/core";
 import Badge from "@material-ui/core/Badge";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { withStyles } from "@material-ui/core/styles";
+
+
+import { cartState } from "../redux/cartSlice";
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -43,8 +45,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavBar = () => {
-  const { items } = useSelector((state) => state.cart);
   const classes = useStyles();
+  const { items } = useSelector((state) => state.cart);
+  const { purchaseCreated } = useSelector(cartState);
+  const [checkedOut, setCheckedOut] = useState(false)
+
+  useEffect(() => {
+    if (purchaseCreated){
+      setCheckedOut(true)
+    }
+  },[purchaseCreated])
+
 
   return (
     <>
@@ -76,6 +87,8 @@ const NavBar = () => {
               <Grid item>
                 <Dropdown />
               </Grid>
+              
+              {!checkedOut && ( 
               <Grid item>
                 <StyledBadge
                   badgeContent={(items && items.length)}
@@ -86,6 +99,8 @@ const NavBar = () => {
                   )}
                 </StyledBadge>
               </Grid>
+              )}
+
             </Grid>
           </Grid>
         </Toolbar>
