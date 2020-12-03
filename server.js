@@ -25,7 +25,6 @@ app.use(cors())
 app.use("/", userRoutes)
 app.use("/", eventRoutes)
 app.use("/", purchaseRoutes)
-// app.use("/", express.static("uploads"))
 app.use("/", express.static("build"))
 
 

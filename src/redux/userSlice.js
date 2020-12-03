@@ -27,8 +27,8 @@ export const logIn = createAsyncThunk("/login", async (data) => {
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    loggedIn: true,
-    hostId: "host a",
+    loggedIn: false,
+    hostId: "",
     error: "",
   },
   reducers: {

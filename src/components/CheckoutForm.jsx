@@ -237,6 +237,14 @@ const CheckoutForm = (props) => {
           </Box>
         </Grid>
       </form>
+
+      <Grid item>
+        <Typography variant="h6">CC on file</Typography>
+        <Typography variant="h6">4000 0012 4000 0000</Typography>
+        <Typography variant="h6">EXP: use current date</Typography>
+        <Typography variant="h6">CVC: 424</Typography>
+        <Typography variant="h6">Use your postal code</Typography>
+      </Grid>
     </Grid>
   );
 };
