@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
+
 import {useHistory} from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 
 import { formattedAmount } from "../Utils";
-import { clearCart, cartState } from "../redux/cartSlice";
+import { clearCart, cartState, savePayment, processPayment} from "../redux/cartSlice";
 
 import  FormInput  from "./FormInput";
 import  Button  from "./Button";
 
 import api from "../api";
+import { charge } from "../../controllers/purchase";
 
 
 
@@ -35,72 +37,78 @@ const CARD_OPTIONS = {
 
 const CheckoutForm = (props) => {
   const stripe = useStripe();
+  const {paySuccess, payError} = useSelector(cartState)
   const dispatch = useDispatch()
   const history = useHistory()
   const elements = useElements();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [order, setOrder] = useState("");
   const [pmtErrors, setPmtErrors] = useState([]);
+  const [values, setValues] = useState()
+
 
   // useEffect(() => {
   //   setOrder(orderNumber());
   // }, []);
 
-  const dispatchLoaded = () => {
-    props.loadedData();
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
   };
 
-  const dispatchLoading = () => {
-    props.loadingData();
-  };
-
-  const handleName = (event) => {
-    setName(event.target.value);
-  };
-
-  const handleEmail = (event) => {
-    setEmail(event.target.value);
-  };
   const handleCloseErrors = () => {
     setPmtErrors([]);
   };
 
-  const dispatchEmptyCart = () => {
-    props.emptyCart();
-  };
-
-  const storePay = async (order) => {
+  
+  const saveOrder = async (order) => {
     const { amount, items } = props;
-    const data = new FormData();
-    data.append("amount", amount);
-    data.append("itemsBought", JSON.stringify(items));
-    data.append("order", order);
+    // const data = new FormData();
+    // data.append("amount", amount);
+    // data.append("itemsBought", JSON.stringify(items));
+    // data.append("order", order);
 
-    const ckout = await api.create("/checkout", data);
-    console.log(ckout);
     
-    if (ckout.success) {
+    const data = {
+      items: JSON.stringify(items),
+      amount,
+      order: values.order,
+      customer: values.name
+    }
+
+
+    dispatch(savePayment(data))
+    
+    if (paySuccess) {
       dispatch(clearCart())
       history.push("/confirmation");
     } else {
-      console.log(ckout.msg);
+     setPmtErrors([pmtErrors])
     }
   };
 
-  const pay = async (amount, id, orderNum) => {
-    const stripeData = new FormData();
-    stripeData.append("id", id);
-    stripeData.append("amount", formattedAmount(amount));
-    stripeData.append("order", orderNum);
-    stripeData.append("customer", name);
+  const processPay = async (amount, id, orderNum) => {
+    // const stripeData = new FormData();
+    // stripeData.append("id", id);
+    // stripeData.append("amount", formattedAmount(amount));
+    // stripeData.append("order", orderNum);
+    // stripeData.append("customer", name);
 
-    const chr = await api.create("/charge", stripeData);
-    // dispatch(loaded());
-    if (!chr.success) {
-      setPmtErrors([chr.msg]);
+
+    const data = {
+      id: values.id,
+      amount: formattedAmount(amount),
+      order: values.orderNum,
+      customer: values.name
+    }
+
+    dispatch(charge(data))
+
+    if (!paySuccess) {
+      setPmtErrors([payError]);
     } else {
-      storePay(order);
+      saveOrder(values.order);
     }
   };
 
@@ -110,14 +118,13 @@ const CheckoutForm = (props) => {
       type: "card",
       card: elements.getElement(CardElement),
       billing_details: {
-        name,
-        email,
+        name: values.name,
+        email: values.email,
       },
     });
     if (!error) {
       const { id } = paymentMethod;
-      // dispatch(loading());
-      pay(props.amount, id, order);
+      processPay(props.amount, id, order);
     } else {
       console.log(error);
     }
@@ -129,19 +136,21 @@ const CheckoutForm = (props) => {
         <FormInput
           className=""
           type="text"
-          onChange={handleName}
+          name="name"
+          onChange={(evt) => handleChange(evt)}
           placeholder="Name on Card"
           required
-          value={name}
+          value={values.name}
         />
       </fieldset>
       <fieldset id="stripe-input">
         <FormInput
           type="text"
-          onChange={handleEmail}
+          onChange={(evt) => handleChange(evt)}
           placeholder="Email"
+          name="email"
           required
-          value={email}
+          value={values.email}
         />
       </fieldset>
       <fieldset className="form-control">
@@ -174,18 +183,5 @@ const CheckoutForm = (props) => {
   );
 };
 
-// const mapStateToProps = (state) => {
-//   return {
-//     loading: state.loading,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     loadingData: () => dispatch(loadingAction()),
-//     loadedData: () => dispatch(loadedAction()),
-//     emptyCart: () => dispatch(clearCartAction()),
-//   };
-// };
 
 export default CheckoutForm

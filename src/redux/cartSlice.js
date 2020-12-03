@@ -20,7 +20,7 @@ export const processPayment = createAsyncThunk(
 
 
 
-export const checkout = createAsyncThunk(
+export const savePayment = createAsyncThunk(
   "/charge", 
   async (data) => {
   try {
@@ -44,7 +44,7 @@ export const cartSlice = createSlice({
     amount: 0,
     total: 0,
     loading: false,
-    error: "",
+    payError: "",
     paySuccess: false,
   },
   reducers: {
@@ -106,7 +106,7 @@ export const cartSlice = createSlice({
       state.loading = false;
       const { error } = action.payload;
       if (error) {
-        state.error = error;
+        state.payError = error;
       } else {
         state.paySuccess = true
       }
@@ -114,6 +114,8 @@ export const cartSlice = createSlice({
     [processPayment.rejected]: (state, action) => {
       state.loading = false;
       state.paySuccess = false
+      state.payError = action.error;
+
     },
   }
 });
