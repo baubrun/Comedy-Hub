@@ -4,21 +4,16 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { cartState, createPurchase, processPayment } from "../redux/cartSlice";
+import { cartState, clearCart, createPurchase, processPayment, receipt } from "../redux/cartSlice";
 
-import FormInput from "./FormInput";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
-import Input from "@material-ui/core/Input";
 import _ from "lodash";
 import Loader from "react-loader-spinner";
+import Typography from "@material-ui/core/Typography";
 
 
 const CARD_OPTIONS = {
@@ -46,7 +41,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "24px",
   },
   error: {
+    backgroundColor: "#ff3333",
+    color: "white",
+    cursor: "pointer",
     verticalAlign: "middle",
+    textAlign: "center",
+    padding: "10px",
   },
   purchase: {
     padding: "8px 0",
@@ -77,6 +77,7 @@ const CheckoutForm = (props) => {
     email: "",
   });
 
+
   useEffect(() => {
     if (paySuccess) {
       saveOrder();
@@ -85,6 +86,8 @@ const CheckoutForm = (props) => {
 
   useEffect(() => {
     if (purchaseCreated) {
+      dispatch(receipt())
+      dispatch(clearCart())
       history.push("/confirmation");
     }
   }, [purchaseCreated]);
@@ -94,6 +97,10 @@ const CheckoutForm = (props) => {
       setPmtErrors(payErrorMsg);
     }
   }, [payErrorMsg]);
+
+  const closeErrors = () => {
+    setPmtErrors("");
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -111,7 +118,6 @@ const CheckoutForm = (props) => {
   };
 
   const saveOrder = () => {
-    console.log("in save order");
     const { total } = props;
     const data = {
       customer: values.name,
@@ -150,12 +156,11 @@ const CheckoutForm = (props) => {
     }
   };
 
+
   return (
     <Grid
       container
       direction="column"
-      // alignItems="center"
-      // justify="center"
     >
       <form>
         <Grid item>
@@ -165,7 +170,7 @@ const CheckoutForm = (props) => {
               name="name"
               onChange={(evt) => handleChange(evt)}
               placeholder="Name on card"
-              required
+              required={true}
               value={values.name}
               InputProps={{
                 className: classes.input
@@ -181,7 +186,7 @@ const CheckoutForm = (props) => {
               onChange={(evt) => handleChange(evt)}
               placeholder="Email"
               name="email"
-              required
+              required={true}
               value={values.email}
               InputProps={{
                 className: classes.input
@@ -193,14 +198,14 @@ const CheckoutForm = (props) => {
         {<CardElement options={CARD_OPTIONS} />}
 
         <Grid item>
-          {pmtErrors && (
-            <Box
-              style={{ cursor: "pointer" }}
-              className="bg-danger text-light text-center py-2"
-              id="errors"
-            >
-              {pmtErrors}
-            </Box>
+        {pmtErrors && (
+               <Box 
+               onClick={() => closeErrors()}
+               >
+                 <Typography className={classes.error} component="p">
+                   {pmtErrors}
+                 </Typography>
+               </Box>
           )}
         </Grid>
 
@@ -218,7 +223,6 @@ const CheckoutForm = (props) => {
             >
               Purchase &nbsp;
               <span>
-               
                 {loading && (
                   <Loader
                     type="BallTriangle"
@@ -236,5 +240,6 @@ const CheckoutForm = (props) => {
     </Grid>
   );
 };
+
 
 export default CheckoutForm;

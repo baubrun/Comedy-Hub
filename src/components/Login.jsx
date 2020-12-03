@@ -3,18 +3,17 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Card from "@material-ui/core/Card";
-import Box from "@material-ui/core/Box";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import Icon from "@material-ui/core/Icon";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Link, useHistory } from "react-router-dom";
 import { logIn, userState } from "../redux/userSlice";
 import { readEvents } from "../redux/eventsSlice";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -25,7 +24,12 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(2),
   },
   error: {
+    backgroundColor: "#ff3333",
+    color: "white",
+    cursor: "pointer",
     verticalAlign: "middle",
+    textAlign: "center",
+    padding: "10px",
   },
   title: {
     marginTop: theme.spacing(2),
@@ -65,8 +69,6 @@ const Login = () => {
     dispatch(readEvents());
   }, []);
 
-
-
   useEffect(() => {
     if (loggedIn) {
       history.push("/profile");
@@ -75,7 +77,7 @@ const Login = () => {
 
   useEffect(() => {
     if (error) {
-      setValues({...values, errorMsg: error})
+      setValues({ ...values, errorMsg: error });
     }
   }, [error]);
 
@@ -85,6 +87,10 @@ const Login = () => {
       ...values,
       [name]: value,
     });
+  };
+
+  const closeErrors = () => {
+    setValues({ ...values, errorMsg: "" });
   };
 
   const handleSubmit = async (event) => {
@@ -99,7 +105,7 @@ const Login = () => {
   };
 
   return (
-    <form>
+    <form onSubmit={(evt) => handleSubmit(evt)}>
       <Card className={classes.card}>
         <CardContent>
           <Typography className={classes.title} variant="h6">
@@ -107,14 +113,15 @@ const Login = () => {
           </Typography>
 
           {values.errorMsg && (
-            <Box
-              style={{ cursor: "pointer" }}
-              className="bg-danger text-light text-center py-2"
-              id="errors"
-            >
-              {values.errorMsg}
-            </Box>
+               <Box 
+               onClick={() => closeErrors()}
+               >
+                 <Typography className={classes.error} component="p">
+                   {values.errorMsg}
+                 </Typography>
+               </Box>
           )}
+
 
           <TextField
             className={classes.textField}
@@ -125,6 +132,7 @@ const Login = () => {
             onChange={(evt) => handleChange(evt)}
             type="username"
             value={values.username}
+            required={true}
           ></TextField>
           <br />
           <TextField
@@ -137,14 +145,13 @@ const Login = () => {
             type="password"
             value={values.password}
           />
-        
         </CardContent>
         <CardActions>
           <Button
             className={classes.submit}
             color="primary"
-            onClick={(evt) => handleSubmit(evt)}
             variant="contained"
+            type="submit"
           >
             submit
           </Button>

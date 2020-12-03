@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch , useSelector} from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import Header from "./Header";
 
-import {
-  clearCart,
-  cartState,
-} from "../redux/cartSlice";
-import PrintIcon from '@material-ui/icons/Print';
-
+import { cartState } from "../redux/cartSlice";
+import PrintIcon from "@material-ui/icons/Print";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
 
 const Confirmation = () => {
-  const dispatch = useDispatch()
-  const {items, total, orderNumber} = useSelector(cartState)
-
-
- useEffect(() => {
-    // set
- }, [])
-
+  const { receipt } = useSelector(cartState);
 
   const handlePrint = () => {
     window.print();
@@ -26,47 +27,46 @@ const Confirmation = () => {
   return (
     <>
       <Header text="CONFIRMATION" type="secondary" />
-      <div className="text-right m-1" id="print" onClick={() => handlePrint()}>
-        <PrintIcon />
-      </div>
-
-      <div className="container-fluid">
-        <table className="table my-2">
-          <thead>
-            <tr>
-              <th>Event</th>
-              <th>Performer</th>
-              <th>Venue</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th># of tickets</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item, idx) => {
+      <Box onClick={() => handlePrint()}>
+        <PrintIcon style={{ fontSize: "50px", cursor: "pointer" }} />
+      </Box>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Event</TableCell>
+              <TableCell>Performer</TableCell>
+              <TableCell>Venue</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell>Time</TableCell>
+              <TableCell># of tickets</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {receipt.items.map((item, idx) => {
               return (
-                <tr key={idx}>
-                  <td>{item.title}</td>
-                  <td>{item.performer}</td>
-                  <td>{item.venue}</td>
-                  <td>{item.startDate}</td>
-                  <td>{item.startTime}</td>
-                  <td>{item.amount}</td>
-                </tr>
+                <TableRow key={idx}>
+                  <TableCell>{item.title}</TableCell>
+                  <TableCell>{item.performer}</TableCell>
+                  <TableCell>{item.venue}</TableCell>
+                  <TableCell>{item.startDate}</TableCell>
+                  <TableCell>{item.startTime}</TableCell>
+                  <TableCell>{item.amount}</TableCell>
+                </TableRow>
               );
             })}
-          </tbody>
-        </table>
-        <div className="text-center my-3">
-          <h4>Confirmation #: </h4> {orderNumber}
-        </div>
-        <div className="text-center my-3">
-          <h4>Total Paid: </h4> ${total}
-        </div>
-      </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Box>
+        <Typography variant="h6">Confirmation #:&nbsp; {receipt.orderNumber} </Typography>{" "}
+        {receipt.orderNumber}
+      </Box>
+      <Box>
+        <Typography variant="h6">Total Paid:&nbsp;${receipt.total} </Typography>
+      </Box>
     </>
   );
 };
-
 
 export default Confirmation;

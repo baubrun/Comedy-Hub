@@ -43,27 +43,7 @@ export const createPurchase = createAsyncThunk(
 export const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    items: [
-      {
-        allDay: "false",
-        facebook: "Blue",
-        instagram: "",
-        twitter: "",
-        _id: "5e9500f414179e43481c6d86",
-        title: "Blue Balls",
-        startDate: "2020-11-11",
-        startTime: "14:00",
-        endDate: "2020-11-11",
-        endTime: "15:15",
-        venue: "RIRE NOW",
-        performer: "Blue Ivy",
-        image: "BlueIvy.jpg",
-        price: 21,
-        amount: 1,
-        hostId: "host b",
-        dateAdded: "2020-04-14T00:16:52.580Z",
-    }
-    ],
+    items: [],
     amount: 1,
     total: 21,
     loading: false,
@@ -71,6 +51,11 @@ export const cartSlice = createSlice({
     paySuccess: false,
     purchaseCreated: false,
     orderNumber: "",
+    receipt: {
+      items: [],
+      total: null,
+      orderNumber: ""
+    }
   },
   reducers: {
     addToCart: (state, action) => {
@@ -88,6 +73,11 @@ export const cartSlice = createSlice({
       state.paySuccess = false;
       state.purchaseCreated = false;
       state.orderNumber = ""
+    },
+    receipt: (state) => {
+      state.receipt.items = state.items
+      state.receipt.orderNumber = state.orderNumber
+      state.receipt.total = state.total
     },
     removeItem: (state, action) => {
       state.items = state.items.filter((item) => item._id !== action.payload._id);
@@ -185,6 +175,7 @@ export const {
   clearCart,
   removeItem,
   getTotal,
+  receipt,
   toggleAmount,
   setOrderNumber,
 } = cartSlice.actions;

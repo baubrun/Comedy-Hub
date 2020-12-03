@@ -134,39 +134,40 @@ const UserEventsContainer = () => {
       >
         <Grid item xs={2}>
           <Button
+          variant="contained"
             color="secondary"
             disabled={state.selectedId ? true : false}
-            id="add-event-btn"
-            text="ADD "
             onClick={() => toggleForm()}
-          />
+          >ADD </Button>
         </Grid>
         <Grid item xs={2}>
           <Button
             color="primary"
-            id="update-event-btn"
-            text="EDIT"
+            variant="contained"
             onClick={() => {
               !state.selectedId 
               ? showAlert() 
               : toggleForm("edit") 
             }}
-          />
+          >EDIT</Button>
         </Grid>
         <Grid item xs={2}>
           <Button
-            color="secondary"
-            id="delete-event-btn"
-            text="DELETE"
+            style={{
+              backgroundColor: "red",
+              color: "white",
+              fontWeight: "bolder",
+            }}
+            variant="contained"
             onClick={() => handleDelete()}
-          />
+          >DELETE</Button>
         </Grid>
         <Grid item xs={2}>
           <Button
             color="secondary"
-            text="CANCEL"
+            variant="contained"
             onClick={() => handleCancel()}
-          />
+          >CANCEL</Button>
         </Grid>
       </Grid>
 

@@ -30,10 +30,6 @@ export const userSlice = createSlice({
     loggedIn: true,
     hostId: "host a",
     error: "",
-    
-    // loggedIn: false,
-    // hostId: "",
-    // error: "",
   },
   reducers: {
     logOut: (state) => {

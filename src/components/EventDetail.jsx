@@ -17,6 +17,10 @@ import Box from "@material-ui/core/Box";
 import {addToCart} from "../redux/cartSlice"
 
 const useStyles = makeStyles((theme) => ({
+  btn: {
+    fontWeight: "bolder",
+    letterSpacing: "2px",
+  },
   grid: {
     backgroundColor: "black",
     color: "white",
@@ -68,11 +72,12 @@ const ED = (props) => {
           <ListItem>
             <Link to="/cart">
               <Button
-                text="RESERVE"
-                color="primary"
+              className={classes.btn}
+                color="secondary"
                 onClick={() => dispatch(addToCart(props.event))}
                 size="large"
-              />
+                variant="contained"
+              >RESERVE</Button>
             </Link>
           </ListItem>
 
@@ -122,26 +127,26 @@ const ED = (props) => {
           <ListItem>
             <Box>
               {facebook && (
-                <Link to={`facebook.com/${facebook}`}>
+                <a href={`https://facebook.com/${facebook}`}>
                   <img 
                   src={require("../images/icons/fb.png")} 
                   alt="facebook" />
-                </Link>
+                </a>
               )}
               {instagram && (
-                <Link to={`instagram.com/${instagram}`}>
+                <a href={`https://instagram.com/${instagram}`}>
                   <img
                     src={require("../images/icons/ig-color.png")}
                     alt="instagram"
                   />
-                </Link>
+                </a>
               )}
               {twitter && (
-                <Link to={`instagram.com/${twitter}`}>
+                <a href={`https://instagram.com/${twitter}`}>
                   <img 
                   src={require("../images/icons/tt.png")} 
                   alt="twitter" />
-                </Link>
+                </a>
               )}
             </Box>
           </ListItem>

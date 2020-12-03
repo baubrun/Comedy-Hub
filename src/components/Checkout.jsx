@@ -7,12 +7,10 @@ import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 
@@ -37,10 +35,13 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "Courier Prime",
   },
   summaryCard: {
+    borderRadius: "5px",
     backgroundColor: theme.palette.secondary.main,
+    fontFamily: "Courier Prime",
     color: "white",
+    letterSpacing: "3px",
     padding: "16px",
-   textAlign: "center",
+    textAlign: "center",
   },
 }));
 
@@ -75,16 +76,19 @@ const Checkout = () => {
 
         <Grid item xs={6}>
           <Card className={clsx([classes.cards])}>
-            <CardContent style={{textAlign:"center"}}>
+            <CardContent style={{ textAlign: "center" }}>
               <Box>
-              <Typography className={classes.summaryCard} color="secondary" variant="h4">
-                SUMMARY
-              </Typography>
-              <Typography variant="h5">
-                {`${numTickets()} ticket${numTickets() > 1 ? "s" : ""} for:`}
-              </Typography>
-              {items.map((item, idx) => (
-                <>
+                <Typography
+                  className={classes.summaryCard}
+                  color="secondary"
+                  variant="h4"
+                >
+                  SUMMARY
+                </Typography>
+                <Typography variant="h5">
+                  {`${numTickets()} ticket${numTickets() > 1 ? "s" : ""} for:`}
+                </Typography>
+                {items.map((item, idx) => (
                   <List key={idx}>
                     <ListItemText>
                       <Typography color="primary" variant="h5">
@@ -92,16 +96,15 @@ const Checkout = () => {
                       </Typography>
                     </ListItemText>
                   </List>
-                </>
-              ))}
-              <br />
+                ))}
+                <br />
 
-                  <Box className={classes.summaryCard}>
-              <Typography style={{color: "white"}} variant="h4">
-                TOTAL
-              </Typography>
-              <Typography  variant="h5">$ {total}</Typography>
-              </Box>
+                <Box className={classes.summaryCard}>
+                  <Typography style={{ color: "white" }} variant="h4">
+                    TOTAL
+                  </Typography>
+                  <Typography variant="h5">$ {total}</Typography>
+                </Box>
               </Box>
             </CardContent>
           </Card>

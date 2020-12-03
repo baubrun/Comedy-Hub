@@ -9,9 +9,8 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import Icon from "@material-ui/core/Icon";
+import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
-
 import { useHistory } from "react-router-dom";
 import { register, userState } from "../redux/userSlice";
 
@@ -24,7 +23,11 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(2),
   },
   error: {
+    backgroundColor: "#ff3333",
+    color: "white",
+    cursor: "pointer",
     verticalAlign: "middle",
+    padding: "10px",
   },
   title: {
     marginTop: theme.spacing(2),
@@ -52,13 +55,13 @@ const useStyles = makeStyles((theme) => ({
 const Register = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { loggedIn } = useSelector(userState);
+  const { loggedIn, error } = useSelector(userState);
   const history = useHistory();
   const [values, setValues] = useState({
     username: "",
     password: "",
     hostId: "",
-    errors: [],
+    errorMsg: "",
   });
 
   useEffect(() => {
@@ -66,6 +69,12 @@ const Register = () => {
       history.push("/profile");
     }
   }, [loggedIn]);
+
+  useEffect(() => {
+    if (error) {
+      setValues({ ...values, errorMsg: error });
+    }
+  }, [error]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -87,17 +96,27 @@ const Register = () => {
     dispatch(register(data));
   };
 
-  const handleCloseErrors = () => {
-    setValues({ ...values, errors: [] });
+  const closeErrors = () => {
+    setValues({ ...values, errorMsg: "" });
   };
 
   return (
-    <form>
+    <form onSubmit={(evt) => handleSubmit(evt)}>
       <Card className={classes.card}>
         <CardContent>
           <Typography className={classes.title} variant="h6">
             Register
           </Typography>
+
+          {values.errorMsg && (
+               <Box 
+               onClick={() => closeErrors()}
+               >
+                 <Typography className={classes.error} component="p">
+                   {values.errorMsg}
+                 </Typography>
+               </Box>
+          )}
 
           <TextField
             className={classes.textField}
@@ -107,6 +126,7 @@ const Register = () => {
             margin="normal"
             onChange={(evt) => handleChange(evt)}
             value={values.username}
+            required
           />
 
           <TextField
@@ -118,6 +138,7 @@ const Register = () => {
             onChange={(evt) => handleChange(evt)}
             type="password"
             value={values.password}
+            required
           />
 
           <TextField
@@ -128,16 +149,8 @@ const Register = () => {
             margin="normal"
             onChange={(evt) => handleChange(evt)}
             value={values.hostId}
+            required
           />
-
-          {values.error && (
-            <Typography color="error" component="p">
-              <Icon className={classes.error} color="error">
-                error
-              </Icon>
-              {values.error}
-            </Typography>
-          )}
         </CardContent>
         <CardActions>
           <Grid container direction="row" alignItems="center" justify="center">
@@ -147,6 +160,7 @@ const Register = () => {
                 color="primary"
                 onClick={(evt) => handleSubmit(evt)}
                 variant="contained"
+                type="submit"
               >
                 SUBMIT
               </Button>

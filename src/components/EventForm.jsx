@@ -20,6 +20,14 @@ import { userState } from "../redux/userSlice";
 import { createEvent, updateEvent, eventsState } from "../redux/eventsSlice";
 
 const useStyles = makeStyles((theme) => ({
+  error: {
+    backgroundColor: "#ff3333",
+    color: "white",
+    cursor: "pointer",
+    verticalAlign: "middle",
+    textAlign: "center",
+    padding: "10px",
+  },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 200,
@@ -81,9 +89,12 @@ const EventForm = (props) => {
     if (error) {
       setValues({...values, errorMsg: error})
     }
-  }, [error, values]);
+  }, [error]);
 
 
+  const closeErrors = () => {
+    setValues({ ...values, errorMsg: "" });
+  };
 
 
   const handleChange = (event) => {
@@ -147,15 +158,14 @@ const EventForm = (props) => {
    
           <Grid item xs={12}>
           {values.errorMsg && (
-            <Box
-              style={{ cursor: "pointer" }}
-              className="bg-danger text-light text-center py-2"
-              id="errors"
-            >
-              {values.errorMsg}
-            </Box>
+               <Box 
+               onClick={() => closeErrors()}
+               >
+                 <Typography className={classes.error} component="p">
+                   {values.errorMsg}
+                 </Typography>
+               </Box>
           )}
-
           </Grid>
 
 
