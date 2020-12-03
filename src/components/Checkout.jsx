@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CheckoutForm from "./CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import _ from "lodash";
 
-import { clearCart, cartState } from "../redux/cartSlice";
+import {  cartState } from "../redux/cartSlice";
 import Header from "./Header";
 
 export const PK_STRIPE = "pk_test_1jcRkbFeUYqVsCGYpNX51Ggv00oyStF042";
@@ -17,30 +16,11 @@ const stripePromise = loadStripe(PK_STRIPE);
 const useStyles = makeStyles((theme) => ({}));
 
 const Checkout = () => {
-  const history = useHistory();
-
+  const classes = useStyles()
   const { items, total } = useSelector(cartState);
-  const [state, setState] = useState({
-    itemsBought: [],
-  });
+ 
 
-  const filterItemsBought = () => {
-    return items.map((i) => {
-      return _.pick(i, [
-        "title",
-        "venue",
-        "startDate",
-        "startTime",
-        "performer",
-        "price",
-        "amount",
-      ]);
-    });
-  };
 
-  useEffect(() => {
-    setState(filterItemsBought());
-  }, []);
 
   const numTickets = () => {
     return items.map((t) => t.amount).reduce((acc, curr) => acc + curr, 0);

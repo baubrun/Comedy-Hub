@@ -1,38 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch , useSelector} from "react-redux";
-// import { confirmCheckoutAction, clearCartAction } from "../actions/actions";
-// import "./Confirmation.css"
 import Header from "./Header";
-import api from "../api";
-import {readEvents} from "../redux/eventsSlice"
-// import orderId from "order-id"
-// import env from "../../config"
 
+import {
+  clearCart,
+  cartState,
+} from "../redux/cartSlice";
+import PrintIcon from '@material-ui/icons/Print';
 
-
-// const orderNum = orderId(env.orderId).generate()
 
 const Confirmation = () => {
-  const {events} = useSelector
-  const [state, setState] = useState({
-    orderNum: "",
-    total: "",
-  });
+  const dispatch = useDispatch()
+  const {items, total} = useSelector(cartState)
 
 
-  // useEffect(() => {
-  //   confirm();
-  // }, []);
+ useEffect(() => {
+  dispatch(clearCart())
+ }, [])
 
-  const confirm = async () => {
-    const data = await api.read("/orderNum");
-    if (data.success) {
-      setState({
-        orderNum: data.order,
-        total: data.amount,
-      });
-    }
-  };
 
   const handlePrint = () => {
     window.print();
@@ -40,9 +25,9 @@ const Confirmation = () => {
 
   return (
     <>
-      <Header text="CONFIRMATION" type="dark" />
-      <div className="text-right m-1" id="print" onClick={handlePrint}>
-        <img src="print-40.png" alt="" />
+      <Header text="CONFIRMATION" type="secondary" />
+      <div className="text-right m-1" id="print" onClick={() => handlePrint()}>
+        <PrintIcon />
       </div>
 
       <div className="container-fluid">
@@ -58,7 +43,7 @@ const Confirmation = () => {
             </tr>
           </thead>
           <tbody>
-            {this.props.checkout.map((item, idx) => {
+            {items.map((item, idx) => {
               return (
                 <tr key={idx}>
                   <td>{item.title}</td>
@@ -76,7 +61,7 @@ const Confirmation = () => {
           <h4>Confirmation #: </h4> {this.state.orderNum}
         </div>
         <div className="text-center my-3">
-          <h4>Total Paid: </h4> ${(parseInt(this.state.total) / 100).toFixed(2)}
+          <h4>Total Paid: </h4> ${total}
         </div>
       </div>
     </>

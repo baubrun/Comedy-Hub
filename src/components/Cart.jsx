@@ -20,7 +20,8 @@ import {
   removeItem,
   clearCart,
   toggleAmount,
-  cartState
+  cartState,
+  setOrderNumber,
 } from "../redux/cartSlice";
 
 export const currencyFormat = (amount) => {
@@ -216,7 +217,11 @@ const TotalRow = ({total }) => {
               fontWeight: "bolder",
             }}
             variant="contained"
-            onClick={() => history.push("/checkout")}
+            onClick={() => {
+              dispatch(setOrderNumber());
+              history.push("/checkout");
+            }
+            }
           >
             CHECKOUT
           </Button>

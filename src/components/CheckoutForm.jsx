@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  clearCart,
   cartState,
   createPurchase,
   processPayment,
@@ -16,10 +15,8 @@ import Button from "./Button";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
 
-import orderId from "order-id";
 
-import _ from "lodash"
-
+import _ from "lodash";
 
 const CARD_OPTIONS = {
   style: {
@@ -47,7 +44,12 @@ const useStyles = makeStyles((theme) => ({
 const CheckoutForm = (props) => {
   const classes = useStyles();
   const stripe = useStripe();
-  const { paySuccess, payErrorMsg, loading, purchaseCreated } = useSelector(cartState);
+  const { 
+    paySuccess, 
+    payErrorMsg, 
+    loading, 
+    orderNumber,
+    purchaseCreated } = useSelector(cartState);
   const dispatch = useDispatch();
   const history = useHistory();
   const elements = useElements();
@@ -58,39 +60,23 @@ const CheckoutForm = (props) => {
     orderNum: "",
   });
 
-
-  const setOrderNum = () => {
-    const oid = orderId("MY-SECRET").generate();
-    setValues({ ...values, orderNum: oid });
-    return oid;
-  };
-
-
-  useEffect(() => {
-    setOrderNum();
-  }, []);
-
-
   useEffect(() => {
     if (paySuccess) {
       saveOrder();
     }
   }, [paySuccess]);
 
-
   useEffect(() => {
     if (purchaseCreated) {
-      history.push("/confirmation")
+      history.push("/confirmation");
     }
   }, [purchaseCreated]);
 
-
   useEffect(() => {
     if (payErrorMsg) {
-      setPmtErrors(payErrorMsg)
+      setPmtErrors(payErrorMsg);
     }
   }, [payErrorMsg]);
-
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -101,25 +87,23 @@ const CheckoutForm = (props) => {
   };
 
   const getItemsIDs = () => {
-    return props.items.map(i => {
-      return _.pick(i, ["_id"])
-    })
+    const ids = props.items.map((i) => {
+      return _.pick(i, ["_id"]);
+    });
+    return ids;
   };
-
 
   const saveOrder = () => {
     console.log("in save order");
     const { total } = props;
     const data = {
       customer: values.name,
-      // items: JSON.stringify(items),
       items: JSON.stringify(getItemsIDs()),
       amount: total,
-      orderNumber: values.orderNum,
+      orderNumber,
     };
     dispatch(createPurchase(data));
   };
-
 
   const processPay = async (total, id) => {
     const data = {
@@ -130,7 +114,6 @@ const CheckoutForm = (props) => {
     };
     dispatch(processPayment(data));
   };
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -144,12 +127,11 @@ const CheckoutForm = (props) => {
     });
     if (!error) {
       const { id } = paymentMethod;
-      processPay(props.total, id, values.orderNum);
+      processPay(props.total, id, orderNumber);
     } else {
       setPmtErrors(error);
     }
   };
-
 
   return (
     <form className="form-group">

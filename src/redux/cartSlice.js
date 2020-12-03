@@ -6,6 +6,7 @@ import {
 import {
   domain
 } from "../Utils";
+import orderId from "order-id";
 
 
 export const processPayment = createAsyncThunk(
@@ -51,6 +52,7 @@ export const cartSlice = createSlice({
     payErrorMsg: "",
     paySuccess: false,
     purchaseCreated: false,
+    orderNumber: "",
   },
   reducers: {
     addToCart: (state, action) => {
@@ -67,6 +69,7 @@ export const cartSlice = createSlice({
       state.payErrorMsg = "";
       state.paySuccess = false;
       state.purchaseCreated = false;
+      state.orderNumber = ""
     },
     removeItem: (state, action) => {
       state.items = state.items.filter((item) => item._id !== action.payload._id);
@@ -111,6 +114,9 @@ export const cartSlice = createSlice({
         }
         return item;
       });
+    },
+    setOrderNumber: (state) => {
+      state.orderNumber = orderId("MY-SECRET").generate();
     },
   },
   extraReducers: {
@@ -164,7 +170,8 @@ export const {
   clearCart,
   removeItem,
   getTotal,
-  toggleAmount
+  toggleAmount,
+  setOrderNumber,
 } = cartSlice.actions;
 
 export const cartState = (state) => state.cart

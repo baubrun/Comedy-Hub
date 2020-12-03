@@ -159,7 +159,7 @@ const Events = () => {
           <Box display="flex">
             <IconButton
               id="list-view"
-              onClick={toggleListView}
+              onClick={() => toggleListView()}
               color="secondary"
             >
               <ListIcon className={classes.icons} />
@@ -167,7 +167,7 @@ const Events = () => {
 
             <IconButton
               id="calendar-view"
-              onClick={toggleCalendarView}
+              onClick={() =>toggleCalendarView()}
               color="primary"
             >
               <CalendarTodayIcon className={classes.icons} />

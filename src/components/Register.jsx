@@ -99,21 +99,6 @@ const Register = () => {
             Register
           </Typography>
 
-          {/* <Box onClick={handleCloseErrors} 
-          style={{ cursor: "pointer" }}>
-        {values && values.errors.map((err, idx) => {
-          return (
-            <div
-              className="bg-danger text-light text-center py-2"
-              key={idx}
-              id="errors"
-            >
-              {err.msg}
-            </div>
-          );
-        })}
-      </Box> */}
-
           <TextField
             className={classes.textField}
             id="username"
