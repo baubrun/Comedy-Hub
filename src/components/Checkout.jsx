@@ -36,9 +36,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 const Checkout = () => {
   const classes = useStyles();
   const { items, total } = useSelector(cartState);
+
 
   const numTickets = () => {
     return items.map((t) => t.amount).reduce((acc, curr) => acc + curr, 0);
@@ -86,5 +88,6 @@ const Checkout = () => {
     </>
   );
 };
+
 
 export default Checkout;

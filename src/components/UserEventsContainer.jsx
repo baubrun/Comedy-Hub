@@ -8,7 +8,7 @@ import { compareDates } from "../Utils";
 import { readEvents, eventsState, deleteEvent } from "../redux/eventsSlice";
 import { userState } from "../redux/userSlice";
 
-import Button from "./Button";
+import Button from "@material-ui/core/Button";
 import Header from "./Header";
 
 import Grid from "@material-ui/core/Grid";
