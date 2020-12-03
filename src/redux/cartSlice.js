@@ -1,4 +1,40 @@
-import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { domain } from "../Utils";
+
+
+export const processPayment = createAsyncThunk(
+  "/charge", 
+  async (data) => {
+  try {
+    const res = await axios.post(domain + "/charge", data);
+ 
+    return res.data;
+  } catch (error) {
+    return {
+      error: error.message,
+    };
+  }
+});
+
+
+
+export const checkout = createAsyncThunk(
+  "/charge", 
+  async (data) => {
+  try {
+    const res = await axios.post(domain + "/checkout", data);
+ 
+    return res.data;
+  } catch (error) {
+    return {
+      error: error.message,
+    };
+  }
+});
+
+
 
 
 export const cartSlice = createSlice({
@@ -7,6 +43,9 @@ export const cartSlice = createSlice({
     items: [],
     amount: 0,
     total: 0,
+    loading: false,
+    error: "",
+    paySuccess: false,
   },
   reducers: {
     addToCart: (state, action) => {
@@ -37,7 +76,6 @@ export const cartSlice = createSlice({
           amount: 0,
         }
       );
-      // total = parseFloat(total.toFixed(2));
       state.total = total;
       state.amount = amount;
     },
@@ -58,11 +96,26 @@ export const cartSlice = createSlice({
         }
         return item;
       }); 
-      
-      
-
     },
   },
+  extraReducers: {
+    [processPayment.pending]: (state) => {
+      state.loading = true;
+    },
+    [processPayment.fulfilled]: (state, action) => {
+      state.loading = false;
+      const { error } = action.payload;
+      if (error) {
+        state.error = error;
+      } else {
+        state.paySuccess = true
+      }
+    },
+    [processPayment.rejected]: (state, action) => {
+      state.loading = false;
+      state.paySuccess = false
+    },
+  }
 });
 
 export const {addToCart, clearCart, removeItem, getTotal, toggleAmount } = cartSlice.actions;

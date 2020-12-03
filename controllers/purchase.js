@@ -1,19 +1,17 @@
 const Purchases = require("../models/Purchase")
 const stripe = require("stripe")(process.env.STRIPE_SECRET)
-let orderNum = ""
-let total = ""
 
 
-const charge =  async (req,res) => {
+const charge =  async (req, res) => {
+    console.log("in stripe server :>>\n")
+
     const {
         id,
         amount,
         order,
     } = req.body
 
-    orderNum = order
-    total = amount
-    
+  
     try {
         await stripe.paymentIntents.create({
             amount: amount,
@@ -31,8 +29,7 @@ const charge =  async (req,res) => {
     } catch (error) {
         console.log("stripe error:", error.raw.message)
         return res.json({
-            success: false,
-            msg: error.raw.message
+            error: error.raw.message
         })
     }
 
@@ -42,7 +39,7 @@ const charge =  async (req,res) => {
 
 
 const checkout = async (req, res) => {
-    console.log("in checkout server")
+    console.log("in checkout server :>>\n")
     const {amount, itemsBought, order } = req.body
     try {
         const purchase = Purchases({
@@ -54,26 +51,17 @@ const checkout = async (req, res) => {
         await purchase.save()
     
         return res.json({
-            success: true
+            message: "Purchase saved."
         })
     
     } catch (error) {
         return res.json({
-            success: false
+            error: error.message
         })
     }
 }
 
 
-
-const order = (req, res) => {
-    return res.json({
-        success: true,
-        order: orderNum,
-        amount: total
-    })
-
-}
 
 
 
@@ -86,5 +74,4 @@ const order = (req, res) => {
 module.exports = {
     charge,
     checkout,
-    order,
 }

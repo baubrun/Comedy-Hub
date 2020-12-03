@@ -3,15 +3,16 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 import {useHistory} from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux";
 
-import { orderNumber, formattedAmount } from "../Utils";
+import { formattedAmount } from "../Utils";
+import { clearCart, cartState } from "../redux/cartSlice";
+
 import  FormInput  from "./FormInput";
 import  Button  from "./Button";
 
 import api from "../api";
 
-import { useDispatch, useSelector } from "react-redux";
-import {clearCart} from "../redux/cartSlice"
 
 
 const CARD_OPTIONS = {

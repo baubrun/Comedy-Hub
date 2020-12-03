@@ -26,11 +26,5 @@ router.route("/charge")
 
 
 
-router.route("/orderNum")
-    .get(
-        purchaseController.order
-    )
-
-
 
 module.exports = router

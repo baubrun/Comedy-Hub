@@ -47,7 +47,6 @@ const Checkout = () => {
     return items.map((t) => t.amount).reduce((acc, curr) => acc + curr, 0);
   };
 
-if (!state) return null
 
   return (
     <div id="checkout" className="container-fluid bg-dark">
