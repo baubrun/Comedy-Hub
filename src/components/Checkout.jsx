@@ -8,12 +8,8 @@ import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import _ from "lodash";
 
-import {
-  clearCart,
-  cartState,
-} from "../redux/cartSlice";
+import { clearCart, cartState } from "../redux/cartSlice";
 import Header from "./Header";
-
 
 export const PK_STRIPE = "pk_test_1jcRkbFeUYqVsCGYpNX51Ggv00oyStF042";
 const stripePromise = loadStripe(PK_STRIPE);
@@ -25,10 +21,8 @@ const Checkout = () => {
 
   const { items, total } = useSelector(cartState);
   const [state, setState] = useState({
-    itemsBought: []
-  })
-
-
+    itemsBought: [],
+  });
 
   const filterItemsBought = () => {
     return items.map((i) => {
@@ -42,13 +36,18 @@ const Checkout = () => {
         "amount",
       ]);
     });
-  }
-    
+  };
+
   useEffect(() => {
-    setState(filterItemsBought())
+    setState(filterItemsBought());
   }, []);
 
+  const numTickets = () => {
+    console.log('state :>> ', state);
+    return items.map((t) => t.amount).reduce((acc, curr) => acc + curr, 0);
+  };
 
+if (!state) return null
 
   return (
     <div id="checkout" className="container-fluid bg-dark">
@@ -59,13 +58,24 @@ const Checkout = () => {
             <div className="div card-header text-dark bg-white">
               <h3 className="text-center">SUMMARY</h3>
             </div>
-            <div className="card-body bg-primary"></div>
+            <div className="card-body bg-primary">
+              <div className="card-text text-dark text-center">
+                {`${numTickets()} ticket${numTickets() > 1 ? "s" : ""} for:`}
+                {items.map((item, idx) => (
+                  <ul className="list-group" key={idx}>
+                    <li className="list-group-item text-center">
+                      {item.title}
+                    </li>
+                  </ul>
+                ))}
+              </div>
+            </div>
             <div className="card-text text-center my-2">
               <h3>TOTAL</h3>
             </div>
             <div className="card-text text-center">
-                  <h3>$ {total}</h3>
-                </div>
+              <h3>$ {total}</h3>
+            </div>
           </div>
         </div>
       </div>
@@ -78,7 +88,7 @@ const Checkout = () => {
           <div className="card-body">
             <div className="card-text">
               <Elements stripe={stripePromise}>
-                <CheckoutForm amount={total} items={state.itemsBought} />
+                <CheckoutForm amount={total} items={items} />
               </Elements>
             </div>
           </div>
