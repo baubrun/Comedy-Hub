@@ -137,14 +137,7 @@ const Login = () => {
             type="password"
             value={values.password}
           />
-          {values.error && (
-            <Typography color="error" component="p">
-              <Icon className={classes.error} color="error">
-                error
-              </Icon>
-              {values.error}
-            </Typography>
-          )}
+        
         </CardContent>
         <CardActions>
           <Button

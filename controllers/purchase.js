@@ -2,9 +2,7 @@ const Purchases = require("../models/Purchase")
 const stripe = require("stripe")(process.env.STRIPE_SECRET)
 
 
-const charge =  async (req, res) => {
-    console.log("in stripe server :>>\n")
-
+const processPmt =  async (req, res) => {
     const {
         id,
         amount,
@@ -38,7 +36,7 @@ const charge =  async (req, res) => {
 
 
 
-const checkout = async (req, res) => {
+const savePurchase = async (req, res) => {
     console.log("in checkout server :>>\n")
     const {amount, itemsBought, order } = req.body
     try {
@@ -72,6 +70,6 @@ const checkout = async (req, res) => {
 
 
 module.exports = {
-    charge,
-    checkout,
+    processPmt,
+    savePurchase,
 }

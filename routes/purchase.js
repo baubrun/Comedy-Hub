@@ -9,18 +9,18 @@ const purchaseController = require("../controllers/purchase")
 
 
 
-router.route("/checkout")
+router.route("/savePurchase")
     .post(
         upload.none(),
-        purchaseController.checkout
+        purchaseController.savePurchase
     )
 
 
 
-router.route("/charge")
+router.route("/processPmt")
     .post(
         upload.none(),
-        purchaseController.charge
+        purchaseController.processPmt
     )
 
 

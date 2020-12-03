@@ -1,19 +1,18 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { domain } from "../Utils";
 
 
 export const processPayment = createAsyncThunk(
-  "/charge", 
+  "/processPmt", 
   async (data) => {
   try {
-    const res = await axios.post(domain + "/charge", data);
+    const res = await axios.post(domain + "/processPmt", data);
  
     return res.data;
   } catch (error) {
     return {
-      error: error.message,
+      error: error.message
     };
   }
 });
@@ -21,15 +20,15 @@ export const processPayment = createAsyncThunk(
 
 
 export const savePayment = createAsyncThunk(
-  "/charge", 
+  "/savePurchase", 
   async (data) => {
   try {
-    const res = await axios.post(domain + "/checkout", data);
+    const res = await axios.post(domain + "/savePurchase", data);
  
     return res.data;
   } catch (error) {
     return {
-      error: error.message,
+      error: error.message
     };
   }
 });
@@ -68,7 +67,6 @@ export const cartSlice = createSlice({
 
           cartTotal.amount += amount;
           cartTotal.total += itemsTotal;
-          console.log('cartTotal :>>', cartTotal)
           return cartTotal;
         },
         {

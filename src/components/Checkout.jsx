@@ -43,7 +43,6 @@ const Checkout = () => {
   }, []);
 
   const numTickets = () => {
-    console.log('state :>> ', state);
     return items.map((t) => t.amount).reduce((acc, curr) => acc + curr, 0);
   };
 
@@ -87,7 +86,7 @@ const Checkout = () => {
           <div className="card-body">
             <div className="card-text">
               <Elements stripe={stripePromise}>
-                <CheckoutForm amount={total} items={items} />
+                <CheckoutForm total={total} items={items} />
               </Elements>
             </div>
           </div>

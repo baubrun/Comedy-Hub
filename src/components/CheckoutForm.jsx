@@ -6,14 +6,16 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {useHistory} from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 
-import { formattedAmount } from "../Utils";
 import { clearCart, cartState, savePayment, processPayment} from "../redux/cartSlice";
 
 import  FormInput  from "./FormInput";
 import  Button  from "./Button";
 
-import api from "../api";
-import { charge } from "../../controllers/purchase";
+
+import orderId from "order-id"
+
+import Box from "@material-ui/core/Box";
+import { makeStyles } from "@material-ui/core/styles";
 
 
 
@@ -35,19 +37,39 @@ const CARD_OPTIONS = {
 };
 
 
+const useStyles = makeStyles((theme) => ({
+
+  error: {
+    verticalAlign: "middle",
+  }}
+));
+
+
 const CheckoutForm = (props) => {
+  const classes = useStyles()
   const stripe = useStripe();
-  const {paySuccess, payError} = useSelector(cartState)
+  const {paySuccess, payError, loading} = useSelector(cartState)
   const dispatch = useDispatch()
   const history = useHistory()
   const elements = useElements();
-  const [pmtErrors, setPmtErrors] = useState([]);
-  const [values, setValues] = useState()
+  const [pmtErrors, setPmtErrors] = useState("");
+  const [values, setValues] = useState({
+    name: "",
+    email: "",
+    orderNum: "",
+  })
 
 
-  // useEffect(() => {
-  //   setOrder(orderNumber());
-  // }, []);
+  const setOrderNum = () => {
+    const oid = orderId("MY-SECRET").generate()
+    setValues({...values, orderNum: oid})
+    return oid
+  }
+
+  useEffect(() => {
+    // setValues({...values, orderNum:  });
+    setOrderNum()
+  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -58,12 +80,12 @@ const CheckoutForm = (props) => {
   };
 
   const handleCloseErrors = () => {
-    setPmtErrors([]);
+    setPmtErrors("");
   };
 
   
-  const saveOrder = async (order) => {
-    const { amount, items } = props;
+  const saveOrder = async () => {
+    const { total, items } = props;
     // const data = new FormData();
     // data.append("amount", amount);
     // data.append("itemsBought", JSON.stringify(items));
@@ -72,11 +94,10 @@ const CheckoutForm = (props) => {
     
     const data = {
       items: JSON.stringify(items),
-      amount,
+      amount: total,
       order: values.order,
       customer: values.name
     }
-
 
     dispatch(savePayment(data))
     
@@ -84,11 +105,11 @@ const CheckoutForm = (props) => {
       dispatch(clearCart())
       history.push("/confirmation");
     } else {
-     setPmtErrors([pmtErrors])
+     setPmtErrors(pmtErrors)
     }
   };
 
-  const processPay = async (amount, id, orderNum) => {
+  const processPay = async (total, id) => {
     // const stripeData = new FormData();
     // stripeData.append("id", id);
     // stripeData.append("amount", formattedAmount(amount));
@@ -97,22 +118,24 @@ const CheckoutForm = (props) => {
 
 
     const data = {
-      id: values.id,
-      amount: formattedAmount(amount),
+      id,
+      amount: total * 100,
       order: values.orderNum,
       customer: values.name
     }
 
-    dispatch(charge(data))
+    dispatch(processPayment(data))
 
-    if (!paySuccess) {
-      setPmtErrors([payError]);
+    if (paySuccess) {
+      saveOrder();
     } else {
-      saveOrder(values.order);
+      setPmtErrors(payError);
     }
   };
 
+
   const handleSubmit = async (event) => {
+    console.log(" inhandleSubmit");
     event.preventDefault();
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
@@ -124,14 +147,14 @@ const CheckoutForm = (props) => {
     });
     if (!error) {
       const { id } = paymentMethod;
-      processPay(props.amount, id, order);
+      processPay(props.total, id, values.orderNum);
     } else {
-      console.log(error);
+      setPmtErrors(error)
     }
   };
 
   return (
-    <form className="form-group" onSubmit={handleSubmit}>
+    <form className="form-group">
       <fieldset>
         <FormInput
           className=""
@@ -157,27 +180,24 @@ const CheckoutForm = (props) => {
         {<CardElement options={CARD_OPTIONS} />}
       </fieldset>
 
-      <div className="stripe-error-msg bg-danger text-light my-2 text-center">
-        {pmtErrors.map((err, idx) => {
-          return (
-            <div
-              key={idx}
-              className="errors"
-              onClick={handleCloseErrors}
-              style={{ cursor: "pointer" }}
-            >
-              {err}
-            </div>
-          );
-        })}
-      </div>
+      {pmtErrors && (
+           <Box
+           style={{ cursor: "pointer" }}
+           className="bg-danger text-light text-center py-2"
+           id="errors"
+         >
+           {pmtErrors}
+         </Box>
+          )}
+
       <Button
-        color="dark text-white my-3"
-        size="block"
+        color="secondary"
+        size="large"
         text="PURCHASE"
         type="submit"
-        disabled={!stripe || props.loading}
-        loading={props.loading}
+        disabled={!stripe || loading}
+        loading={loading}
+        onClick={(evt) => handleSubmit(evt)}
       ></Button>
     </form>
   );
