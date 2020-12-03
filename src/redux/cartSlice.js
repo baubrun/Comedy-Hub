@@ -1,37 +1,42 @@
 import axios from "axios";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { domain } from "../Utils";
+import {
+  createSlice,
+  createAsyncThunk
+} from "@reduxjs/toolkit";
+import {
+  domain
+} from "../Utils";
 
 
 export const processPayment = createAsyncThunk(
-  "/processPmt", 
+  "/processPmt",
   async (data) => {
-  try {
-    const res = await axios.post(domain + "/processPmt", data);
- 
-    return res.data;
-  } catch (error) {
-    return {
-      error: error.message
-    };
-  }
-});
+    try {
+      const res = await axios.post(domain + "/processPmt", data);
+
+      return res.data;
+    } catch (error) {
+      return {
+        error: error.message
+      };
+    }
+  });
 
 
 
-export const savePayment = createAsyncThunk(
-  "/savePurchase", 
+export const createPurchase = createAsyncThunk(
+  "/purchase",
   async (data) => {
-  try {
-    const res = await axios.post(domain + "/savePurchase", data);
- 
-    return res.data;
-  } catch (error) {
-    return {
-      error: error.message
-    };
-  }
-});
+    try {
+      const res = await axios.post(domain + "/purchase", data);
+
+      return res.data;
+    } catch (error) {
+      return {
+        error: error.message
+      };
+    }
+  });
 
 
 
@@ -43,33 +48,45 @@ export const cartSlice = createSlice({
     amount: 0,
     total: 0,
     loading: false,
-    payError: "",
+    payErrorMsg: "",
     paySuccess: false,
+    purchaseCreated: false,
   },
   reducers: {
     addToCart: (state, action) => {
       const found = state.items.findIndex(i => i._id === action.payload._id)
-      if (found === -1){
+      if (found === -1) {
         state.items = [...state.items, action.payload]
       }
     },
     clearCart: (state) => {
       state.items = [];
+      state.amount = 0;
+      state.total = 0;
+      state.loading = false;
+      state.payErrorMsg = "";
+      state.paySuccess = false;
+      state.purchaseCreated = false;
     },
     removeItem: (state, action) => {
       state.items = state.items.filter((item) => item._id !== action.payload._id);
     },
     getTotal: (state) => {
-      let { total, amount } = state.items.reduce(
+      let {
+        total,
+        amount
+      } = state.items.reduce(
         (cartTotal, cartItem) => {
-          const { price, amount } = cartItem;
+          const {
+            price,
+            amount
+          } = cartItem;
           const itemsTotal = price * amount;
 
           cartTotal.amount += amount;
           cartTotal.total += itemsTotal;
           return cartTotal;
-        },
-        {
+        }, {
           total: 0,
           amount: 0,
         }
@@ -78,7 +95,7 @@ export const cartSlice = createSlice({
       state.amount = amount;
     },
     toggleAmount: (state, action) => {
-        state.items = state.items.map((item) => {
+      state.items = state.items.map((item) => {
         if (item._id === action.payload._id) {
           if (action.payload.toggle === "inc") {
             return {
@@ -93,32 +110,62 @@ export const cartSlice = createSlice({
           }
         }
         return item;
-      }); 
+      });
     },
   },
   extraReducers: {
+
+    [createPurchase.pending]: (state) => {
+      state.loading = true;
+    },
+    [createPurchase.fulfilled]: (state, action) => {
+      state.loading = false;
+      const {
+        error
+      } = action.payload;
+      if (error) {
+        state.payErrorMsg = error;
+      } else {
+        state.purchaseCreated = true
+      }
+    },
+    [createPurchase.rejected]: (state, action) => {
+      state.loading = false;
+      state.payErrorMsg = action.error;
+    },
+
+
     [processPayment.pending]: (state) => {
       state.loading = true;
     },
     [processPayment.fulfilled]: (state, action) => {
       state.loading = false;
-      const { error } = action.payload;
+      const {
+        error
+      } = action.payload;
       if (error) {
-        state.payError = error;
+        state.payErrorMsg = error;
       } else {
         state.paySuccess = true
       }
     },
     [processPayment.rejected]: (state, action) => {
       state.loading = false;
-      state.paySuccess = false
-      state.payError = action.error;
-
+      state.payErrorMsg = action.error;
     },
+
+
+  
   }
 });
 
-export const {addToCart, clearCart, removeItem, getTotal, toggleAmount } = cartSlice.actions;
+export const {
+  addToCart,
+  clearCart,
+  removeItem,
+  getTotal,
+  toggleAmount
+} = cartSlice.actions;
 
 export const cartState = (state) => state.cart
 export default cartSlice.reducer;

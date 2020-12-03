@@ -22,7 +22,7 @@ import { eventsState } from "./redux/eventsSlice";
 const App = () => {
   const {events} = useSelector(eventsState);
   const { loggedIn } = useSelector(userState);
-  const { items } = useSelector(cartState);
+  const { items, isOrderSaved } = useSelector(cartState);
 
 
   return (
@@ -48,14 +48,8 @@ const App = () => {
             )}
             </Route>
 
-          <Route exact={true} path="/confirmation">
-            {items && items.length < 1 ? (
-              <Redirect to="/events" />
-            ) : (
-              <Confirmation />
-            )}
-          </Route>
-          {/* <Route exact={true} path="/profile" component={UserEventsContainer} /> */}
+          <Route exact={true} path="/confirmation" component={Confirmation} />
+       
 
           <Route exact={true} path="/profile" component={UserEventsContainer}>
             {!loggedIn ? <Redirect to="/login" /> : <UserEventsContainer />}

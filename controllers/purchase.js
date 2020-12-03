@@ -1,5 +1,36 @@
 const Purchases = require("../models/Purchase")
 const stripe = require("stripe")(process.env.STRIPE_SECRET)
+const mongoose = require("mongoose")
+
+
+
+
+const create = async (req, res) => {
+    console.log("in checkout server :>>\n")
+    const {amount, items, orderNumber, customer, } = req.body
+    
+    const oids = items.map(i => mongoose.Types.ObjectId(i))
+    
+    try {
+        const purchase = Purchases({
+            customer: customer,
+            items: oids,
+            amount: amount,
+            orderNumber: orderNumber,
+        })
+        await purchase.save()
+        return res.status(200).json({
+            success: true
+        })
+    } catch (error) {
+        return res.status(500).json({
+            error: error.message
+        })
+    }
+}
+
+
+
 
 
 const processPmt =  async (req, res) => {
@@ -36,40 +67,7 @@ const processPmt =  async (req, res) => {
 
 
 
-const savePurchase = async (req, res) => {
-    console.log("in checkout server :>>\n")
-    const {amount, itemsBought, order } = req.body
-    try {
-        const purchase = Purchases({
-            amount: amount,
-            itemsBought: itemsBought,
-            order: order
-        })
-    
-        await purchase.save()
-    
-        return res.json({
-            message: "Purchase saved."
-        })
-    
-    } catch (error) {
-        return res.json({
-            error: error.message
-        })
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
 module.exports = {
     processPmt,
-    savePurchase,
+    create,
 }

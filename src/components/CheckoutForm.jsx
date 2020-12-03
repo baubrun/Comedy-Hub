@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-
-
-import {useHistory} from "react-router-dom"
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { clearCart, cartState, savePayment, processPayment} from "../redux/cartSlice";
+import {
+  clearCart,
+  cartState,
+  createPurchase,
+  processPayment,
+} from "../redux/cartSlice";
 
-import  FormInput  from "./FormInput";
-import  Button  from "./Button";
-
-
-import orderId from "order-id"
-
+import FormInput from "./FormInput";
+import Button from "./Button";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
 
+import orderId from "order-id";
+
+import _ from "lodash"
 
 
 const CARD_OPTIONS = {
@@ -36,40 +38,59 @@ const CARD_OPTIONS = {
   },
 };
 
-
 const useStyles = makeStyles((theme) => ({
-
   error: {
     verticalAlign: "middle",
-  }}
-));
-
+  },
+}));
 
 const CheckoutForm = (props) => {
-  const classes = useStyles()
+  const classes = useStyles();
   const stripe = useStripe();
-  const {paySuccess, payError, loading} = useSelector(cartState)
-  const dispatch = useDispatch()
-  const history = useHistory()
+  const { paySuccess, payErrorMsg, loading, purchaseCreated } = useSelector(cartState);
+  const dispatch = useDispatch();
+  const history = useHistory();
   const elements = useElements();
   const [pmtErrors, setPmtErrors] = useState("");
   const [values, setValues] = useState({
     name: "",
     email: "",
     orderNum: "",
-  })
+  });
 
 
   const setOrderNum = () => {
-    const oid = orderId("MY-SECRET").generate()
-    setValues({...values, orderNum: oid})
-    return oid
-  }
+    const oid = orderId("MY-SECRET").generate();
+    setValues({ ...values, orderNum: oid });
+    return oid;
+  };
+
 
   useEffect(() => {
-    // setValues({...values, orderNum:  });
-    setOrderNum()
+    setOrderNum();
   }, []);
+
+
+  useEffect(() => {
+    if (paySuccess) {
+      saveOrder();
+    }
+  }, [paySuccess]);
+
+
+  useEffect(() => {
+    if (purchaseCreated) {
+      history.push("/confirmation")
+    }
+  }, [purchaseCreated]);
+
+
+  useEffect(() => {
+    if (payErrorMsg) {
+      setPmtErrors(payErrorMsg)
+    }
+  }, [payErrorMsg]);
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -79,63 +100,39 @@ const CheckoutForm = (props) => {
     });
   };
 
-  const handleCloseErrors = () => {
-    setPmtErrors("");
+  const getItemsIDs = () => {
+    return props.items.map(i => {
+      return _.pick(i, ["_id"])
+    })
   };
 
-  
-  const saveOrder = async () => {
-    const { total, items } = props;
-    // const data = new FormData();
-    // data.append("amount", amount);
-    // data.append("itemsBought", JSON.stringify(items));
-    // data.append("order", order);
 
-    
+  const saveOrder = () => {
+    console.log("in save order");
+    const { total } = props;
     const data = {
-      items: JSON.stringify(items),
+      customer: values.name,
+      // items: JSON.stringify(items),
+      items: JSON.stringify(getItemsIDs()),
       amount: total,
-      order: values.order,
-      customer: values.name
-    }
-
-    dispatch(savePayment(data))
-    
-    if (paySuccess) {
-      dispatch(clearCart())
-      history.push("/confirmation");
-    } else {
-     setPmtErrors(pmtErrors)
-    }
+      orderNumber: values.orderNum,
+    };
+    dispatch(createPurchase(data));
   };
+
 
   const processPay = async (total, id) => {
-    // const stripeData = new FormData();
-    // stripeData.append("id", id);
-    // stripeData.append("amount", formattedAmount(amount));
-    // stripeData.append("order", orderNum);
-    // stripeData.append("customer", name);
-
-
     const data = {
       id,
       amount: total * 100,
       order: values.orderNum,
-      customer: values.name
-    }
-
-    dispatch(processPayment(data))
-
-    if (paySuccess) {
-      saveOrder();
-    } else {
-      setPmtErrors(payError);
-    }
+      customer: values.name,
+    };
+    dispatch(processPayment(data));
   };
 
 
   const handleSubmit = async (event) => {
-    console.log(" inhandleSubmit");
     event.preventDefault();
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
@@ -149,9 +146,10 @@ const CheckoutForm = (props) => {
       const { id } = paymentMethod;
       processPay(props.total, id, values.orderNum);
     } else {
-      setPmtErrors(error)
+      setPmtErrors(error);
     }
   };
+
 
   return (
     <form className="form-group">
@@ -181,14 +179,14 @@ const CheckoutForm = (props) => {
       </fieldset>
 
       {pmtErrors && (
-           <Box
-           style={{ cursor: "pointer" }}
-           className="bg-danger text-light text-center py-2"
-           id="errors"
-         >
-           {pmtErrors}
-         </Box>
-          )}
+        <Box
+          style={{ cursor: "pointer" }}
+          className="bg-danger text-light text-center py-2"
+          id="errors"
+        >
+          {pmtErrors}
+        </Box>
+      )}
 
       <Button
         color="secondary"
@@ -203,5 +201,4 @@ const CheckoutForm = (props) => {
   );
 };
 
-
-export default CheckoutForm
+export default CheckoutForm;
