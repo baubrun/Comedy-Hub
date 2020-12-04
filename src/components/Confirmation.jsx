@@ -57,7 +57,6 @@ const Confirmation = () => {
       </TableContainer>
       <Box>
         <Typography variant="h6">Confirmation #:&nbsp; {receipt.orderNumber} </Typography>{" "}
-        {receipt.orderNumber}
       </Box>
       <Box>
         <Typography variant="h6">Total Paid:&nbsp;${receipt.total} </Typography>
