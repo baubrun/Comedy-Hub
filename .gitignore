@@ -26,11 +26,7 @@ notes.txt
 prac.html
 
 
-src/data/
-src/images/
 .env
 *.env
 .env*
 
-server/
-uploads/

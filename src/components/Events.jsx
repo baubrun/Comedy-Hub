@@ -65,10 +65,7 @@ const Events = () => {
     setValues({ ...values, events: eventsSorted });
   };
 
-  const handleSearchInput = (event) => {
-    setValues({ ...values, searchInput: event.target.value });
-  };
-
+  
   const handleVenueChange = (event) => {
     setValues({ ...values, venue: event.target.value });
   };

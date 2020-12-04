@@ -44,8 +44,8 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState: {
     items: [],
-    amount: 1,
-    total: 21,
+    amount: 0,
+    total: 0,
     loading: false,
     payErrorMsg: "",
     paySuccess: false,

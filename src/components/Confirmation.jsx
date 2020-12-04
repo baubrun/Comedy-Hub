@@ -4,9 +4,6 @@ import Header from "./Header";
 
 import { cartState } from "../redux/cartSlice";
 import PrintIcon from "@material-ui/icons/Print";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
