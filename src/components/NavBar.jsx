@@ -32,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
     bottom: "auto",
     top: 0,
   },
+  link: {
+    textDecoration: "none",
+    color: "white",
+  },
   title: {
     color: "white",
     fontWeight: "bolder",
@@ -89,6 +93,7 @@ const NavBar = () => {
               
               {!checkedOut && ( 
               <Grid item>
+                <Link className={classes.link} to="/cart">
                 <StyledBadge
                   badgeContent={(items && items.length)}
                   color="secondary"
@@ -97,6 +102,7 @@ const NavBar = () => {
                     <ShoppingCartIcon style={{ fontSize: 40 }} />
                   )}
                 </StyledBadge>
+                </Link>
               </Grid>
               )}
 
