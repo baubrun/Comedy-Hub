@@ -32,7 +32,9 @@ const App = () => {
           <Route exact={true} path="/login" component={Login} />
           <Route exact={true} path="/register" component={Register} />
           <Route exact={true} path="/events" component={Events} />
-
+          <Route exact={true} path="/profile">
+            {!loggedIn ? <Redirect to="/login" /> : <UserEventsContainer />}
+          </Route>
           <Route exact={true} path="/event/:id">
             {events && events.length < 1 ? (
               <Redirect to="/events" />
@@ -52,9 +54,6 @@ const App = () => {
 
           <Route exact={true} path="/confirmation" component={Confirmation} />
 
-          <Route exact={true} path="/profile" component={UserEventsContainer}>
-            {!loggedIn ? <Redirect to="/login" /> : <UserEventsContainer />}
-          </Route>
           <NotFound />
         </Switch>
       </BrowserRouter>

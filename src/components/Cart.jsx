@@ -63,7 +63,7 @@ const Cart = () => {
 
   if (items && items.length < 1) {
     return (
-      <Grid container direction="row" justify="center" alignItems="center">
+      <Grid container direction="row" justify="center" alignItems="center" wrap="wrap">
         <Grid item>
           <Typography variant="h3"> Cart is Empty</Typography>
         </Grid>

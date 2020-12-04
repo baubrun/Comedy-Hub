@@ -54,7 +54,7 @@ export const UserEvents = (props) => {
 
   if (props.userEvents.length < 1) {
     return (
-      <Grid container direction="row" justify="center" alignItems="center">
+      <Grid container direction="row" justify="center" alignItems="center" wrap="wrap">
         <Grid item>
           <Typography variant="h4">NO EVENTS</Typography>
         </Grid>

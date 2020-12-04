@@ -56,7 +56,7 @@ const Checkout = () => {
   return (
     <>
       <Header text="CHECKOUT" type="secondary" />
-      <Grid container direction="row" alignItems="center" justify="center">
+      <Grid container direction="row" alignItems="center" justify="center" wrap="wrap">
         <Grid item xs={6}>
           <Card className={clsx([classes.purchaseCard, classes.cards])}>
             <CardHeader className={classes.info}>

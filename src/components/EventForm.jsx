@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 200,
   },
   fileUpload: {
-    margin: "16px"
+    margin: "16px",
   },
   input: {
     display: "none",
@@ -77,25 +77,22 @@ const EventForm = (props) => {
     ...initState,
   });
 
-
   useEffect(() => {
     if (props.selectedId) {
       const found = events.find((i) => i._id === props.selectedId);
       setValues(found);
     }
-  }, [props.selectedId, events]);
+  }, [props.selectedId]);
 
   useEffect(() => {
     if (error) {
-      setValues({...values, errorMsg: error})
+      setValues({ ...values, errorMsg: error });
     }
   }, [error]);
-
 
   const closeErrors = () => {
     setValues({ ...values, errorMsg: "" });
   };
-
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -105,9 +102,11 @@ const EventForm = (props) => {
     });
   };
 
-
   const handleSubmit = (evt) => {
+    console.log('evt :>> ', evt);
     evt.preventDefault();
+    // evt.stopPropagation();
+    // evt.stopImmediatePropagation();
     const data = new FormData();
     data.append("title", values.title);
     data.append("startDate", values.startDate);
@@ -123,13 +122,9 @@ const EventForm = (props) => {
     data.append("twitter", values.twitter);
     data.append("image", file);
 
-
-
-    if (props.editMode){
-      data.append("_id", props.selectedId)
-      const form = [ props.selectedId, data]
-       
-      
+    if (props.editMode) {
+      data.append("_id", props.selectedId);
+      const form = [props.selectedId, data];
       dispatch(updateEvent(form));
     } else {
       dispatch(createEvent(data));
@@ -140,9 +135,7 @@ const EventForm = (props) => {
     <Grid className={classes.root} container justify="center">
       <Grid item>
         <Paper className={classes.paper}>
-        <form 
-            onSubmit={(evt) => handleSubmit(evt)}
-            >
+          <form onSubmit={handleSubmit}>
             <Grid
               container
               direction="row"
@@ -155,19 +148,16 @@ const EventForm = (props) => {
                 </Typography>
               </Grid>
             </Grid>
-   
-          <Grid item xs={12}>
-          {values.errorMsg && (
-               <Box 
-               onClick={() => closeErrors()}
-               >
-                 <Typography className={classes.error} component="p">
-                   {values.errorMsg}
-                 </Typography>
-               </Box>
-          )}
-          </Grid>
 
+            <Grid item xs={12}>
+              {values.errorMsg && (
+                <Box onClick={() => closeErrors()}>
+                  <Typography className={classes.error} component="p">
+                    {values.errorMsg}
+                  </Typography>
+                </Box>
+              )}
+            </Grid>
 
             <Grid direction="row" container justify="center" spacing={2}>
               <Grid item>
@@ -180,9 +170,9 @@ const EventForm = (props) => {
                     onChange={(evt) => handleChange(evt)}
                     required
                   >
-              <MenuItem value="LE FOU FOU">LE FOU FOU</MenuItem>
-              <MenuItem value="JOKES BLAGUES">JOKES BLAGUES</MenuItem>
-              <MenuItem value="RIRE NOW">RIRE NOW</MenuItem>
+                    <MenuItem value="LE FOU FOU">LE FOU FOU</MenuItem>
+                    <MenuItem value="JOKES BLAGUES">JOKES BLAGUES</MenuItem>
+                    <MenuItem value="RIRE NOW">RIRE NOW</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -341,22 +331,19 @@ const EventForm = (props) => {
             </Grid>
 
             <Grid container justify="center" alignItems="center">
-              
-                <input
-                  accept="image/*"
-                  className={classes.input}
-                  id="icon-button-file"
-                  name="image"
-                  onChange={(evt) => setFile(evt.target.files[0])}
-                  type="file"
-                  alt={values.performer}
-                />
+              <input
+                accept="image/*"
+                className={classes.input}
+                id="icon-button-file"
+                name="image"
+                onChange={(evt) => setFile(evt.target.files[0])}
+                type="file"
+                alt={values.performer}
+              />
 
-               <Grid className={classes.fileUpload} item xs={3}>
-                <label 
-                htmlFor="icon-button-file"  >
+              <Grid className={classes.fileUpload} item xs={3}>
+                <label htmlFor="icon-button-file">
                   <Button
-                 
                     color="secondary"
                     component="span"
                     variant="contained"
@@ -365,7 +352,6 @@ const EventForm = (props) => {
                   </Button>
                 </label>
               </Grid>
-             
             </Grid>
 
             <Grid container justify="center">
@@ -374,13 +360,13 @@ const EventForm = (props) => {
                   color="primary"
                   variant="contained"
                   fullWidth
-                 type="submit"
+                  type="submit"
                 >
                   SUBMIT
                 </Button>
               </Grid>
             </Grid>
-            </form>
+          </form>
         </Paper>
       </Grid>
     </Grid>
