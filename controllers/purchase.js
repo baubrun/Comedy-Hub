@@ -55,7 +55,6 @@ const processPmt =  async (req, res) => {
             success: true
         })
     } catch (error) {
-        console.log("stripe error:", error.raw.message)
         return res.json({
             error: error.raw.message
         })
