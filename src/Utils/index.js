@@ -1,5 +1,5 @@
 
-export let domain = "http://localhost:5000" 
+export let domain = "https://com-hub.herokuapp.com" 
 
 
 
