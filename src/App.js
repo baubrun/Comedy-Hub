@@ -14,13 +14,15 @@ import Confirmation from "./components/Confirmation";
 import Cart from "./components/Cart";
 import { useSelector } from "react-redux";
 import NotFound from "./components/NotFound";
-import { userState } from "./redux/userSlice";
 import { cartState } from "./redux/cartSlice";
 import { eventsState } from "./redux/eventsSlice";
 
+import PrivateRoute from "./components/PrivateRoute"
+
+
+
 const App = () => {
   const { events } = useSelector(eventsState);
-  const { loggedIn } = useSelector(userState);
   const { items } = useSelector(cartState);
 
   return (
@@ -32,9 +34,9 @@ const App = () => {
           <Route exact={true} path="/login" component={Login} />
           <Route exact={true} path="/register" component={Register} />
           <Route exact={true} path="/events" component={Events} />
-          <Route exact={true} path="/profile">
-            {!loggedIn ? <Redirect to="/login" /> : <UserEventsContainer />}
-          </Route>
+          
+          <PrivateRoute exact={true} path="/profile" component={UserEventsContainer} />
+          
           <Route exact={true} path="/event/:id">
             {events && events.length < 1 ? (
               <Redirect to="/events" />

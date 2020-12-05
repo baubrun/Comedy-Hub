@@ -14,7 +14,6 @@ import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import _ from "lodash";
 import clsx from "clsx";
 import { cartState } from "../redux/cartSlice";
 import Header from "./Header";

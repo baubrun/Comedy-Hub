@@ -28,6 +28,7 @@ const UserEventsContainer = () => {
     userEvents: [],
   });
 
+
   useEffect(() => {
     dispatch(readEvents());
   }, [dispatch]);

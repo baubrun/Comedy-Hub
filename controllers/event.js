@@ -1,9 +1,6 @@
 const Events = require("../models/Events")
 const mongoose = require("mongoose")
 const path = require("path")
-const {
-    moveFilesToApp
-} = require("../lib/multer")
 const onFinished = require("on-finished")
 
 
@@ -63,17 +60,6 @@ const create = async (req, res) => {
         await newEvent.save()
         const events = await Events.find({});
         res.status(200).json({events: events})
-
-        onFinished(res, (error) => {
-            if (error) {
-                return res.status(400).json({
-                    message: error.message,
-                });
-            } else {
-                moveFilesToApp();
-            }
-            return;
-        });
 
     } catch (error) {
         return res.status(500).json({
@@ -178,18 +164,7 @@ const update = async (req, res) => {
 
         
         const events = await Events.find({});
-        res.status(200).json({events: events})
-
-        onFinished(res, (error) => {
-            if (error) {
-                return res.status(400).json({
-                    message: error.message,
-                });
-            } else {
-                moveFilesToApp();
-            }
-            return;
-        });
+        return res.status(200).json({events: events})
 
     } catch (error) {
         return res.status(500).json({

@@ -103,10 +103,7 @@ const EventForm = (props) => {
   };
 
   const handleSubmit = (evt) => {
-    console.log('evt :>> ', evt);
     evt.preventDefault();
-    // evt.stopPropagation();
-    // evt.stopImmediatePropagation();
     const data = new FormData();
     data.append("title", values.title);
     data.append("startDate", values.startDate);
