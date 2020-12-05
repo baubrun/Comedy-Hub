@@ -17,7 +17,7 @@ import FileUpload from "@material-ui/icons/AddPhotoAlternate";
 
 import clsx from "clsx";
 import { userState } from "../redux/userSlice";
-import { createEvent, updateEvent, eventsState } from "../redux/eventsSlice";
+import { createEvent, updateEvent, eventsState, clearError } from "../redux/eventsSlice";
 
 const useStyles = makeStyles((theme) => ({
   error: {
@@ -91,7 +91,7 @@ const EventForm = (props) => {
   }, [error]);
 
   const closeErrors = () => {
-    setValues({ ...values, errorMsg: "" });
+    dispatch(clearError())
   };
 
   const handleChange = (event) => {
@@ -123,8 +123,11 @@ const EventForm = (props) => {
       data.append("_id", props.selectedId);
       const form = [props.selectedId, data];
       dispatch(updateEvent(form));
+      console.log("editing");
+      console.log('form :>>', form)
     } else {
       dispatch(createEvent(data));
+      console.log("adding");
     }
   };
 

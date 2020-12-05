@@ -69,6 +69,9 @@ export const EventsSlice = createSlice({
     loading: false,
   },
   reducers: {
+    clearError: (state) => {
+      state.error = ""
+    },
     clearEvents: (state) => {
       state.events = [];
     },
@@ -83,7 +86,7 @@ export const EventsSlice = createSlice({
       if (error) {
         state.error = error;
       } else {
-        state.events = [...action.payload];
+        state.events = action.payload.events
       }
     },
     [createEvent.rejected]: (state, action) => {
@@ -91,16 +94,16 @@ export const EventsSlice = createSlice({
       state.error = action.payload.error;
     },
 
-    [deleteEvent.pending]: (state, action) => {
+    [deleteEvent.pending]: (state) => {
       state.loading = true;
     },
     [deleteEvent.fulfilled]: (state, action) => {
       state.loading = false;
-      const { error } = action.payload;
+      const { error, events } = action.payload;
       if (error) {
         state.error = error;
       } else {
-        state.events = action.payload.events;
+        state.events = events;
       }
     },
     [deleteEvent.rejected]: (state, action) => {
@@ -113,13 +116,12 @@ export const EventsSlice = createSlice({
     },
     [readEvents.fulfilled]: (state, action) => {
       state.loading = false;
-      const { error } = action.payload;
+      const { error, events } = action.payload;
       if (error) {
         state.error = error;
       } 
       else {
-        state.events = action.payload.events;
-
+        state.events = events;
       }
     },
     [readEvents.rejected]: (state, action) => {
@@ -127,16 +129,16 @@ export const EventsSlice = createSlice({
       state.error = action.error;
     },
     
-    [updateEvent.pending]: (state, action) => {
+    [updateEvent.pending]: (state) => {
       state.loading = true;
     },
     [updateEvent.fulfilled]: (state, action) => {
       state.loading = false;
-      const { error } = action.payload;
+      const { error, events } = action.payload;
       if (error) {
         state.error = error;
       } else {
-        state.events = action.payload.events;
+        state.events = events;
       }
     },
     [updateEvent.rejected]: (state, action) => {
@@ -146,7 +148,7 @@ export const EventsSlice = createSlice({
   },
 });
 
-export const { clearEvents } = EventsSlice.actions;
+export const { clearEvents, clearError } = EventsSlice.actions;
 
 export const eventsState = (state) => state.events;
 export default EventsSlice.reducer;

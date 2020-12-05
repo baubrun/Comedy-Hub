@@ -1,7 +1,6 @@
 const Events = require("../models/Events")
 const mongoose = require("mongoose")
 const path = require("path")
-const onFinished = require("on-finished")
 
 
 const create = async (req, res) => {
