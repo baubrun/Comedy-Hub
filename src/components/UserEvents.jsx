@@ -72,7 +72,7 @@ export const UserEvents = (props) => {
 
               <CardMedia
                 className={classes.img}
-                image={`/uploads/${event.image}`}
+                image={`${process.env.PUBLIC_URL}/uploads/${event.image}`}
                 component="img"
                 title={event.title}
               />
