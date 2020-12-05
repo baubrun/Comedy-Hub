@@ -45,7 +45,7 @@ const Event = (props) => {
       <Link to={`/event/${_id}`}>
         <CardMedia
           className={classes.img}
-          image={`${process.env.PUBLIC_URL}/uploads/${image}`}
+          image={image}
           component="img"
           title={title}
         />
