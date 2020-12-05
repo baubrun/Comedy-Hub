@@ -58,7 +58,9 @@ const create = async (req, res) => {
 
         await newEvent.save()
         const events = await Events.find({});
-        res.status(200).json({events: events})
+        res.status(200).json({
+            events: events
+        })
 
     } catch (error) {
         return res.status(500).json({
@@ -72,7 +74,9 @@ const create = async (req, res) => {
 const read = async (req, res) => {
     try {
         const events = await Events.find({});
-        return res.status(200).json({events: events})
+        return res.status(200).json({
+            events: events
+        })
 
     } catch (error) {
         return res.status(500).json({
@@ -108,7 +112,6 @@ const remove = async (req, res) => {
 
 const update = async (req, res) => {
     const _id = req.params.eventId
-
     const {
         files,
         body: {
@@ -144,8 +147,8 @@ const update = async (req, res) => {
             }
         }
 
-        
-        await Events.findByIdAndUpdate(_id,{
+
+        await Events.findByIdAndUpdate(_id, {
             title: title,
             startDate: startDate,
             startTime: startTime,
@@ -161,9 +164,11 @@ const update = async (req, res) => {
             twitter: twitter
         })
 
-        
+
         const events = await Events.find({});
-        return res.status(200).json({events: events})
+        return res.status(200).json({
+            events: events
+        })
 
     } catch (error) {
         return res.status(500).json({

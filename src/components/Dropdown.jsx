@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
@@ -12,7 +12,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import StreetviewIcon from "@material-ui/icons/Streetview";
-import Typography  from "@material-ui/core/Typography";
+import Typography from "@material-ui/core/Typography";
 
 import { logOut, userState } from "../redux/userSlice";
 import { clearCart } from "../redux/cartSlice";
@@ -50,23 +50,18 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-
 const useStyles = makeStyles((theme) => ({
   link: {
-    color: theme.palette.primary.main
-  }
+    color: theme.palette.primary.main,
+  },
 }));
 
-
-export const Dropdown = (props) => {
-  const classes = useStyles()
+export const Dropdown = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
   const { loggedIn, hostId } = useSelector(userState);
   const [anchorEl, setAnchorEl] = useState(null);
-
-
-
 
   const logout = () => {
     dispatch(logOut());
@@ -82,7 +77,6 @@ export const Dropdown = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
 
   return (
     <>
@@ -104,7 +98,10 @@ export const Dropdown = (props) => {
 
         {loggedIn && (
           <Box m={2}>
-            <Typography variant="h6" color="secondary">{`Hi ${hostId}!`}</Typography>
+            <Typography
+              variant="h6"
+              color="secondary"
+            >{`Hi ${hostId}!`}</Typography>
           </Box>
         )}
       </Grid>
@@ -116,11 +113,22 @@ export const Dropdown = (props) => {
         open={Boolean(anchorEl)}
         onClose={(evt) => handleClose(evt)}
       >
-        <Link className={classes.link}  to="/profile">
-          <StyledMenuItem >
-            <ListItemIcon  >
+        {!loggedIn && (
+          <Link className={classes.link} to="/login">
+            <StyledMenuItem>
+              <ListItemIcon>
+                <InboxIcon color="secondary" fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="LOGIN" />
+            </StyledMenuItem>
+          </Link>
+        )}
+
+        <Link className={classes.link} to="/profile">
+          <StyledMenuItem>
+            <ListItemIcon>
               <PersonIcon color="secondary" fontSize="small" />
-            </ListItemIcon >
+            </ListItemIcon>
             <ListItemText primary="PROFILE" />
           </StyledMenuItem>
         </Link>
@@ -128,19 +136,18 @@ export const Dropdown = (props) => {
         <Link className={classes.link} to="/events">
           <StyledMenuItem>
             <ListItemIcon>
-              <StreetviewIcon  color="secondary" fontSize="small" />
+              <StreetviewIcon color="secondary" fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="EVENTS" />
           </StyledMenuItem>
         </Link>
 
-    
         {loggedIn && (
           <Link className={classes.link} to="/">
             <StyledMenuItem>
               <ListItemIcon>
                 <InboxIcon color="secondary" fontSize="small" />
-              </ListItemIcon >
+              </ListItemIcon>
               <ListItemText primary="LOGOUT" onClick={() => logout()} />
             </StyledMenuItem>
           </Link>

@@ -27,6 +27,7 @@ const read = async (req, res) => {
                 error: "Invalid Email or password.",
             });
         } else {
+           
             return res.status(200).json({
                 hostId: user.hostId
             });
@@ -66,7 +67,9 @@ const create = async (req, res) => {
         hostId: hostId,
     })
         await user.save()
-        return res.status(201).json({
+        
+
+        return res.status(200).json({
             hostId: user.hostId
         })
 

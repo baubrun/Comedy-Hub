@@ -6,7 +6,7 @@ export const createEvent = createAsyncThunk(
   "/events/create", 
   async (data) => {
   try {
-    const res = await axios.post(domain + "/events", data);
+    const res = await axios.post(`${domain}/events`, data);
  
     return res.data;
   } catch (error) {

@@ -123,11 +123,8 @@ const EventForm = (props) => {
       data.append("_id", props.selectedId);
       const form = [props.selectedId, data];
       dispatch(updateEvent(form));
-      console.log("editing");
-      console.log('form :>>', form)
     } else {
       dispatch(createEvent(data));
-      console.log("adding");
     }
   };
 

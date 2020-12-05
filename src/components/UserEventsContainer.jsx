@@ -16,7 +16,7 @@ import Spinner from "./Spinner";
 
 const UserEventsContainer = () => {
   const dispatch = useDispatch();
-  const { hostId, loading } = useSelector(userState);
+  const { hostId, loading, loggedIn } = useSelector(userState);
   const { events } = useSelector(eventsState);
   const [state, setState] = useState({
     addMode: false,
@@ -29,9 +29,9 @@ const UserEventsContainer = () => {
   });
 
 
-  useEffect(() => {
-    dispatch(readEvents());
-  }, [dispatch]);
+  useEffect(() => { 
+      dispatch(readEvents());
+  }, []);
 
   useEffect(() => {
     if (events) {
@@ -122,6 +122,8 @@ const UserEventsContainer = () => {
       />
     );
   }
+
+
 
   return (
     <>

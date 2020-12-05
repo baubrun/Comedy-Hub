@@ -16,13 +16,9 @@ router.route("/events")
   .post(upload.any(), eventController.create);
 
 
-router.route("/events/:eventId");
-
-
 router.route("/events/:eventId")
   .delete(eventController.remove)
   .patch(upload.any(), eventController.update)
-  .post(eventController.create);
 
 
 

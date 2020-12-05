@@ -30,14 +30,6 @@ app.use("/", express.static("build"))
 
 
 
-/*================
-test
-===================*/
-
-app.get("/server", (req, res) => {
-    res.json("server running...")
-})
-
 
 
 /*================
