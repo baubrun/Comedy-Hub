@@ -32,7 +32,7 @@ const useStyles = makeStyles({
 const Event = (props) => {
   const classes = useStyles();
 
-  const { title, startDate, performer, startTime, image ,_id} = props.event
+  const { title, startDate, performer, startTime, image, _id } = props.event;
 
   return (
     <Card className={classes.root}>
@@ -45,7 +45,7 @@ const Event = (props) => {
       <Link to={`/event/${_id}`}>
         <CardMedia
           className={classes.img}
-          image={image}
+          image={`${process.env.PUBLIC_URL}/images/${image}`}
           component="img"
           title={title}
         />
@@ -76,7 +76,6 @@ const Event = (props) => {
       </CardActions>
     </Card>
   );
-  
 };
 
 export default Event;

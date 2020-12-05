@@ -44,7 +44,7 @@ const HomePage = () => {
     </Grid>
 
     <Grid  container>
-    <img className={classes.homeImg} src="club-2.jpg" alt="club" />
+    <img className={classes.homeImg} src="/images/club-2.jpg" alt="club" />
     </Grid>
 
     </>

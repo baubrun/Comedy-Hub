@@ -64,7 +64,7 @@ const ED = (props) => {
           className={classes.large}
           alt={title}
           id="performer-img-detail"
-          src={image}
+          src={`${process.env.PUBLIC_URL}/images/${image}`}
         />
       </Grid>
       <Grid item>
